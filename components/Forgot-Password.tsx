@@ -6,8 +6,6 @@ import { useRouter } from "next/router";
 
 const ForgotPasswordForm: FC = () => {
 
-  const forgotPasswordForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
-
   const router = useRouter();
 
   const [email, setEmail] = useState('');
@@ -15,6 +13,7 @@ const ForgotPasswordForm: FC = () => {
   const [error, setShowError] = useState(false);
 
   const requestPasswordResetLink = async (e: FormEvent<HTMLFormElement>,email: string) => {
+    e.preventDefault()
     setShowSpinner(true)
     try {
       await sendPasswordResetEmail(auth, email);
@@ -29,7 +28,7 @@ const ForgotPasswordForm: FC = () => {
   }
   
   return (
-    <Form ref={forgotPasswordForm} name="forgotPasswordForm"
+    <Form name="forgotPasswordForm"
     onSubmit={e => requestPasswordResetLink(e, email)}>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email address</Form.Label>

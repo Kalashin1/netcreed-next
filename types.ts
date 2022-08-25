@@ -18,19 +18,21 @@ export interface User extends DocumentData {
   savedArticles: Array<Article>
 }
 
+export type Author = Pick<User, 'username' | 'phone' | 'email' | 'github' | 'twitter' | 'coverPhoto' | 'id'>;
+
 export interface Article extends DocumentData {
   title: string;
   createdAt: number;
   tags: Array<string>;
   category: string;
   body: string;
-  image: string;
+  coverPhoto: string;
   slug: string;
   id: string;
   stamp: string;
   readingTimeInMins: number;
   description: string;
-  author: Partial<User>;
+  author: Author;
   views: number;
   likes: number;
   saves: number;

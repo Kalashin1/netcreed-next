@@ -1,62 +1,146 @@
 import { NextComponentType } from "next";
 import { MultiSelect } from "react-multi-select-component";
 import { useState, useRef, MutableRefObject, FormEvent } from "react";
-import { db } from "../Firebase-settings";
-import { addDoc } from "@firebase/firestore";
-import { Article } from "../types";
+import { randomBytes } from "crypto";
+import { auth, db, storage } from "../Firebase-settings";
+import { getDoc, doc, addDoc, collection } from "@firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
+import { Article, ARTICLE_STATUS, Author, User as _User } from "../types";
+import { User } from "@firebase/auth";
+import { useRouter } from "next/router";
 
-const options = [
-  { label: "Grapes 🍇", value: "grapes" },
-  { label: "Mango 🥭", value: "mango" },
-  { label: "Strawberry 🍓", value: "strawberry", disabled: true },
+const tags = [
+  { label: "JavaScript", value: "js" },
+  { label: "HTML", value: "html" },
+  { label: "CSS", value: "css" },
+  { label: "NodeJS", value: "node" },
+  { label: "TypeScript", value: "ts" },
+  { label: "Python", value: "python" },
+  { label: "React", value: "react" },
+  { label: "Angular", value: "angular" },
 ];
+
+const publishTypes = [
+  { label: 'Published', value: 'publish' },
+  { label: 'Draft', value: 'draft' },
+  { label: 'Archive', value: 'archive' }
+]
 
 const CreateArticleForm: NextComponentType = () => {
 
+  const router = useRouter();
+
   const createArticleForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
 
-  const [selected, setSelected] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedPublishTypes, setSelectedPublishTypes] = useState([]);
 
-  const createArticle = async (e: FormEvent<HTMLFormElement>, form: HTMLFormElement) => {
-    const { title, coverPhoto, body } = form;
-    // TODO: upload image to cloudinary
-    const article: Partial<Article> = {
-      title,
-      body,
-      description: body.slice(0, 50),
-      createdAt: new Date().getTime().toString(),
-      
+  const uploadImage = async (file: HTMLInputElement) => {
+    const extension = file.files![0].name.split('.')[1];
+
+    const key = randomBytes(16).toString('hex')
+    const name = `${key}.${extension}`;
+    localStorage.setItem('name', name);
+
+
+    const storageRef = ref(storage)
+    const articleImagesRef = ref(storageRef, `articles/${name}`);
+
+    const metadata = {
+      contentType: 'image/jpeg',
+    };
+
+    const res = await uploadBytes(articleImagesRef, file.files![0], metadata);
+
+    const imageUrl = await getDownloadURL(articleImagesRef);
+
+    return imageUrl;
+  }
+
+  const getUser = async (user: User) => {
+    const uid = user.uid;
+    const docRef = doc(db, 'users', uid);
+    const document = await getDoc(docRef);
+    const userDoc = await document.data() as _User;
+    return {
+      username: userDoc.username,
+      phone: userDoc.phone,
+      twitter: userDoc.twitter,
+      github: userDoc.github,
+      coverPhoto: userDoc.coverPhoto,
+      email: userDoc.email,
+      id: document.id,
     }
+  }
 
+  const createArticle = async (e: FormEvent<HTMLFormElement>, form: HTMLFormElement, staus: ARTICLE_STATUS) => {
+    try {
+      e.preventDefault();
+
+      let author: Author;
+
+      const currentUser = auth.currentUser;
+
+      if (!currentUser) {
+        throw Error('You are not loggged in yet');
+      } else {
+        author = await getUser(currentUser);
+      }
+      const { articleName, coverPhoto, body } = form;
+
+      const imageUrl = await uploadImage(coverPhoto as HTMLInputElement);
+
+      console.log(imageUrl);
+
+      const article: Partial<Article> = {
+        title: articleName.value,
+        body: body.value,
+        description: body.value.slice(0, 50),
+        createdAt: new Date().getTime(),
+        coverPhoto: imageUrl,
+        readingTimeInMins: (body.length / 200),
+        author,
+        likes: 0,
+        saves: 0,
+        tags: selectedTags,
+        status: staus!,
+        views: 0,
+      }
+      await addDoc(collection(db, 'articles'), article);
+      alert('Article created');
+      router.push('/post-dashboard');
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <div className="container">
       <div>
-        <form name="articleForm">
+        <form name="articleForm" ref={createArticleForm} onSubmit={e => createArticle(e, createArticleForm.current!, 'saved')} >
           <div className="form-group">
             <label htmlFor="exampleFormControlInput1">Title</label>
-            <input type="text" name="title" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+            <input type="text" name="articleName" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
           </div>
           <div className="form-group">
             <label htmlFor="exampleFormControlFile1">Select Cover Photo</label>
-            <input type="file" name="coverPhoto" className="form-control-file" id="exampleFormControlFile1" />
+            <input type="file" name="coverPhoto" className="form-control" id="exampleFormControlFile1" />
           </div>
           <div className="form-group">
             <label>Select Tag</label>
             <MultiSelect
-              options={options}
-              value={selected}
-              onChange={setSelected}
+              options={tags}
+              value={selectedTags}
+              onChange={setSelectedTags}
               labelledBy="Select"
             />
           </div>
           <div className="form-group">
             <label>Add To</label>
             <MultiSelect
-              options={options}
-              value={selected}
-              onChange={setSelected}
+              options={publishTypes}
+              value={selectedPublishTypes}
+              onChange={setSelectedPublishTypes}
               labelledBy="Select"
             />
           </div>
@@ -66,7 +150,7 @@ const CreateArticleForm: NextComponentType = () => {
           </div>
 
           <div className="my-2 flex">
-            <button className="btn btn-primary" style={{ width: '100%'}}>
+            <button className="btn btn-primary" style={{ width: '100%' }}>
               Create Post
             </button>
           </div>

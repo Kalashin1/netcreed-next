@@ -48,7 +48,8 @@ const SignupForm: NextComponentType = () => {
       await setDoc(doc(db, 'users', user.uid), {
         name: userPayload.name,
         email: userPayload.email,
-        articles: []
+        articles: [],
+        createdAt: new Date().getTime()
       })
       setShowSpinner(false);
       alert('Your account has been created successfully');

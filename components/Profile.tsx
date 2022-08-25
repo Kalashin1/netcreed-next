@@ -5,6 +5,7 @@ import { getDoc, doc, updateDoc } from '@firebase/firestore';
 import { User } from '../types';
 import { Tab, Tabs, Form, Button, Spinner } from 'react-bootstrap';
 import { useRouter } from "next/router";
+import PersonalDetailsComponent from "./Personal-Details-Component";
 
 const UserProfile: NextComponentType = () => {
 
@@ -118,55 +119,7 @@ const UserProfile: NextComponentType = () => {
                 </div>
               </div>
             </div>
-            <div className="card my-4">
-              <div className="card-header">
-                <h4>Personal Details</h4>
-              </div>
-              <div className="card-body">
-                <div className="py-4">
-                  <p className="clearfix">
-                    <span className="float-left">
-                      Username
-                    </span>
-                    <span className="float-right text-muted">
-                      {user.username}
-                    </span>
-                  </p>
-                  <p className="clearfix">
-                    <span className="float-left">
-                      Phone
-                    </span>
-                    <span className="float-right text-muted">
-                      {user.phone}
-                    </span>
-                  </p>
-                  <p className="clearfix">
-                    <span className="float-left">
-                      Mail
-                    </span>
-                    <span className="float-right text-muted" style={{ fontSize: '.8rem'}}>
-                      { user.email }
-                    </span>
-                  </p>
-                  <p className="clearfix">
-                    <span className="float-left">
-                      Github
-                    </span>
-                    <span className="float-right text-muted">
-                      <a href={`https://github.com/${user.github}`}>{ user.username }</a>
-                    </span>
-                  </p>
-                  <p className="clearfix">
-                    <span className="float-left">
-                      Twitter
-                    </span>
-                    <span className="float-right text-muted">
-                      <a href={`https://twitter.com/${user.twitter}`}>{user.twitter}</a>
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <PersonalDetailsComponent { ...Object.create({ username: user.username, phone: user.phone, email: user.email, twitter: user.twitter})}  />
 
           </div>
           <div className="col-12 col-md-12 col-lg-8">
@@ -247,68 +200,6 @@ const UserProfile: NextComponentType = () => {
                     </div>
                   </Tab>
                 </Tabs>
-                <div className="tab-content tab-bordered container" id="myTab3Content">
-
-                  <div className="tab-pane fade my-4" id="settings" role="tabpanel" aria-labelledby="profile-tab2">
-                    <form method="post" className="needs-validation">
-                      <div className="">
-                        <h4>Edit Profile</h4>
-                      </div>
-                      <div className="card-body">
-                        <div className="row">
-                          <div className="form-group col-md-6 col-12">
-                            <label>First Name</label>
-                            <input type="text" className="form-control" value="John" />
-                            <div className="invalid-feedback">
-                              Please fill in the first name
-                            </div>
-                          </div>
-                          <div className="form-group col-md-6 col-12">
-                            <label>Last Name</label>
-                            <input type="text" className="form-control" value="Deo" />
-                            <div className="invalid-feedback">
-                              Please fill in the last name
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="form-group col-md-7 col-12">
-                            <label>Email</label>
-                            <input type="email" className="form-control" value="test@example.com" />
-                            <div className="invalid-feedback">
-                              Please fill in the email
-                            </div>
-                          </div>
-                          <div className="form-group col-md-5 col-12">
-                            <label>Phone</label>
-                            <input type="tel" className="form-control" value="" />
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="form-group col-12">
-                            <label>Bio</label>
-                            <textarea
-                              className="form-control summernote-simple">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur voluptatum alias molestias minus quod dignissimos.</textarea>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="form-group mb-0 col-12">
-                            <div className="custom-control custom-checkbox">
-                              <input type="checkbox" name="remember" className="custom-control-input" id="newsletter" />
-                              <label className="custom-control-label" htmlFor="newsletter">Subscribe to newsletter</label>
-                              <div className="text-muted form-text">
-                                You will get new information about products, offers and promotions
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <button className="btn btn-primary">Save Changes</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

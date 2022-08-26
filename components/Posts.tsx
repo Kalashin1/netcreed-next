@@ -1,6 +1,7 @@
-import { NextComponentType } from "next"
 import { MultiSelect } from "react-multi-select-component";
-import { useState } from "react";
+import { useState, FC } from "react";
+import { Article } from "../types";
+import { Button } from 'react-bootstrap';
 
 const options = [
   { label: "Grapes 🍇", value: "grapes" },
@@ -8,7 +9,11 @@ const options = [
   { label: "Strawberry 🍓", value: "strawberry", disabled: true },
 ];
 
-const PostTable: NextComponentType = () => {
+type PostPayload = {
+  posts: Article[]
+}
+
+const PostTable: FC<PostPayload> = ({ posts }) => {
 
   const [selected, setSelected] = useState([]);
 
@@ -18,7 +23,7 @@ const PostTable: NextComponentType = () => {
         <h4>All Posts</h4>
       </div>
       <div className="card-body">
-        <div style={{ width: '50%' }} className="my-4">
+        <div style={{ width: '50vw' }} className="my-4">
 
           <label>Add To</label>
           <MultiSelect
@@ -29,7 +34,7 @@ const PostTable: NextComponentType = () => {
           />
         </div>
         <div>
-          <form>
+          <form style={{ width: '50vw' }}>
             <div className="input-group">
               <input type="text" className="form-control" placeholder="Search" />
               <div className="input-group-append">
@@ -53,33 +58,32 @@ const PostTable: NextComponentType = () => {
               <th>Category</th>
               <th>Created At</th>
               <th>Views</th>
-              <th>Status</th>
             </tr>
-              <tr>
-                <td>
-                  <div className="custom-checkbox custom-control">
-                    <input type="checkbox" data-checkboxes="mygroup" className="custom-control-input" id="checkbox-2" />
-                    <label htmlFor="checkbox-2" className="custom-control-label">&nbsp;</label>
-                  </div>
-                </td>
-                <td>
-                  <a href="#">
-                    <span className="d-inline-block ml-1">Cara Stevens</span>
-                  </a>
-                </td>
-                <td>Post Title 1
-
-                </td>
-                <td>
-                  <a href="#">Science</a>
-                </td>
-                <td>10-02-2019</td>
-                <td>3,587</td>
-                <td>
-                  <div className="badge badge-warning">Pending</div>
-                </td>
-              </tr>
-
+              {
+                posts && posts.map((post, index) => (
+                  <tr key={index}>
+                    <td>
+                      <div className="custom-checkbox custom-control">
+                        <input type="checkbox" data-checkboxes="mygroup" className="custom-control-input" id="checkbox-2" />
+                        <label htmlFor="checkbox-2" className="custom-control-label">&nbsp;</label>
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#">
+                        <span className="d-inline-block ml-1">{post.author.username}</span>
+                      </a>
+                    </td>
+                    <td>
+                      {post.title}
+                    </td>
+                    <td>
+                      <a href="#">{post.status}</a>
+                    </td>
+                    <td>{new Date(post.createdAt).toDateString()}</td>
+                    <td>{post.views}</td>
+                  </tr>
+                ))
+              }
             </tbody></table>
         </div>
         <div className="float-right">

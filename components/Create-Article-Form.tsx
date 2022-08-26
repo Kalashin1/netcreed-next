@@ -8,6 +8,7 @@ import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
 import { Article, ARTICLE_STATUS, Author, User as _User } from "../types";
 import { User } from "@firebase/auth";
 import { useRouter } from "next/router";
+import { Button, Spinner } from "react-bootstrap";
 
 const tags = [
   { label: "JavaScript", value: "js" },
@@ -34,6 +35,7 @@ const CreateArticleForm: NextComponentType = () => {
 
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedPublishTypes, setSelectedPublishTypes] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const uploadImage = async (file: HTMLInputElement) => {
     const extension = file.files![0].name.split('.')[1];
@@ -67,7 +69,7 @@ const CreateArticleForm: NextComponentType = () => {
       phone: userDoc.phone,
       twitter: userDoc.twitter,
       github: userDoc.github,
-      coverPhoto: userDoc.coverPhoto,
+      coverPhoto: userDoc.coverPhoto? userDoc.coverPhoto: 'url',
       email: userDoc.email,
       id: document.id,
     }
@@ -150,9 +152,11 @@ const CreateArticleForm: NextComponentType = () => {
           </div>
 
           <div className="my-2 flex">
-            <button className="btn btn-primary" style={{ width: '100%' }}>
-              Create Post
-            </button>
+            <Button variant="primary" type="submit" style={{ width: '100%' }}>
+              {showSpinner && (<Spinner animation="border" role="status">
+              </Spinner>)}
+              {!showSpinner && 'Save Information'}
+            </Button>
           </div>
         </form>
       </div>

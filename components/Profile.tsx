@@ -11,8 +11,10 @@ const UserProfile: NextComponentType = () => {
 
   const router = useRouter();
 
-  const profileForm: MutableRefObject<null | HTMLFormElement> = useRef(null)
-  const bioForm: MutableRefObject<null | HTMLFormElement> = useRef(null)
+  let userId: string;
+
+  const profileForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
+  const bioForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
 
   let _user: Partial<User> = {};
 
@@ -21,7 +23,9 @@ const UserProfile: NextComponentType = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [showSpinner2, setShowSpinner2] = useState(false);
 
-  let userId = localStorage.getItem('userId')!
+  if (typeof window !== 'undefined') {
+    userId = localStorage.getItem('userId')!
+  }
   useEffect(() => {
     const getUser = async () => {
       const userDocRef = doc(db, 'users', userId)
@@ -36,7 +40,7 @@ const UserProfile: NextComponentType = () => {
     }
 
     getUser();
-  }, [userId])
+  }, [])
 
 
   const updateProfile = async (e: FormEvent<HTMLFormElement>, form: HTMLFormElement, userId: string) => {
@@ -87,7 +91,7 @@ const UserProfile: NextComponentType = () => {
             <div className="card author-box">
               <div className="card-body">
                 <div className="author-box-center">
-                  <img alt="image-src" src="/assets/img/users/user-1.png" className="rounded-circle author-box-picture" />
+                  <img alt="src" src="/assets/img/demo/avatar2.jpg" className="rounded-circle author-box-picture" />
                   <div className="clearfix"></div>
                   <div className="author-box-name">
                     <a href="#">{user.name}</a>
@@ -119,8 +123,10 @@ const UserProfile: NextComponentType = () => {
                 </div>
               </div>
             </div>
-            <PersonalDetailsComponent { ...Object.create({ username: user.username, phone: user.phone, email: user.email, twitter: user.twitter})}  />
-
+            { 
+              user && (
+              <PersonalDetailsComponent username={user.username!} github={user.github!} twitter={user.twitter!} email={user.email!} phone={user.phone!} />)
+            }
           </div>
           <div className="col-12 col-md-12 col-lg-8">
             <Button className="m-4 text-left" variant="primary" style={{ width: '80%'}}>
@@ -138,7 +144,7 @@ const UserProfile: NextComponentType = () => {
                     <div className="tab-pane fade show active container my-4" id="about" role="tabpanel" aria-labelledby="home-tab2">
 
                       <p className="m-t-30">
-                        { user.bio }
+                        { user && user.bio }
                       </p>
 
                     </div>

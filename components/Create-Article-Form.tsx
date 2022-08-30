@@ -40,7 +40,7 @@ const CreateArticleForm: NextComponentType = () => {
   const uploadImage = async (file: HTMLInputElement) => {
     const extension = file.files![0].name.split('.')[1];
 
-    const key = randomBytes(16).toString('hex')
+    const key = randomBytes(16).toString('hex');
     const name = `${key}.${extension}`;
     localStorage.setItem('name', name);
 
@@ -67,6 +67,7 @@ const CreateArticleForm: NextComponentType = () => {
     return {
       username: userDoc.username,
       phone: userDoc.phone,
+      name: userDoc.name,
       twitter: userDoc.twitter,
       github: userDoc.github,
       coverPhoto: userDoc.coverPhoto? userDoc.coverPhoto: 'url',
@@ -76,6 +77,7 @@ const CreateArticleForm: NextComponentType = () => {
   }
 
   const createArticle = async (e: FormEvent<HTMLFormElement>, form: HTMLFormElement, staus: ARTICLE_STATUS) => {
+    setShowSpinner(true)
     try {
       e.preventDefault();
 
@@ -100,7 +102,7 @@ const CreateArticleForm: NextComponentType = () => {
         description: body.value.slice(0, 50),
         createdAt: new Date().getTime(),
         coverPhoto: imageUrl,
-        readingTimeInMins: (body.length / 200),
+        readingTimeInMins: (body.value.length / 200),
         author,
         likes: 0,
         saves: 0,
@@ -109,9 +111,11 @@ const CreateArticleForm: NextComponentType = () => {
         views: 0,
       }
       await addDoc(collection(db, 'articles'), article);
+      setShowSpinner(true)
       alert('Article created');
       router.push('/post-dashboard');
     } catch (error) {
+      setShowSpinner(true)
       console.log(error)
     }
   }

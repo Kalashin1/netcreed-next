@@ -18,7 +18,7 @@ export interface User extends DocumentData {
   savedArticles: Array<Article>
 }
 
-export type Author = Pick<User, 'username' | 'phone' | 'email' | 'github' | 'twitter' | 'coverPhoto' | 'id'>;
+export type Author = Pick<User, 'name' | 'username' | 'phone' | 'email' | 'github' | 'twitter' | 'coverPhoto' | 'id'>;
 
 export interface Article extends DocumentData {
   title: string;

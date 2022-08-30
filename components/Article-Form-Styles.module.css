@@ -1,0 +1,35 @@
+
+.form {
+  padding: 1rem 3rem;
+}
+
+.articleTitle {
+  position: relative;
+  border: 0;
+  left: -2.7rem;
+  top: -6.3rem;
+  border-bottom: .2rem solid black;
+  margin: 0 1rem;
+  padding: .8rem 2rem;
+  display: block;
+  width: 98%;
+  z-index: 100;
+}
+
+.articleTitle:focus {
+  outline: 0;
+  border: 0;
+  border-bottom: .2rem solid black;
+}
+
+.body {
+  padding: 0;
+  margin: 1rem;
+  z-index: 10;
+  font-size: 14px;
+  position: relative;
+  position: absolute;
+  top: 3rem; left: 0;
+  width: 90%;
+  min-height: 100vh;
+}

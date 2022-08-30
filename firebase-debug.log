@@ -1,0 +1,71 @@
+[debug] [2022-08-30T05:39:27.838Z] ----------------------------------------------------------------------
+[debug] [2022-08-30T05:39:27.860Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2022-08-30T05:39:27.861Z] CLI Version:   11.4.1
+[debug] [2022-08-30T05:39:27.861Z] Platform:      win32
+[debug] [2022-08-30T05:39:27.862Z] Node Version:  v14.19.3
+[debug] [2022-08-30T05:39:28.026Z] Time:          Tue Aug 30 2022 06:39:27 GMT+0100 (West Africa Standard Time)
+[debug] [2022-08-30T05:39:28.027Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-08-30T05:39:28.071Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2022-08-30T05:39:28.299Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-08-30T05:39:28.299Z] > authorizing via signed-in user (kinaneesamsonjohn@gmail.com)
+[debug] [2022-08-30T05:39:44.156Z] java version "17.0.2" 2022-01-18 LTS
+Java(TM) SE Runtime Environment (build 17.0.2+8-LTS-86)
+
+[debug] [2022-08-30T05:39:44.171Z] Java HotSpot(TM) 64-Bit Server VM (build 17.0.2+8-LTS-86, mixed mode, sharing)
+
+[debug] [2022-08-30T05:39:44.206Z] Parsed Java major version: 17
+[info] i  emulators: Starting emulators: auth, firestore, hosting, storage {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, firestore, hosting, storage"}}
+[warn] !  emulators: It seems that you are running multiple instances of the emulator suite for project foodkal-01. This may result in unexpected behavior. 
+[debug] [2022-08-30T05:39:44.450Z] [hub] writing locator at C:\Users\pc\AppData\Local\Temp\hub-foodkal-01.json
+[debug] [2022-08-30T05:39:44.644Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2022-08-30T05:39:44.645Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2022-08-30T05:39:44.645Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\pc\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.14.4.jar","--host","localhost","--port",8080,"--rules","C:\\Users\\pc\\Documents\\projects\\netcreed-next-app\\firestore.rules"],"optionalArgs":["port","webchannel_port","host","rules","functions_emulator","seed_from_export"],"joinArgs":false} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\pc\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.14.4.jar\",\"--host\",\"localhost\",\"--port\",8080,\"--rules\",\"C:\\\\Users\\\\pc\\\\Documents\\\\projects\\\\netcreed-next-app\\\\firestore.rules\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"functions_emulator\",\"seed_from_export\"],\"joinArgs\":false}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[debug] [2022-08-30T05:40:16.823Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"storage"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2022-08-30T05:40:22.654Z] Temp file directory for storage emulator: C:\Users\pc\AppData\Local\Temp/firebase/storage/blobs {"metadata":{"emulator":{"name":"storage"},"message":"Temp file directory for storage emulator: C:\\Users\\pc\\AppData\\Local\\Temp/firebase/storage/blobs"}}
+[debug] [2022-08-30T05:40:22.669Z] > refreshing access token with scopes: []
+[debug] [2022-08-30T05:40:22.672Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2022-08-30T05:40:22.673Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-08-30T05:40:22.680Z] Failed to list hosting sites
+[debug] Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+[debug] [2022-08-30T05:40:22.681Z] > refreshing access token with scopes: []
+[debug] [2022-08-30T05:40:22.682Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2022-08-30T05:40:22.682Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-08-30T05:40:22.685Z] fetchWebSetup error: FirebaseError: Authentication Error: Your credentials are no longer valid. Please run firebase login --reauth
+
+For CI servers and headless environments, generate a new token with firebase login:ci
+[warn] !  hosting: Using web app configuration from cache. 
+[info] i  hosting: Serving hosting files from: dist {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mdist\u001b[22m"}}
+[info] +  hosting: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}
+[debug] [2022-08-30T05:40:23.417Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2022-08-30T05:40:23.417Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2022-08-30T05:40:23.418Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\pc\\.cache\\firebase\\emulators\\ui-v1.8.1\\server\\server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\pc\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.8.1\\\\server\\\\server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2022-08-30T05:40:24.635Z] Web / API server started at localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at localhost:4000\n"}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4000                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬─────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI             │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Authentication │ localhost:9099 │ http://localhost:4000/auth      │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Firestore      │ localhost:8080 │ http://localhost:4000/firestore │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Hosting        │ localhost:5000 │ n/a                             │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Storage        │ localhost:9199 │ http://localhost:4000/storage   │
+└────────────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[info] i  To verify the email address kinaneesamsonjohn@gmail.com, follow this link: http://localhost:9099/emulator/action?mode=verifyEmail&lang=en&oobCode=pUWbkmQ6oiHjD2LtOI_PoLZXVb8oh8Or40LkecEEAETj1RmtcWYXp3&apiKey=fake-api-key {"metadata":{"emulator":{"name":"auth"},"message":"To verify the email address kinaneesamsonjohn@gmail.com, follow this link: http://localhost:9099/emulator/action?mode=verifyEmail&lang=en&oobCode=pUWbkmQ6oiHjD2LtOI_PoLZXVb8oh8Or40LkecEEAETj1RmtcWYXp3&apiKey=fake-api-key"}}

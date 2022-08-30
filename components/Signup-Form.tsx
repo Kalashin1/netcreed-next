@@ -87,7 +87,7 @@ const SignupForm: NextComponentType = () => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="confirmPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Confirm Password</Form.Label>
           <Form.Control type={inputType} name="confirmPassword" required placeholder="Password" />
           <Form.Text className="text-muted" style={{ cursor: 'pointer' }} onClick={toggleShowPassword}>
             show password

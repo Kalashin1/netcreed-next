@@ -29,9 +29,9 @@ const Layout: NextPage = function ({ children }: any) {
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
           crossOrigin="anonymous"
         />
-        <link href="assets/css/main.css" rel="stylesheet" />
+        <link href="/assets/css/main.css" rel="stylesheet" />
 
-        <link href="assets/css/select2.min.css" rel="stylesheet" />
+        <link href="/assets/css/select2.min.css" rel="stylesheet" />
 
       </Head>
       <Navbar />

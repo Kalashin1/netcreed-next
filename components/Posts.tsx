@@ -53,11 +53,12 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
                   <label htmlFor="checkbox-all" className="custom-control-label">&nbsp;</label>
                 </div>
               </th>
-              <th>Author</th>
               <th>Title</th>
               <th>Category</th>
               <th>Created At</th>
               <th>Views</th>
+              <th>Saves</th>
+              <th>Likes</th>
             </tr>
               {
                 posts && posts.map((post, index) => (
@@ -69,11 +70,6 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
                       </div>
                     </td>
                     <td>
-                      <a href="#">
-                        <span className="d-inline-block ml-1">{post.author.username}</span>
-                      </a>
-                    </td>
-                    <td>
                       {post.title}
                     </td>
                     <td>
@@ -81,6 +77,8 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
                     </td>
                     <td>{new Date(post.createdAt).toDateString()}</td>
                     <td>{post.views}</td>
+                    <td>{post.saves}</td>
+                    <td>{post.likes}</td>
                   </tr>
                 ))
               }

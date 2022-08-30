@@ -1,4 +1,11 @@
-const PostContent = () => {
+import { FC } from 'react';
+import { Article } from '../types';
+
+type _Article = {
+  article: Article
+}
+
+const PostContent: FC<_Article> = ({ article }) => {
   return (
     <div className="container pt-4 pb-4">
       <div className="row justify-content-center">
@@ -20,17 +27,9 @@ const PostContent = () => {
         <div className="col-md-12 col-lg-8">
           <article className="article-post">
             <p>
-              Holy grail funding non-disclosure agreement advisor ramen bootstrapping ecosystem. Beta crowdfunding iteration assets business plan paradigm shift stealth mass market seed money rockstar niche market marketing buzz market.
+              { article.body }
             </p>
-            <p>
-              Burn rate release facebook termsheet equity technology. Interaction design rockstar network effects handshake creative startup direct mailing. Technology influencer direct mailing deployment return on investment seed round.
-            </p>
-            <p>
-              Termsheet business model canvas user experience churn rate low hanging fruit backing iteration buyer seed money. Virality release launch party channels validation learning curve paradigm shift hypotheses conversion. Stealth leverage freemium venture startup business-to-business accelerator market.
-            </p>
-            <p>
-              Freemium non-disclosure agreement lean startup bootstrapping holy grail ramen MVP iteration accelerator. Strategy market ramen leverage paradigm shift seed round entrepreneur crowdfunding social proof angel investor partner network virality.
-            </p>
+           
           </article>
           <div className="border p-5 bg-lightblue">
             <div className="row justify-content-between">

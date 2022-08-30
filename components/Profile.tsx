@@ -90,7 +90,8 @@ const UserProfile: NextComponentType = () => {
           <div className="col-12 col-md-12 col-lg-4">
             <div className="card author-box">
               <div className="card-body">
-                <div className="author-box-center">
+                <div className="author-box-center"
+                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
                   <img alt="src" src="/assets/img/demo/avatar2.jpg" className="rounded-circle author-box-picture" />
                   <div className="clearfix"></div>
                   <div className="author-box-name">
@@ -108,7 +109,7 @@ const UserProfile: NextComponentType = () => {
                     <div className="text-small font-weight-bold">Follow {user.name} On</div>
                   </div>
                   <a href="#" className="btn btn-social-icon mr-1 btn-facebook">
-                    <i className="fab fa-facebook-f"></i>
+                    <i className="fab fa-linkedin-in"></i>
                   </a>
                   <a href="#" className="btn btn-social-icon mr-1 btn-twitter">
                     <i className="fab fa-twitter"></i>
@@ -117,7 +118,7 @@ const UserProfile: NextComponentType = () => {
                     <i className="fab fa-github"></i>
                   </a>
                   <a href="#" className="btn btn-social-icon mr-1 btn-instagram">
-                    <i className="fab fa-instagram"></i>
+                    <i className="fab fa-reddit"></i>
                   </a>
                   <div className="w-100 d-sm-none"></div>
                 </div>
@@ -129,7 +130,7 @@ const UserProfile: NextComponentType = () => {
             }
           </div>
           <div className="col-12 col-md-12 col-lg-8">
-            <Button className="m-4 text-left" variant="primary" style={{ width: '80%'}}>
+            <Button className="m-4 text-left" onClick={e => router.push('/create-post')} variant="primary" style={{ width: '80%'}}>
               Your Posts
             </Button>
             <div className="card">
@@ -194,7 +195,7 @@ const UserProfile: NextComponentType = () => {
                       
                       onSubmit={e => updateBio(e, bioForm.current!, userId)}>
                         <Form.Group className="mb-3" controlId="text-area">
-                          <Form.Label>Example textarea</Form.Label>
+                          <Form.Label>Update Your Bio</Form.Label>
                           <Form.Control name="bio" as="textarea" rows={3} />
                         </Form.Group>
                         <Button variant="primary" type="submit" style={{ width: '100%' }}>

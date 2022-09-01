@@ -43,31 +43,6 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
                 </div>
               </div>
             ))}
-
-            <div className="mb-3 d-flex align-items-center">
-              <img height="80" src="./assets/img/demo/blog5.jpg" />
-              <div className="pl-3">
-                <h2 className="mb-2 h6 font-weight-bold">
-                  <a className="text-dark" href="./article.html">Underwater museum brings hope to Lake Titicaca</a>
-                </h2>
-                <div className="card-text text-muted small">
-                  Jake Bittle in LOVE/HATE
-                </div>
-                <small className="text-muted">Dec 12 &middot; 5 min read</small>
-              </div>
-            </div>
-            <div className="mb-3 d-flex align-items-center">
-              <img height="80" src="./assets/img/demo/blog6.jpg" />
-              <div className="pl-3">
-                <h2 className="mb-2 h6 font-weight-bold">
-                  <a className="text-dark" href="./article.html">Sun-skimming probe starts calling home</a>
-                </h2>
-                <div className="card-text text-muted small">
-                  Jake Bittle in LOVE/HATE
-                </div>
-                <small className="text-muted">Dec 12 &middot; 5 min read</small>
-              </div>
-            </div>
           </div>
         </div>
       </div>

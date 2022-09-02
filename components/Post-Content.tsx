@@ -1,6 +1,20 @@
 import { FC } from 'react';
 import { Article } from '../types';
 
+import 'highlight.js/styles/github-dark.css';
+const marked = require('marked');
+import hljs from 'highlight.js';
+
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  langPrefix: 'hljs language-',
+  highlight: function(code, lang) {
+  const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+  // return hljs.highlightAuto(code).value;
+  return hljs.highlight(code, { language }).value;
+  },
+})
+
 type _Article = {
   article: Article
 }
@@ -26,8 +40,9 @@ const PostContent: FC<_Article> = ({ article }) => {
         </div>
         <div className="col-md-12 col-lg-8">
           <article className="article-post">
-            <p>
-              { article.body }
+            <p 
+              dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}
+            >
             </p>
            
           </article>

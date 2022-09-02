@@ -7,10 +7,6 @@ const links = [
     route: '/'
   },
   {
-    text: 'Post',
-    route: '/post'
-  },
-  {
     text: 'About',
     route: '/about'
   },

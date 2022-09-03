@@ -39,11 +39,7 @@ const PostContent: FC<_Article> = ({ article }) => {
           </div>
         </div>
         <div className="col-md-12 col-lg-8">
-          <article className="article-post">
-            <p 
-              dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}
-            >
-            </p>
+          <article className="article-post" dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}>
            
           </article>
           <div className="border p-5 bg-lightblue">

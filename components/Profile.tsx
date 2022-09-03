@@ -130,9 +130,9 @@ const UserProfile: NextComponentType = () => {
             }
           </div>
           <div className="col-12 col-md-12 col-lg-8">
-            <Button className="m-4 text-left" onClick={e => router.push('/create-post')} variant="primary" style={{ width: '80%'}}>
+            {/* <Button className="m-4 text-left" onClick={e => router.push('/create-post')} variant="primary" style={{ width: '80%'}}>
               Your Posts
-            </Button>
+            </Button> */}
             <div className="card">
               <div className="padding-20">
                 <Tabs

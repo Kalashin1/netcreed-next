@@ -1,4 +1,5 @@
 import { NextComponentType } from "next"
+import Link from "next/link";
 import { FC } from 'react'
 import { Article } from "../types";
 
@@ -20,13 +21,13 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                 <div key={index} className="mb-3 d-flex justify-content-between">
                   <div className="pr-3">
                     <h2 className="mb-1 h4 font-weight-bold">
-                      <a className="text-dark" href="./article.html">{post.title}</a>
+                      <Link className="text-dark" href={`/post/${post.id}`}>{post.title}</Link>
                     </h2>
                     <p>
                       {post.description}
                     </p>
                     <div className="card-text text-muted small">
-                      {post.author.username} in SCIENCE
+                      {post.author.username} 
                     </div>
                     <small className="text-muted">{new Date(post.createdAt).toDateString()} &middot; {Math.floor(post.readingTimeInMins)} min read</small>
                   </div>
@@ -45,10 +46,10 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
               <li key={index}>
                 <span>
                   <h6 className="font-weight-bold">
-                    <a href="./article.html" className="text-dark">{post.title}?</a>
+                    <Link href={`/post/${post.id}`} className="text-dark">{post.title}</Link>
                   </h6>
                   <p className="text-muted">
-                    {post.username} in SCIENCE
+                    {post.username}
                   </p>
                 </span>
               </li>

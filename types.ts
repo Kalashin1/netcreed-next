@@ -7,6 +7,7 @@ export interface User extends DocumentData {
   id: string;
   email: string;
   username: string;
+  profilePhoto: string;
   phone: string;
   github: string;
   twitter: string;

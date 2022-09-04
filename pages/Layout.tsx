@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Script from 'next/script';
-import type { NextPage, NextPageContext } from 'next'
+import type { NextPage } from 'next'
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 

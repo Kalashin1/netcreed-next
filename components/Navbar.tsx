@@ -1,5 +1,10 @@
 import { NextComponentType } from "next";
 import Link from 'next/link'
+import Image from "next/image";
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const links = [
   {
@@ -20,37 +25,33 @@ const links = [
   }
 ] as const;
 
-const Navbar: NextComponentType = () => {
+const NavbarComponent: NextComponentType = () => {
   return (
-    <nav className="topnav navbar navbar-expand-lg navbar-light bg-white fixed-top">
-      <div className="container">
-        <a className="navbar-brand" href="./index.html"><strong>Netcreed</strong></a>
-        <button className="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="navbar-collapse collapse" id="navbarColor02">
-          <ul className="navbar-nav mr-auto d-flex align-items-center">
-            {links.map((link, index) => (
-              <li className="nav-item" key={index}>
-                <div className="nav-link">
-                  <Link href={link.route} style={{ textDecoration: 'none'}}>
-                    {link.text}
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <ul className="navbar-nav ml-auto d-flex align-items-center">
-            <li className="nav-item highlight">
-              <div className="nav-link">
-                <Link href="/login">Login</Link>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <Navbar bg="white" expand="lg" fixed="top">
+      <Container>
+        <Navbar.Brand href="#home">
+          <Image src="/logo.png" width={50} height={60} alt="Netcreed" />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Item style={{ margin: '0 1rem' }}>
+              <Link href="/">Home</Link>
+            </Nav.Item>
+            <Nav.Item style={{ margin: '0 1rem' }}>
+              <Link href="/about">About</Link>
+            </Nav.Item>
+            <Nav.Item style={{ margin: '0 1rem' }}>
+              <Link href="/signup">Create Account</Link>
+            </Nav.Item>
+            <Nav.Item style={{ margin: '0 1rem' }}>
+              <Link href="/login">Login</Link>
+            </Nav.Item>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   )
 }
 
-export default Navbar;
+export default NavbarComponent;

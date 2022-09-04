@@ -4,21 +4,19 @@ import type { NextPage, NextPageContext } from 'next'
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { PropsWithChildren } from 'react';
-
 const Layout: NextPage = function ({ children }: any) {
   return (
     <>
       <Head>
-        <link rel="apple-touch-icon" sizes="76x76" href="logo.png" />
-        <link rel="icon" type="image/png" href="logo.png" />
+        <link rel="apple-touch-icon" sizes="76x76" href="/logo.png" />
+        <link rel="icon" type="image/png" href="/logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
           name="viewport"
         />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css" integrity="sha512-XWTTruHZEYJsxV3W/lSXG1n3Q39YIWOstqvmFsdNEEQfHoZ6vm6E9GK2OrF6DSJSpIbRbi+Nn0WDPID9O7xB2Q==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
         <link
           href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700|Source+Sans+Pro:400,600,700"
           rel="stylesheet"
@@ -35,7 +33,9 @@ const Layout: NextPage = function ({ children }: any) {
 
       </Head>
       <Navbar />
-      { children}
+      <div style={{ margin: '4rem 0' }}>
+        { children}
+      </div>
       <Footer />
       <Script
           defer
@@ -44,7 +44,7 @@ const Layout: NextPage = function ({ children }: any) {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         ></Script>
-        
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.min.js" integrity="sha512-8Y8eGK92dzouwpROIppwr+0kPauu0qqtnzZZNEF8Pat5tuRNJxJXCkbQfJ0HlUG3y1HB3z18CSKmUo7i2zcPpg==" crossOrigin="anonymous" referrerPolicy="no-referrer"></Script>
     </>
   )
 }

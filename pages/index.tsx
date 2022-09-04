@@ -30,20 +30,7 @@ export type Articles = {
 
 const Home: NextPage = ({ articles }) => {
 
-  // const [posts, setPosts] = useState<Article[]>([]);
-  // const [allPosts, setAllPosts] = useState<Article[]>([]);
-
-  // useEffect(() => {
-  //   const getDocuments = async () => {
-  //     const q = query(collection(db, 'articles'));
-  //     const docRes = await getDocs(q);
-  //     const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
-  //     // console.log(articles);
-  //     setPosts(articles);
-  //     setAllPosts(articles);
-  //   }
-  //   getDocuments()
-  // }, [])
+  
 
   return (
     <Layout>

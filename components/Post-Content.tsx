@@ -8,6 +8,7 @@ import hljs from 'highlight.js';
 marked.setOptions({
   renderer: new marked.Renderer(),
   langPrefix: 'hljs language-',
+  //@ts-ignore
   highlight: function(code, lang) {
   const language = hljs.getLanguage(lang) ? lang : 'plaintext';
   // return hljs.highlightAuto(code).value;

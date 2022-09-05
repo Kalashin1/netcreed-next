@@ -4,6 +4,7 @@ import ForgotPasswordForm from '../components/Forgot-Password';
 
 const ForgotPassword: NextPage = ()=>{
   return (
+    //@ts-ignore
     <Layout>
       <div className='text-center my-4'>
         <h3>Enter your email</h3>

@@ -28,11 +28,13 @@ export type Articles = {
   articles: Article[]
 }
 
+//@ts-ignore
 const Home: NextPage = ({ articles }) => {
 
   
 
   return (
+    //@ts-ignore
     <Layout>
       <Head>
         <meta name="title" content="Netcreed, Software Development" />

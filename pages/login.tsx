@@ -4,6 +4,7 @@ import LoginForm from '../components/Login-Form';
 
 const LoginPage: NextPage = ()=>{
   return (
+    //@ts-ignore
     <Layout>
       <div className='text-center my-4'>
         <h3>Login To your account</h3>

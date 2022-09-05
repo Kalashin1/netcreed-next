@@ -6,6 +6,7 @@ import NewsLetter from "../components/Newletter";
 
 const Category:NextPage = () => {
   return (
+    //@ts-ignore
     <Layout>
       <Header />
       <Categories />

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "firebase deploy --only hosting:netcreed"
   },
   "dependencies": {
     "@types/highlight.js": "^10.1.0",

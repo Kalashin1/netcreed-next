@@ -27,6 +27,7 @@ const PostDashboard: NextPage = () => {
   }, [])
 
   return (
+    //@ts-ignore
     <Layout>
       { posts && (<Posts posts={posts} />) }
     </Layout>

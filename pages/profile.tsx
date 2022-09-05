@@ -5,6 +5,7 @@ import UserProfile from '../components/Profile';
 const Profile: NextPage = () => {
 
   return (
+    //@ts-ignore
     <Layout>
       <UserProfile />
     </Layout>

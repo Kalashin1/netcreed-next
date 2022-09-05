@@ -4,6 +4,7 @@ import Layout from "./Layout";
 
 const Signup: NextPage = () => {
   return (
+    //@ts-ignore
     <Layout>
       <div className='text-center my-4'>
         <h3 className='my-4'>Create a new account</h3>

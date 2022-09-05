@@ -3,8 +3,10 @@ import Script from 'next/script';
 import type { NextPage } from 'next'
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { FC } from "react";
 
-const Layout: NextPage = function ({ children }: any) {
+//@ts-ignore
+const Layout: FC = function ({ children }) {
   return (
     <>
       <Head>

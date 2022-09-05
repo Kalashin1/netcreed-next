@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "foodkal-01"
-  }
+  },
+  "targets": {
+    "foodkal-01": {
+      "hosting": {
+        "netcreed": [
+          "netcreed"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

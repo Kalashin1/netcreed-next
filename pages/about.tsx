@@ -30,7 +30,7 @@ const About: NextPage = ({ articles }) => {
     //@ts-ignore
     <Layout>
       <div>
-        <Header />
+        { articles && (<Header article={articles[0]} />) }
         <AboutUs />
         <OtherPosts allPosts={articles} featuredPosts={articles} />
         <NewsLetter />

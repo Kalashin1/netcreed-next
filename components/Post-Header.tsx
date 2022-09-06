@@ -20,13 +20,15 @@ const PostHeader: FC<_Article> = ({ article }) => {
                 { article.description}...
               </p>
               <div className="d-flex align-items-center">
-                <img className="rounded-circle" src="/assets/img/demo/avatar2.jpg" width="70" />
+                { /* eslint-disable-next-line @next/next/no-img-element */ }
+                <img className="rounded-circle" alt={article.author.name} src={article.author.coverPhoto} width="70" />
                 <small className="ml-2">{article.author.username} <span className="text-muted d-block">{ new Date(article.createdAt).toDateString()} &middot; { Math.floor(article.readingTimeInMins)} min. read</span>
                 </small>
               </div>
             </div>
             <div className="col-md-6 pr-0">
-              <img src={article.coverPhoto} />
+            { /* eslint-disable-next-line @next/next/no-img-element */ }
+              <img src={article.coverPhoto} alt={article.title} />
             </div>
           </div>
         </div>

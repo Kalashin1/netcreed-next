@@ -9,7 +9,7 @@ type Posts = {
 }
 
 const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
-  console.log(allPosts)
+  // console.log(allPosts)
   return (
     <div className="container">
       <div className="row justify-content-between">
@@ -31,7 +31,8 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                     </div>
                     <small className="text-muted">{new Date(post.createdAt).toDateString()} &middot; {Math.floor(post.readingTimeInMins)} min read</small>
                   </div>
-                  <img height="120" src={post.coverPhoto} />
+                  { /* eslint-disable-next-line @next/next/no-img-element */ }
+                  <img height="120" alt={post.title} src={post.coverPhoto} />
                 </div>
               ))
             }

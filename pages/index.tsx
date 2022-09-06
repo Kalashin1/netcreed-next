@@ -60,7 +60,7 @@ const Home: NextPage = ({ articles }) => {
         <meta property="og:description" content="Software development platform for FullStack Development, JavaScript Development and Mobile Development." />
         <meta property="og:image" itemProp="image" content="https://yourimagepath.jpg" />
       </Head>
-      <Header />
+      { articles && (<Header article={articles[0]} />) }
       {articles && (<RecentPosts posts={articles} />)}
       {articles && (<OtherPosts allPosts={articles} featuredPosts={articles} />)}
       {/* { posts && (<RecentPosts posts={posts} />) }

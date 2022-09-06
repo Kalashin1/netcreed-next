@@ -1,7 +1,14 @@
 import { NextComponentType } from "next"
 import { useState, useRef, MutableRefObject, FormEvent } from "react";
 import { auth, db } from '../Firebase-settings';
-import { createUserWithEmailAndPassword, sendEmailVerification, User, updateProfile } from 'firebase/auth'
+import { 
+  createUserWithEmailAndPassword, 
+  sendEmailVerification, 
+  User, 
+  updateProfile, 
+  GoogleAuthProvider, 
+  signInWithPopup,
+} from 'firebase/auth'
 import { setDoc, doc } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import { Form, Button, Spinner } from "react-bootstrap";
@@ -10,10 +17,13 @@ const SignupForm: NextComponentType = () => {
 
   const router = useRouter();
 
+  const provider = new GoogleAuthProvider();
+
   const registrationForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
 
   const [inputType, setInputType] = useState('password');
   const [showSpinner, setShowSpinner] = useState(false);
+  const [showSpinner2, setShowSpinner2] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   function toggleShowPassword() {
@@ -63,6 +73,33 @@ const SignupForm: NextComponentType = () => {
     }
   }
 
+  const signinWithGoogle = async (e: any) => {
+    e.preventDefault();
+    setShowSpinner2(true);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential!.accessToken;
+      const user = result.user;
+      localStorage.setItem('userToken', token!)
+      localStorage.setItem('userId', user.uid);
+      console.log(credential, token, user)
+      setShowSpinner2(false);
+      await setDoc(doc(db, 'users', user.uid), {
+        name: user.displayName,
+        email: user.email,
+        articles: [],
+        createdAt: new Date().getTime()
+      })
+      alert('Your account has been created successfully');
+      router.push('/profile');
+    } catch (error) {
+      setShowSpinner2(false);
+      console.log(error);
+    }
+
+  }
+
 
   return (
     <>
@@ -107,6 +144,13 @@ const SignupForm: NextComponentType = () => {
           {!showSpinner && 'Create Account'}
         </Button>
       </Form>
+      <h5 className="text-center mt-4">Or</h5>
+      <Button variant="primary" onClick={signinWithGoogle} style={{ width: '100%', marginTop: '.5rem' }}>
+        {showSpinner2 && (<Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>)}
+        {!showSpinner2 && (<svg xmlns="http://www.w3.org/2000/svg" fill="white" width={25} viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" /></svg>)}
+      </Button>
     </>
   )
 }

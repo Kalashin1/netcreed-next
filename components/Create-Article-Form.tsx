@@ -70,7 +70,7 @@ const CreateArticleForm: NextComponentType = () => {
       name: userDoc.name,
       twitter: userDoc.twitter,
       github: userDoc.github,
-      coverPhoto: userDoc.coverPhoto? userDoc.coverPhoto: 'url',
+      coverPhoto: userDoc.profilePhoto,
       email: userDoc.email,
       id: document.id,
     }
@@ -141,7 +141,7 @@ const CreateArticleForm: NextComponentType = () => {
               labelledBy="Select"
             />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>Add To</label>
             <MultiSelect
               options={publishTypes}
@@ -149,7 +149,7 @@ const CreateArticleForm: NextComponentType = () => {
               onChange={setSelectedPublishTypes}
               labelledBy="Select"
             />
-          </div>
+          </div> */}
           <div className="form-group">
             <label htmlFor="exampleFormControlTextarea1">Post Content</label>
             <textarea className="form-control" name="body" id="exampleFormControlTextarea1" rows={8}></textarea>

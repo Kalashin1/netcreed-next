@@ -17,6 +17,7 @@ const LoginForm: NextComponentType = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   
   const [showSpinner2, setShowSpinner2] = useState(false);
+  const [passwordError, showPasswordError] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
@@ -40,11 +41,14 @@ const LoginForm: NextComponentType = () => {
 
       const { user } = await signInWithEmailAndPassword(auth, loginPayload.email, loginPayload.password);
       localStorage.setItem('userId', user.uid);
-      setShowSpinner(true)
+      setShowSpinner(false)
       alert('Login successfull')
       router.push('/profile')
-    } catch (error) {
-      setShowSpinner(true)
+    } catch (error:any) {
+      setShowSpinner(false)
+      if (error.message.includes('auth/wrong-password')){
+        showPasswordError(true)
+      }
       console.log(error)
     }
   }
@@ -87,6 +91,7 @@ const LoginForm: NextComponentType = () => {
           <Form.Text className="text-muted" style={{ cursor: 'pointer' }} onClick={toggleShowPassword}>
             show password
           </Form.Text>
+          { passwordError && (<small className="text-danger">Incorrect Password</small>)}
         </Form.Group>
         {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />

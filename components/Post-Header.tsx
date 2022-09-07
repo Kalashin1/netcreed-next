@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Article } from '../types';
+import Image from 'next/image';
 
 type _Article = {
   article: Article
@@ -21,7 +22,13 @@ const PostHeader: FC<_Article> = ({ article }) => {
               </p>
               <div className="d-flex align-items-center">
                 { /* eslint-disable-next-line @next/next/no-img-element */ }
-                <img className="rounded-circle" alt={article.author.name} src={article.author.coverPhoto} width="70" />
+                <Image 
+                  className="rounded-circle"
+                  height="60"
+                  width="50"
+                  alt={article.author.name}
+                  src={article.author.coverPhoto}
+                />
                 <small className="ml-2">{article.author.username} <span className="text-muted d-block">{ new Date(article.createdAt).toDateString()} &middot; { Math.floor(article.readingTimeInMins)} min. read</span>
                 </small>
               </div>

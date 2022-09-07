@@ -6,10 +6,10 @@ import NewsLetter from "../components/Newletter";
 import { NextPage } from "next";
 import { Article } from "../types";
 import { db } from "../Firebase-settings";
-import { query, collection, getDocs, doc } from "@firebase/firestore";
+import { query, collection, getDocs, orderBy, limit } from "@firebase/firestore";
 
 export const getStaticProps = async () => {
-  const q = query(collection(db, 'articles'));
+  const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'), limit(10));
   const docRes = await getDocs(q);
   const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
 

@@ -9,17 +9,28 @@ import NewsLetter from '../components/Newletter';
 
 import { Article } from '../types';
 import { db } from '../Firebase-settings';
-import { collection, getDocs, query } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  limit,
+  orderBy,
+  where 
+} from 'firebase/firestore';
 
 export const getStaticProps = async () => {
-  const q = query(collection(db, 'articles'));
+  const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'), limit(10));
   const docRes = await getDocs(q);
   const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
+  const sQ = query(collection(db, 'articles'), where('tags', 'array-contains', articles[0].tags[0]), orderBy('createdAt', 'desc'), limit(10))
+  const sQDocRef = await getDocs(sQ);
+  const secArticles = sQDocRef.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
   // console.log(articles)
 
   return {
     props: {
       articles,
+      alikePosts: secArticles
     },
   }
 }
@@ -29,9 +40,7 @@ export type Articles = {
 }
 
 //@ts-ignore
-const Home: NextPage = ({ articles }) => {
-
-  
+const Home: NextPage = ({ articles, alikePosts }) => {
 
   return (
     //@ts-ignore
@@ -61,10 +70,9 @@ const Home: NextPage = ({ articles }) => {
         <meta property="og:image" itemProp="image" content="https://yourimagepath.jpg" />
       </Head>
       { articles && (<Header article={articles[0]} />) }
-      {articles && (<RecentPosts posts={articles} />)}
-      {articles && (<OtherPosts allPosts={articles} featuredPosts={articles} />)}
-      {/* { posts && (<RecentPosts posts={posts} />) }
-      { allPosts && posts && (<OtherPosts allPosts={allPosts} featuredPosts={posts} />)} */}
+      { articles && (<RecentPosts posts={articles} />)}
+      { alikePosts && (<OtherPosts allPosts={articles.slice(0, 5)} featuredPosts={articles.slice(0, 5)} />)}
+      
       <NewsLetter />
     </Layout>
   );

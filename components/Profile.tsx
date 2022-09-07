@@ -9,6 +9,7 @@ import { Tab, Tabs, Form, Button, Spinner } from 'react-bootstrap';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { useRouter } from "next/router";
 import PersonalDetailsComponent from "./Personal-Details-Component";
+import Image from 'next/image';
 
 const UserProfile: NextComponentType = () => {
 
@@ -146,7 +147,13 @@ const UserProfile: NextComponentType = () => {
               <div className="card-body">
                 <div className="author-box-center"
                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                  <img alt="src" src={user.profilePhoto} width={150} height={170} className="rounded-circle author-box-picture" />
+                  <img
+                    alt={user.name}
+                    src={user.profilePhoto!}
+                    width={100}
+                    height={100}
+                    className="rounded-circle author-box-picture"
+                  />
 
                   <div className="clearfix"></div>
                   <div style={{ position: 'relative', top: '-10rem', right: '-6rem', cursor: 'pointer'}} onClick={e => uploadProfilePhoto(userId)}>
@@ -271,7 +278,7 @@ const UserProfile: NextComponentType = () => {
         </div>
       </div>
     </section>
-  )
+  );
 };
 
 export default UserProfile;

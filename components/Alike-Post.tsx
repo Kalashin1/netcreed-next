@@ -1,6 +1,7 @@
 import { NextComponentType } from 'next';
 import { FC } from 'react';
 import { Article } from '../types';
+import Image from 'next/image';
 
 type Articles = {
   articles: Article[]
@@ -33,7 +34,7 @@ const AlikePost: FC<Articles> = ({ articles }) => {
           <div className="flex-md-row mb-4 box-shadow h-xl-300">
             {articles && articles.map((article, index) => (
               <div className="mb-3 d-flex align-items-center" key={index}>
-                <img height="80" alt="some" src={`${article.coverPhoto}`} />
+                <Image layout="fill" alt="some" src={`${article.coverPhoto}`} />
                 <div className="pl-3">
                   <h2 className="mb-2 h6 font-weight-bold">
                     <a className="text-dark" href={`/posts/${article.id}`}>{article.title}</a>

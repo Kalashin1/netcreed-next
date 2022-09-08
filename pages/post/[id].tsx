@@ -59,13 +59,14 @@ const Post: NextPage = ({ article, articles }) => {
         <meta name="twitter:creator" content="@kinanee_samson" />
         <meta name="twitter:title" content={article.title} />
         <meta name="twitter:description" content={article.description} />
-        <meta name="twitter:image:src" content={article.cover_image} />
-        {/* <!--Open Graph  */}
+        <meta name="twitter:image:src" content={`${article.cover_image}`} />
+        <meta name="twitter:domain" content={`https://netcreed-blog.web.app/post/${article.id}`} />
+        {/* Open Graph  */}
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://netcreed.web.app/${article.id}`} />
+        <meta property="og:url" content={`https://netcreed-blog.web.app/post/${article.id}`} />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.description} />
-        <meta property="og:image" itemProp="image" content={article.cover_image} />
+        <meta property="og:image" itemProp="image" content={`${article.cover_image}`} />
       </Head>
       {article && (<PostHeader article={article} />)}
       {article && (<PostContent article={article} />)}

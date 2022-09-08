@@ -61,7 +61,7 @@ const Home: NextPage = ({ articles, alikePosts }) => {
         <meta name="twitter:creator" content="@kinanee_samson" />
         <meta name="twitter:title" content="Netcreed" />
         <meta name="twitter:description" content="Software development platform for FullStack Development, JavaScript Development and Mobile Development." />
-        <meta name="twitter:image" content="http://graphics8.nytimes.com/images/2012/02/19/us/19whitney-span/19whitney-span-articleLarge.jpg" />
+        <meta name="twitter:image" content="" />
         {/* Open Graph  */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://netcreed.web.app/" />

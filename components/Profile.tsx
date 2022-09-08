@@ -149,7 +149,7 @@ const UserProfile: NextComponentType = () => {
                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                   <img
                     alt={user.name}
-                    src={user.profilePhoto!}
+                    src={user.profilePhoto!} 
                     width={100}
                     height={100}
                     className="rounded-circle author-box-picture"

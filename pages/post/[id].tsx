@@ -59,7 +59,7 @@ const Post: NextPage = ({ article, articles }) => {
         <meta name="twitter:creator" content="@kinanee_samson" />
         <meta name="twitter:title" content={article.title} />
         <meta name="twitter:description" content={article.description} />
-        <meta name="twitter:image:src" content={`${article.coverPhoto}`} />
+        <meta name="twitter:image" content={`${article.coverPhoto}`} />
         <meta name="twitter:domain" content={`https://netcreed-blog.web.app/post/${article.id}`} />
         {/* Open Graph  */}
         <meta property="og:type" content="article" />

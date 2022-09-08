@@ -61,13 +61,13 @@ const Home: NextPage = ({ articles, alikePosts }) => {
         <meta name="twitter:creator" content="@kinanee_samson" />
         <meta name="twitter:title" content="Netcreed" />
         <meta name="twitter:description" content="Software development platform for FullStack Development, JavaScript Development and Mobile Development." />
-        <meta name="twitter:image" content="" />
+        <meta name="twitter:image:src" content={articles[0].coverPhoto} />
         {/* Open Graph  */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://netcreed.web.app/" />
+        <meta property="og:url" content="https://netcreed-blog.vercel.app/" />
         <meta property="og:title" content="Netcreed" />
         <meta property="og:description" content="Software development platform for FullStack Development, JavaScript Development and Mobile Development." />
-        <meta property="og:image" itemProp="image" content="https://yourimagepath.jpg" />
+        <meta property="og:image" itemProp="image" content={articles[0].coverPhoto} />
       </Head>
       { articles && (<Header article={articles[0]} />) }
       { articles && (<RecentPosts posts={articles} />)}

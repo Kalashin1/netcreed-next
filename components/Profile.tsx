@@ -102,13 +102,15 @@ const UserProfile: NextComponentType = () => {
     e.preventDefault()
     setShowSpinner(true);
     try {
-      const { username, phone, headline, github, twitter } = form;
+      const { username, phone, headline, github, twitter, linkedin, reddit } = form;
       const payload = {
         username: username.value,
         phone: phone.value,
         headline: headline.value,
         github: github.value,
-        twitter: twitter.value
+        twitter: twitter.value,
+        linkedin: linkedin.value,
+        reddit: reddit.value,
       }
       await updateDoc(doc(db, 'users', userId), payload);
       setShowSpinner(false);
@@ -156,7 +158,7 @@ const UserProfile: NextComponentType = () => {
                   />
 
                   <div className="clearfix"></div>
-                  <div style={{ position: 'relative', top: '-10rem', right: '-6rem', cursor: 'pointer'}} onClick={e => uploadProfilePhoto(userId)}>
+                  <div style={{ position: 'relative', top: '-7rem', right: '-6rem', cursor: 'pointer'}} onClick={e => uploadProfilePhoto(userId)}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 576 512"><path d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" /></svg>
                 </div>
                   <div className="author-box-name">
@@ -195,9 +197,6 @@ const UserProfile: NextComponentType = () => {
             }
           </div>
           <div className="col-12 col-md-12 col-lg-8">
-            {/* <Button className="m-4 text-left" onClick={e => router.push('/create-post')} variant="primary" style={{ width: '80%'}}>
-              Your Posts
-            </Button> */}
             <div className="card">
               <div className="padding-20">
                 <Tabs
@@ -243,6 +242,16 @@ const UserProfile: NextComponentType = () => {
                         <Form.Group className="mb-3" controlId="twitter">
                           <Form.Label>Twitter</Form.Label>
                           <Form.Control type="text" name="twitter" required placeholder="Enter your Twitter username" />
+                        </Form.Group>
+                        
+                        <Form.Group className="mb-3" controlId="linkedIn">
+                          <Form.Label>Linkedin</Form.Label>
+                          <Form.Control type="text" name="linkedin" required placeholder="Enter your Linkedin link" />
+                        </Form.Group>
+                        
+                        <Form.Group className="mb-3" controlId="reddit">
+                          <Form.Label>Reddit</Form.Label>
+                          <Form.Control type="text" name="reddit" required placeholder="Enter your reddit username" />
                         </Form.Group>
 
 

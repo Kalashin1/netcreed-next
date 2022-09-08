@@ -1,12 +1,20 @@
 import { FC } from 'react';
 import { Article } from '../types';
 import Image from 'next/image';
+import { useRouter } from 'next/router'
 
 type _Article = {
   article: Article
 }
 
 const PostHeader: FC<_Article> = ({ article }) => {
+
+  const router = useRouter();
+
+  function navigate(route: string) {
+    router.push(route);
+  }
+
   return (
     <div className="container">
       <div className="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
@@ -22,9 +30,10 @@ const PostHeader: FC<_Article> = ({ article }) => {
               </p>
               <div className="d-flex align-items-center">
                 { /* eslint-disable-next-line @next/next/no-img-element */ }
-                <Image 
+                <Image
                   className="rounded-circle"
                   height="60"
+                  onClick={e => navigate(`/profile/${article.author.id}`)}
                   width="50"
                   alt={article.author.name}
                   src={article.author.coverPhoto}

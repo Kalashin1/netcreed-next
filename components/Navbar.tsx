@@ -42,6 +42,9 @@ const NavbarComponent: NextComponentType = () => {
               <Link href="/about">About</Link>
             </Nav.Item>
             <Nav.Item style={{ margin: '0 1rem' }}>
+              <Link href="/categories">Categories</Link>
+            </Nav.Item>
+            <Nav.Item style={{ margin: '0 1rem' }}>
               <Link href="/signup">Create Account</Link>
             </Nav.Item>
             <Nav.Item style={{ margin: '0 1rem' }}>

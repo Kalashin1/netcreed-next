@@ -29,19 +29,21 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
             allPosts.map((post, index) => (
               <Col key={index} xs lg="6" className="my-4">
                 <Container>
-                  <Card.Img src={post.coverPhoto} alt="Card image" onClick={(e:any) => navigate(`/post/${post.id}`)} />
+                  <Card.Img src={post.coverPhoto} alt="Card image" onClick={(e: any) => navigate(`/post/${post.id}`)} />
                   <Card className="bg-light text-dark">
                     <Card.Body>
-                      <Card.Title onClick={(e:any) => navigate(`/post/${post.id}`)}>{post.title}</Card.Title>
-                      <Card.Text onClick={(e:any) => navigate(`/post/${post.id}`)}>
+                      <Card.Title onClick={(e: any) => navigate(`/post/${post.id}`)}>{post.title}</Card.Title>
+                      <Card.Text onClick={(e: any) => navigate(`/post/${post.id}`)}>
                         {post.description}
                       </Card.Text>
-                      <Card.Text className="card-text text-muted small">
+                      <Card.Text className="card-text text-muted small" 
+                        onClick={(e: any) => navigate(`/profile/${post.author.id}`)}
+                      >
                         By {post.author.name}
                       </Card.Text>
                       <Card.Text>{new Date(post.createdAt).toDateString()}  &middot; {post.readingTimeInMins} mins</Card.Text>
                     </Card.Body>
-                    
+
                   </Card>
                 </Container>
               </Col>

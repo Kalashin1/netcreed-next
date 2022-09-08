@@ -1,7 +1,5 @@
 import CreateArticleForm from "../components/Create-Article-Form";
 import Layout from "./Layout";
-
-import Header from '../components/Header';
 import { NextPage } from "next";
 
 const CreateArticle: NextPage = () => {

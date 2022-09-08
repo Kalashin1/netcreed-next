@@ -11,6 +11,8 @@ export interface User extends DocumentData {
   phone: string;
   github: string;
   twitter: string;
+  reddit: string;
+  linkedin: string;
   headline: string;
   bio: string;
   createdAt: number;

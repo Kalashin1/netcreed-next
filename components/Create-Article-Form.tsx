@@ -99,7 +99,7 @@ const CreateArticleForm: NextComponentType = () => {
       const article: Partial<Article> = {
         title: articleName.value,
         body: body.value,
-        description: body.value.slice(0, 50),
+        description: body.value.slice(0, 200),
         createdAt: new Date().getTime(),
         coverPhoto: imageUrl,
         readingTimeInMins: (body.value.length / 200),
@@ -141,15 +141,6 @@ const CreateArticleForm: NextComponentType = () => {
               labelledBy="Select"
             />
           </div>
-          {/* <div className="form-group">
-            <label>Add To</label>
-            <MultiSelect
-              options={publishTypes}
-              value={selectedPublishTypes}
-              onChange={setSelectedPublishTypes}
-              labelledBy="Select"
-            />
-          </div> */}
           <div className="form-group">
             <label htmlFor="exampleFormControlTextarea1">Post Content</label>
             <textarea className="form-control" name="body" id="exampleFormControlTextarea1" rows={8}></textarea>

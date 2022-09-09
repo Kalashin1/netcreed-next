@@ -2,7 +2,7 @@ import SignupForm from "../components/Signup-Form"
 import { NextPage } from "next";
 import Layout from "./Layout";
 
-const Signup: NextPage = () => {
+const Register: NextPage = () => {
   return (
     //@ts-ignore
     <Layout>
@@ -13,7 +13,7 @@ const Signup: NextPage = () => {
         <div className='row justify-content-center'>
           <div className='col-md-6'>
             <div className='container'>
-              <SignupForm creator={false} />
+              <SignupForm creator={true} />
             </div>
           </div>
         </div>
@@ -22,4 +22,4 @@ const Signup: NextPage = () => {
   )
 }
 
-export default Signup;
+export default Register;

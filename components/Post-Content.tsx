@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Article } from '../types';
+import Script from 'next/script';
 
 import 'highlight.js/styles/github-dark.css';
 const marked = require('marked');
@@ -35,7 +36,7 @@ const PostContent: FC<_Article> = ({ article }) => {
                 <a className="a2a_button_facebook"></a>
                 <a className="a2a_button_twitter"></a>
               </div>
-              <script async src="https://static.addtoany.com/menu/page.js"></script>
+              <Script async src="https://static.addtoany.com/menu/page.js"></Script>
             </div>
           </div>
         </div>

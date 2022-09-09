@@ -20,32 +20,34 @@ const PostHeader: FC<_Article> = ({ article }) => {
       <div className="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
         <div className="h-100 tofront">
           <div className="row justify-content-between">
-            <div className="col-md-6 pt-6 pb-6 pr-6 align-self-center">
-              <p className="text-uppercase font-weight-bold">
+            <div className="col-md-12 mb-4 pr-0">
+              { /* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={article.coverPhoto} className="img-fluid" alt={article.title} />
+            </div>
+            <div className="col-md-6 pt pb-6 pr-6 align-self-center">
+              {/* <p className="text-uppercase font-weight-bold">
                 <a className="text-danger" href="./category.html">Stories</a>
-              </p>
+              </p> */}
               <h1 className="display-4 secondfont mb-3 font-weight-bold">{article.title}</h1>
               <p className="mb-3">
-                { article.description}...
+                {article.description}...
               </p>
               <div className="d-flex align-items-center">
-                { /* eslint-disable-next-line @next/next/no-img-element */ }
+                { /* eslint-disable-next-line @next/next/no-img-element */}
                 <Image
                   className="rounded-circle"
                   height="60"
                   onClick={e => navigate(`/profile/${article.author.id}`)}
                   width="50"
+                  style={{ objectFit: 'cover' }}
                   alt={article.author.name}
                   src={article.author.coverPhoto}
                 />
-                <small className="ml-2">{article.author.username} <span className="text-muted d-block">{ new Date(article.createdAt).toDateString()} &middot; { Math.floor(article.readingTimeInMins)} min. read</span>
+                <small className="ml-2" onClick={e => navigate(`/profile/${article.author.id}`)}>{article.author.username} <span className="text-muted d-block">{new Date(article.createdAt).toDateString()} &middot; {Math.floor(article.readingTimeInMins)} min. read</span>
                 </small>
               </div>
             </div>
-            <div className="col-md-6 pr-0">
-            { /* eslint-disable-next-line @next/next/no-img-element */ }
-              <img src={article.coverPhoto} alt={article.title} />
-            </div>
+
           </div>
         </div>
       </div>

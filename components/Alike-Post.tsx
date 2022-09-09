@@ -44,7 +44,7 @@ const AlikePost: FC<Articles> = ({ articles }) => {
         <div className="col-lg-6">
           <div className="flex-md-row mb-4 box-shadow h-xl-300">
             {articles && articles.map((article, index) => (
-              <Card className="p-4" key={index}>
+              <Card className="p-4 my-4" key={index}>
                 <h2 className="mb-1 h4 font-weight-bold">
                   <a className="text-dark" onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
                 </h2>

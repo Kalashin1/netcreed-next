@@ -1,5 +1,4 @@
-import { NextComponentType } from "next"
-import { useState, useRef, MutableRefObject, FormEvent } from "react";
+import { useState, useRef, MutableRefObject, FC,  FormEvent } from "react";
 import { auth, db } from '../Firebase-settings';
 import { 
   createUserWithEmailAndPassword, 
@@ -13,7 +12,11 @@ import { setDoc, doc } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import { Form, Button, Spinner } from "react-bootstrap";
 
-const SignupForm: NextComponentType = () => {
+
+type isCreator = {
+  creator: boolean
+}
+const SignupForm: FC<isCreator> = ({ creator }) => {
 
   const router = useRouter();
 
@@ -59,7 +62,8 @@ const SignupForm: NextComponentType = () => {
         name: userPayload.name,
         email: userPayload.email,
         articles: [],
-        createdAt: new Date().getTime()
+        createdAt: new Date().getTime(),
+        creator: creator ? true: false,
       })
       await updateProfile(auth.currentUser!, {
         displayName: userPayload.name,
@@ -89,7 +93,8 @@ const SignupForm: NextComponentType = () => {
         name: user.displayName,
         email: user.email,
         articles: [],
-        createdAt: new Date().getTime()
+        createdAt: new Date().getTime(),
+        creator: creator ? true: false,
       })
       alert('Your account has been created successfully');
       router.push('/profile');

@@ -21,20 +21,21 @@ const tags = [
   { label: "Angular", value: "angular" },
 ];
 
-const publishTypes = [
-  { label: 'Published', value: 'publish' },
-  { label: 'Draft', value: 'draft' },
-  { label: 'Archive', value: 'archive' }
-]
 
 const CreateArticleForm: NextComponentType = () => {
-
+  
   const router = useRouter();
+  const categories = [
+    { label: 'Programming', value: 'coding' },
+    { label: 'UI/UX', value: 'ui/ux' },
+    { label: 'Digital Marketing', value: 'digiMarketing' },
+    { label: 'Game Development', value: 'gameDev'}
+  ]
 
   const createArticleForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
 
   const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedPublishTypes, setSelectedPublishTypes] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [showSpinner, setShowSpinner] = useState(false);
 
   const uploadImage = async (file: HTMLInputElement) => {
@@ -102,11 +103,12 @@ const CreateArticleForm: NextComponentType = () => {
         description: body.value.slice(0, 200),
         createdAt: new Date().getTime(),
         coverPhoto: imageUrl,
-        readingTimeInMins: (body.value.length / 200),
+        readingTimeInMins: (body.value.length / 2000),
         author,
         likes: 0,
         saves: 0,
         tags: selectedTags,
+        category: selectedCategory,
         status: staus!,
         views: 0,
       }
@@ -131,6 +133,14 @@ const CreateArticleForm: NextComponentType = () => {
           <div className="form-group">
             <label htmlFor="exampleFormControlFile1">Select Cover Photo</label>
             <input type="file" name="coverPhoto" className="form-control" id="exampleFormControlFile1" />
+          </div>
+          <div className="form-group">
+            <label>Select Category</label>
+            <select onChange={e => setSelectedCategory(e.target.value)} className="form-control">
+             { categories.map((cat, index) => (
+                <option key={index} value={cat.value}>{cat.label}</option>
+             ))}
+            </select>
           </div>
           <div className="form-group">
             <label>Select Tag</label>

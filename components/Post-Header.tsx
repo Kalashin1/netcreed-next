@@ -24,7 +24,7 @@ const PostHeader: FC<_Article> = ({ article }) => {
               { /* eslint-disable-next-line @next/next/no-img-element */}
               <img src={article.coverPhoto} className="img-fluid" alt={article.title} />
             </div>
-            <div className="col-md-6 pt pb-6 pr-6 align-self-center">
+            <div className="col-md-12 pt pb-6 pr-6 align-self-center">
               {/* <p className="text-uppercase font-weight-bold">
                 <a className="text-danger" href="./category.html">Stories</a>
               </p> */}

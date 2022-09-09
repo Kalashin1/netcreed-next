@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react"
 import { User, Article } from "../../types";
 import { db, auth } from "../../Firebase-settings";
-import { getDoc, doc, getDocs, collection, where, query, limit } from 'firebase/firestore'
+import { getDoc, doc, getDocs, collection, where, query, limit, orderBy } from 'firebase/firestore'
 
 const UserProfile: NextPage = () => {
   const router = useRouter();
@@ -23,7 +23,7 @@ const UserProfile: NextPage = () => {
         
       const docSnap = await getDoc(userDocRef);
       if (docSnap.exists()) {
-        const q = query(collection(db, 'articles'), where("author.id", "==", id), limit(5))
+        const q = query(collection(db, 'articles'), where("author.id", "==", id), limit(5), orderBy('createdAt', 'desc'))
         const docs = await getDocs(q);
         const articles = docs.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
         const $user = { ...docSnap.data(), id: docSnap.id }

@@ -89,10 +89,10 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
             <div>
               <h5 className="font-weight-bold spanborder"><span>More Posts From {user.name}</span></h5>
               {articles && articles.map((article, index) => (
-                <div key={index} className="mb-3 d-flex justify-content-between">
-                  <div className="pr-3">
+                <div key={index} className="mb-3 sm-d-flex justify-content-between">
+                  <Card className="p-4">
                     <h2 className="mb-1 h4 font-weight-bold">
-                      <span className="text-dark" onClick={(e: any) => navigate(`/post/${article.id}`)}>{article.title}</span>
+                      <a className="text-dark" onClick={(e: any) => { e.preventDefault();navigate(`/post/${article.id}`)}}>{article.title}</a>
                     </h2>
                     <p onClick={(e: any) => navigate(`/post/${article.id}`)}>
                       {article.description}
@@ -103,8 +103,8 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                       {article.author.name}
                     </div>
                     <small className="text-muted">{new Date(article.createdAt).toDateString()} · {article.readingTimeInMins} min read</small>
-                  </div>
-                  <img height="120" src={article.coverPhoto} onClick={(e: any) => navigate(`/post/${article.id}`)} />
+                  </Card>
+                  {/* <img className='img-fluid' src={article.coverPhoto} onClick={(e: any) => navigate(`/post/${article.id}`)} /> */}
                 </div>
               ))}
             </div>

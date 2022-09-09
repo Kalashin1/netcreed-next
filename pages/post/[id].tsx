@@ -7,6 +7,7 @@ import Head from "next/head";
 import { db } from '../../Firebase-settings';
 import { collection, getDocs, query, getDoc, doc } from 'firebase/firestore';
 import { Article } from "../../types";
+import NewsLetter from "../../components/Newletter";
 
 
 export const getStaticPaths = async () => {
@@ -40,7 +41,7 @@ export const getStaticProps = async (context: any) => {
 
 // @ts-ignore
 const Post: NextPage = ({ article, articles }) => {
-  console.log(article);
+  // console.log(article);
   return (
     // @ts-ignore
     <Layout>
@@ -71,6 +72,7 @@ const Post: NextPage = ({ article, articles }) => {
       {article && (<PostHeader article={article} />)}
       {article && (<PostContent article={article} />)}
       <AlikePost articles={articles} />
+      <NewsLetter />
     </Layout>
   );
 };

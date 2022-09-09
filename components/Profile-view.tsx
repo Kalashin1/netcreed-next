@@ -2,13 +2,24 @@ import { FC } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import PersonalDetailsComponent from './Personal-Details-Component';
 import Image from 'next/image';
-import { User as IUser } from '../types';
+import { Article, User as IUser } from '../types';
+import { useRouter } from "next/router"
+import Link from 'next/link';
+import Categories from './Categories';
 
 type UserPropsType = {
-  user: Partial<IUser>
+  user: Partial<IUser>,
+  articles: Array<Article>
 }
 
-const ViewUserProfile: FC<UserPropsType> = ({ user }) => {
+const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
+
+  const router = useRouter();
+
+  function navigate(route: string) {
+    router.push(route);
+  }
+
   return (
     <section className="section">
       <Container className="section-body">
@@ -18,11 +29,12 @@ const ViewUserProfile: FC<UserPropsType> = ({ user }) => {
               <Card.Body>
                 <div className="author-box-center"
                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                  <Image
+                  <img
                     alt={user.name}
                     src={user.profilePhoto!}
                     width={100}
                     height={100}
+                    style={{ objectFit: 'cover' }}
                     className="rounded-circle author-box-picture"
                   />
 
@@ -63,7 +75,7 @@ const ViewUserProfile: FC<UserPropsType> = ({ user }) => {
             }
           </Col>
           <Col md={12} lg={8}>
-            <Card>
+            <Card className="mb-4">
               <div className="padding-20">
                 <div className="card-header">
                   <h4>About {user.name}</h4>
@@ -73,6 +85,29 @@ const ViewUserProfile: FC<UserPropsType> = ({ user }) => {
                 </p>
               </div>
             </Card>
+
+            <div>
+              <h5 className="font-weight-bold spanborder"><span>More Posts From {user.name}</span></h5>
+              {articles && articles.map((article, index) => (
+                <div key={index} className="mb-3 d-flex justify-content-between">
+                  <div className="pr-3">
+                    <h2 className="mb-1 h4 font-weight-bold">
+                      <span className="text-dark" onClick={(e: any) => navigate(`/post/${article.id}`)}>{article.title}</span>
+                    </h2>
+                    <p onClick={(e: any) => navigate(`/post/${article.id}`)}>
+                      {article.description}
+                    </p>
+                    <div className="card-text text-muted small"
+                      onClick={(e: any) => navigate(`/profile/${article.author.id}`)}
+                    >
+                      {article.author.name}
+                    </div>
+                    <small className="text-muted">{new Date(article.createdAt).toDateString()} · {article.readingTimeInMins} min read</small>
+                  </div>
+                  <img height="120" src={article.coverPhoto} onClick={(e: any) => navigate(`/post/${article.id}`)} />
+                </div>
+              ))}
+            </div>
           </Col>
         </Row>
       </Container>

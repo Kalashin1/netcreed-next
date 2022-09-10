@@ -29,10 +29,10 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
                   {/* <Card.Text style={{ cursor: 'pointer' }} onClick={(e: any) => navigate(`/post/${post.id}`)}>
                     {post.description}
                   </Card.Text> */}
-                  <Card.Text className="card-text text-muted small" onClick={(e: any) => navigate(`/profile/${post.author.id}`)}>
+                  <Card.Text style={{ cursor: 'pointer' }} className="card-text text-muted small" onClick={(e: any) => navigate(`/profile/${post.author.id}`)}>
                     By {post.author.name}
                   </Card.Text>
-                  <Card.Text>{new Date(post.createdAt).toDateString()}  &middot; {post.readingTimeInMins} mins</Card.Text>
+                  <Card.Text>{new Date(post.createdAt).toDateString()}  &middot; {Math.floor(post.readingTimeInMins)} mins</Card.Text>
                 </Card.Body>
               </Card>
             </Container>

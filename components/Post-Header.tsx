@@ -51,11 +51,11 @@ const PostHeader: FC<_Article> = ({ article }) => {
                   height="60"
                   onClick={e => navigate(`/profile/${article.author.id}`)}
                   width="50"
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: 'cover', cursor: 'pointer' }}
                   alt={article.author.name}
                   src={article.author.coverPhoto}
                 />
-                <small className="ml-2" onClick={e => navigate(`/profile/${article.author.id}`)}>{article.author.username} <span className="text-muted d-block">{new Date(article.createdAt).toDateString()} &middot; {Math.floor(article.readingTimeInMins)} min. read</span>
+                <small className="ml-2" style={{ cursor: 'pointer' }} onClick={e => navigate(`/profile/${article.author.id}`)}>{article.author.name} <span className="text-muted d-block">{new Date(article.createdAt).toDateString()} &middot; {Math.floor(article.readingTimeInMins)} min. read</span>
                 </small>
               </div>
             </div>

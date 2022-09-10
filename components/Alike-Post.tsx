@@ -29,15 +29,16 @@ const AlikePost: FC<Articles> = ({ articles }) => {
             <div className="card-body px-0 pb-0 d-flex flex-column align-items-start">
               <h2 className="h4 font-weight-bold">
                 <p className="text-dark card-title"
+                  style={{ cursor: 'pointer' }}
                   onClick={(e: any) => navigate(`/posts/${articles[0]?.id}`)
                   }>{articles[0]?.title}</p>
               </h2>
-              <p className="card-text">
+              <p className="card-text" style={{ cursor: 'pointer' }}>
                 {articles[0]?.description}
               </p>
               <div>
                 <small className="d-block"><a className="text-muted" style={{ cursor: 'pointer' }} onClick={(e: any) => navigate(`/profile/${articles[0]?.author.id}`)}>{articles[0]?.author.name}</a></small>
-                <small className="text-muted">{new Date(articles[0]?.createdAt).toDateString()} · {articles[0]?.readingTimeInMins} min read</small>
+                <small className="text-muted">{new Date(articles[0]?.createdAt).toDateString()} · {Math.floor(articles[0]?.readingTimeInMins)} min read</small>
               </div>
             </div>
           </div>

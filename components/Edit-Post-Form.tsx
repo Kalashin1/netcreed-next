@@ -31,6 +31,7 @@ const EditArticleForm: FC<_article> = ({ id }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [article, setArticle] = useState({} as Article)
 
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const EditArticleForm: FC<_article> = ({ id }) => {
       const docRes = await getDoc(doc(db, 'articles', id));
       const article = ({ ...docRes.data(), id: docRes.id }) as Article;
       console.log(article)
+      setArticle(article);
       setSelectedTags(article.tags)
       setSelectedCategory(article.category)
       setTitle(article.title)

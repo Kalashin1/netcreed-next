@@ -72,7 +72,6 @@ const Post: NextPage = ({ article, articles }) => {
       {article && (<PostHeader article={article} />)}
       {article && (<PostContent article={article} />)}
       <AlikePost articles={articles} />
-      <NewsLetter />
     </Layout>
   );
 };

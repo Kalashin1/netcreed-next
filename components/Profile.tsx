@@ -1,21 +1,25 @@
 import { NextComponentType } from "next"
 import { useEffect, useState, FormEvent, useRef, MutableRefObject } from 'react';
 import { db, auth, storage } from '../Firebase-settings';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, collection, query, where, limit, orderBy, getDocs } from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth'
-import { User } from '../types';
+import { User, Article } from '../types';
 import { randomBytes } from "crypto";
-import { Tab, Tabs, Form, Button, Spinner } from 'react-bootstrap';
+import { Tab, Tabs, Form, Button, Spinner, Card } from 'react-bootstrap';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { useRouter } from "next/router";
 import PersonalDetailsComponent from "./Personal-Details-Component";
-import CategoriesComponent from "./Categories";
+const marked = require('marked');
 
 import Image from 'next/image';
 
 const UserProfile: NextComponentType = () => {
 
   const router = useRouter();
+
+  const navigate = (route: string) => {
+    router.push(route);
+  }
 
   let userId: string;
 
@@ -25,9 +29,12 @@ const UserProfile: NextComponentType = () => {
   const fileInput: MutableRefObject<null | HTMLInputElement> = useRef(null);
 
   let _user: Partial<User> = {};
+  let _article: Article[] = []
 
   const [user, setUser] = useState(_user);
+  const [articles, setArticles] = useState(_article)
   const [key, setKey] = useState('home');
+
   const [showSpinner, setShowSpinner] = useState(false);
   const [showSpinner2, setShowSpinner2] = useState(false);
 
@@ -43,6 +50,10 @@ const UserProfile: NextComponentType = () => {
       let userDoc = await getDoc(userDocRef);
       if (userDoc.exists()) {
         const user: Partial<User> = userDoc.data()!
+        const q = query(collection(db, 'articles'), where("author.id", "==", userDoc.id), limit(3), orderBy('createdAt', 'desc'))
+        const docs = await getDocs(q);
+        const articles = docs.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
+        setArticles(articles);
         user.id = userDoc.id;
         console.log(user);
         setUser(user);
@@ -191,6 +202,7 @@ const UserProfile: NextComponentType = () => {
                     src={user.profilePhoto!}
                     width={100}
                     height={100}
+                    style={{ objectFit: 'cover' }}
                     className="rounded-circle author-box-picture"
                   />
 
@@ -322,6 +334,42 @@ const UserProfile: NextComponentType = () => {
                     </div>
                   </Tab>
                 </Tabs>
+              </div>
+            </div>
+
+            <div>
+              <Button variant="primary" type="submit" style={{ width: '100%' }}
+                onClick={(e: any) => navigate(`/create-post`)}
+              >
+                Create Post
+              </Button>
+              <h5 className="font-weight-bold spanborder"><span>More Posts From {user.name}</span></h5>
+              {articles && articles.map((article, index) => (
+                <div key={index} className="mb-3 sm-d-flex justify-content-between">
+                  <Card className="p-4">
+                    <h2 className="mb-1 h4 font-weight-bold">
+                      <a className="text-dark" onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
+                    </h2>
+                    <p onClick={(e: any) => navigate(`/post/${article.id}`)} dangerouslySetInnerHTML={{ __html: marked.marked(article.description) }}>
+
+                    </p>
+                    <div className="card-text text-muted small"
+                      onClick={(e: any) => navigate(`/profile/${article.author.id}`)}
+                    >
+                      {article.author.name}
+                    </div>
+                    <small className="text-muted">{new Date(article.createdAt).toDateString()} · {article.readingTimeInMins} min read</small>
+                  </Card>
+
+                </div>
+              ))}
+
+              <div>
+                <Button variant="primary" type="submit" style={{ width: '100%' }}
+                  onClick={(e: any) => navigate(`/post-dashboard`)}
+                >
+                  More Posts
+                </Button>
               </div>
             </div>
           </div>

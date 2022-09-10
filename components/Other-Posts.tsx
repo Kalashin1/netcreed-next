@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import { Container } from "react-bootstrap";
+const marked = require('marked');
+
 type Posts = {
   allPosts: Article[],
   featuredPosts: Article[],
@@ -55,9 +57,9 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                 <h2 className="mb-1 h4 font-weight-bold">
                   <a className="text-dark" onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
                 </h2>
-                <p onClick={(e: any) => navigate(`/post/${article.id}`)}>
-                  {article.description}
-                </p>
+                <p onClick={(e: any) => navigate(`/post/${article.id}`)} dangerouslySetInnerHTML={{ __html: marked.marked(article.description)}}>
+                      
+                    </p>
                 <div className="card-text text-muted small"
                   onClick={(e: any) => navigate(`/profile/${article.author.id}`)}
                 >

@@ -72,8 +72,6 @@ const Home: NextPage = ({ articles, alikePosts }) => {
       { articles && (<Header article={articles[0]} />) }
       { articles && (<RecentPosts posts={articles} />)}
       { alikePosts && (<OtherPosts allPosts={articles.slice(0, 5)} featuredPosts={articles.slice(0, 5)} />)}
-      
-      <NewsLetter />
     </Layout>
   );
 }

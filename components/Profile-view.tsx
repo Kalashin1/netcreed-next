@@ -6,6 +6,7 @@ import { Article, User as IUser } from '../types';
 import { useRouter } from "next/router"
 import Link from 'next/link';
 import Categories from './Categories';
+const marked = require('marked');
 
 type UserPropsType = {
   user: Partial<IUser>,
@@ -94,8 +95,8 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                     <h2 className="mb-1 h4 font-weight-bold">
                       <a className="text-dark" onClick={(e: any) => { e.preventDefault();navigate(`/post/${article.id}`)}}>{article.title}</a>
                     </h2>
-                    <p onClick={(e: any) => navigate(`/post/${article.id}`)}>
-                      {article.description}
+                    <p onClick={(e: any) => navigate(`/post/${article.id}`)} dangerouslySetInnerHTML={{ __html: marked.marked(article.description)}}>
+                      
                     </p>
                     <div className="card-text text-muted small"
                       onClick={(e: any) => navigate(`/profile/${article.author.id}`)}

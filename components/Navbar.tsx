@@ -29,25 +29,25 @@ const NavbarComponent: NextComponentType = () => {
   return (
     <Navbar bg="white" expand="lg" fixed="top">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <Image src="/logo.png" width={50} height={60} alt="Netcreed" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Item style={{ margin: '1rem' }}>
+            <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <Link href="/">Home</Link>
             </Nav.Item>
-            <Nav.Item style={{ margin: '1rem' }}>
+            <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <Link href="/about">About</Link>
             </Nav.Item>
             {/* <Nav.Item style={{ margin: '0 1rem' }}>
               <Link href="/categories">Categories</Link>
             </Nav.Item> */}
-            <Nav.Item style={{ margin: '1rem' }}>
+            <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <Link href="/signup">Create Account</Link>
             </Nav.Item>
-            <Nav.Item style={{ margin: '1rem' }}>
+            <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <Link href="/login">Login</Link>
             </Nav.Item>
           </Nav>

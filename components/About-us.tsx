@@ -25,21 +25,7 @@ const About: NextComponentType = () => {
             <p>
               Welcome to Netcreed, where you can get articles written by Tech professionals to help others in tech find solution to problems, grow and expand their knowledge and network. You will find top notch articles on different topics in IT and Tech space.
             </p>
-            {/* <p>
-              <a href="./article.html"><img src="assets/img/screenshot-mundana-article.png" className="shadow" /></a>
-            </p>
-            <p>
-              <a href="./index.html"><img src="assets/img/screenshot-mundana.png" className="shadow" /></a>
-            </p>
-            <p>
-              <a href="./category.html"><img src="assets/img/screenshot-mundana-category.png" className="shadow" /></a>
-            </p>
-            <p>
-              Like it? You can download Mundana HTML Template for free!
-            </p>
-            <p>
-              <a target="_blank" href="https://www.wowthemes.net/mundana-free-html-bootstrap-template" className="btn btn-secondary">&rarr; Go to Mundana's download page</a>
-            </p> */}
+            
           </article>
           <div className="border p-5 bg-lightblue mt-5">
             <div className="row justify-content-center align-items-center">

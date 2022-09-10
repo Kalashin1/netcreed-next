@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FC } from "react";
+import AppStyle from "./app.module.css"
 
 //@ts-ignore
 const Layout: FC = function ({ children }) {
@@ -19,34 +20,40 @@ const Layout: FC = function ({ children }) {
           name="viewport"
         />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css" integrity="sha512-XWTTruHZEYJsxV3W/lSXG1n3Q39YIWOstqvmFsdNEEQfHoZ6vm6E9GK2OrF6DSJSpIbRbi+Nn0WDPID9O7xB2Q==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
-        <link
-          href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700|Source+Sans+Pro:400,600,700"
-          rel="stylesheet"
-        />
+
+        <link href="/assets/css/main.css" rel="stylesheet" />
+
+        <link href="/assets/css/select2.min.css" rel="stylesheet" />
         <link
           rel="stylesheet"
           href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
           crossOrigin="anonymous"
         />
-        <link href="/assets/css/main.css" rel="stylesheet" />
 
-        <link href="/assets/css/select2.min.css" rel="stylesheet" />
-
+        <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap')
+          body {
+            font-family: "Lato", sans-serif;
+          }
+        `}</style>
       </Head>
-      <Navbar />
-      <div style={{ margin: '4rem 0' }}>
-        { children}
+      <div className={AppStyle.body}>
+        <Navbar />
+        <div style={{ margin: '4rem 0' }}>
+          {children}
+        </div>
+        <Footer />
       </div>
-      <Footer />
+
       <Script
-          defer
-          src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
-          integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        ></Script>
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.min.js" integrity="sha512-8Y8eGK92dzouwpROIppwr+0kPauu0qqtnzZZNEF8Pat5tuRNJxJXCkbQfJ0HlUG3y1HB3z18CSKmUo7i2zcPpg==" crossOrigin="anonymous" referrerPolicy="no-referrer"></Script>
+        defer
+        src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
+        integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
+        crossOrigin="anonymous"
+        referrerPolicy="no-referrer"
+      ></Script>
+      <Script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.min.js" integrity="sha512-8Y8eGK92dzouwpROIppwr+0kPauu0qqtnzZZNEF8Pat5tuRNJxJXCkbQfJ0HlUG3y1HB3z18CSKmUo7i2zcPpg==" crossOrigin="anonymous" referrerPolicy="no-referrer"></Script>
     </>
   )
 }

@@ -4,6 +4,7 @@ import PostContent from "../../components/Post-Content";
 import AlikePost from "../../components/Alike-Post";
 import { NextPage } from "next";
 import Head from "next/head";
+import AppCss from '../app.module.css';
 import { db } from '../../Firebase-settings';
 import { collection, getDocs, query, getDoc, doc, where, limit, orderBy } from 'firebase/firestore';
 import { Article } from "../../types";
@@ -69,9 +70,11 @@ const Post: NextPage = ({ article, articles }) => {
         <meta property="og:description" content={article.description} />
         <meta property="og:image" itemProp="image" content={`${article.coverPhoto}`} />
       </Head>
-      {article && (<PostHeader article={article} />)}
-      {article && (<PostContent article={article} />)}
-      <AlikePost articles={articles.slice(1, articles.length)} /> 
+      <div className={AppCss.body}>
+        {article && (<PostHeader article={article} />)}
+        {article && (<PostContent article={article} />)}
+        <AlikePost articles={articles.slice(1, articles.length)} /> 
+      </div>
     </Layout>
   );
 };

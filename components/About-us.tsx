@@ -1,4 +1,5 @@
-import { NextComponentType } from 'next'
+import { NextComponentType } from 'next';
+import Script from 'next/script';
 
 const About: NextComponentType = () => {
   return (
@@ -15,17 +16,14 @@ const About: NextComponentType = () => {
                 <a className="a2a_button_facebook"></a>
                 <a className="a2a_button_twitter"></a>
               </div>
-              <script async src="https://static.addtoany.com/menu/page.js"></script>
+              <Script async src="https://static.addtoany.com/menu/page.js"></Script>
             </div>
           </div>
         </div>
         <div className="col-md-12 col-lg-8">
           <article className="article-post">
             <p>
-              I hope you like Mundana. My name is <a target="_blank" rel="noreferrer" href="https://www.buymeacoffee.com/sal">Sal</a>, I am the author of this template that Im sharing you for free. You are currently previewing its demo, the article template to be more specific.
-            </p>
-            <p>
-              Here are a few screenshots of Mundana and what you can do with it.
+              Welcome to Netcreed, where you can get articles written by Tech professionals to help others in tech find solution to problems, grow and expand their knowledge and network. You will find top notch articles on different topics in IT and Tech space.
             </p>
             {/* <p>
               <a href="./article.html"><img src="assets/img/screenshot-mundana-article.png" className="shadow" /></a>
@@ -44,14 +42,14 @@ const About: NextComponentType = () => {
             </p> */}
           </article>
           <div className="border p-5 bg-lightblue mt-5">
-            <div className="row justify-content-between align-items-center">
+            <div className="row justify-content-center align-items-center">
               <div className="col-md-8 mb-2 mb-md-0">
-                <h5 className="font-weight-bold mb-3">About the author of Mundana</h5>
-                Hi, Im Sal, the author of the template youre currently previewing. I am sharing for free, for your personal &amp; commercial use on unlimited domains. If youd like to support my work, donations are highly appreciated! You can remove the credit links after donation. Thank you!
+                <h5 className="font-weight-bold mb-3">About Kinanee Samson</h5>
+                Hi, Im Kinanee Samson, the creator of the Netcreed. I created this platform out of my passion to share what i have learned during the course of my Tech careers with others. I derive passion from using my experience and knowledge to help others grow in the same field. 
               </div>
-              <div className="col-md-4">
+              {/* <div className="col-md-4">
                 <a target="_blank" rel="noreferrer" href="https://www.buymeacoffee.com/sal" className="btn btn-warning btn-block"><i className="fa fa-coffee"></i> Buy me a coffee</a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

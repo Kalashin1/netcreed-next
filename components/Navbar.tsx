@@ -35,19 +35,19 @@ const NavbarComponent: NextComponentType = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Item style={{ margin: '0 1rem' }}>
+            <Nav.Item style={{ margin: '1rem' }}>
               <Link href="/">Home</Link>
             </Nav.Item>
-            <Nav.Item style={{ margin: '0 1rem' }}>
+            <Nav.Item style={{ margin: '1rem' }}>
               <Link href="/about">About</Link>
             </Nav.Item>
-            <Nav.Item style={{ margin: '0 1rem' }}>
+            {/* <Nav.Item style={{ margin: '0 1rem' }}>
               <Link href="/categories">Categories</Link>
-            </Nav.Item>
-            <Nav.Item style={{ margin: '0 1rem' }}>
+            </Nav.Item> */}
+            <Nav.Item style={{ margin: '1rem' }}>
               <Link href="/signup">Create Account</Link>
             </Nav.Item>
-            <Nav.Item style={{ margin: '0 1rem' }}>
+            <Nav.Item style={{ margin: '1rem' }}>
               <Link href="/login">Login</Link>
             </Nav.Item>
           </Nav>

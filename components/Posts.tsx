@@ -2,6 +2,7 @@ import { MultiSelect } from "react-multi-select-component";
 import { useState, FC } from "react";
 import { Article } from "../types";
 import { Button } from 'react-bootstrap';
+import { useRouter } from "next/router";
 
 const options = [
   { label: "Grapes 🍇", value: "grapes" },
@@ -15,6 +16,12 @@ type PostPayload = {
 
 const PostTable: FC<PostPayload> = ({ posts }) => {
 
+  const router = useRouter()
+
+  function navigate(route: string) {
+    router.push(route)
+  }
+
   const [selected, setSelected] = useState([]);
 
   return (
@@ -23,7 +30,7 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
         <h4>All Posts</h4>
       </div>
       <div className="card-body">
-        <div style={{ width: '50vw' }} className="my-4">
+        {/* <div style={{ width: '50vw' }} className="my-4">
 
           <label>Add To</label>
           <MultiSelect
@@ -32,8 +39,8 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
             onChange={setSelected}
             labelledBy="Select"
           />
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <form style={{ width: '50vw' }}>
             <div className="input-group">
               <input type="text" className="form-control" placeholder="Search" />
@@ -42,7 +49,7 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
               </div>
             </div>
           </form>
-        </div>
+        </div> */}
         <div className="clearfix mb-3"></div>
         <div className="table-responsive">
           <table className="table table-striped">
@@ -69,16 +76,16 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
                         <label htmlFor="checkbox-2" className="custom-control-label">&nbsp;</label>
                       </div>
                     </td>
-                    <td>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>
                       {post.title}
                     </td>
-                    <td>
-                      <a href="#">{post.status}</a>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>
+                      <p>{post.status}</p>
                     </td>
-                    <td>{new Date(post.createdAt).toDateString()}</td>
-                    <td>{post.views}</td>
-                    <td>{post.saves}</td>
-                    <td>{post.likes}</td>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{new Date(post.createdAt).toDateString()}</td>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.views}</td>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.saves}</td>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.likes}</td>
                   </tr>
                 ))
               }

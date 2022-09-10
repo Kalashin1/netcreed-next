@@ -34,9 +34,9 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
               <Card className="bg-light text-dark">
                 <Card.Body>
                   <Card.Title onClick={(e: any) => navigate(`/post/${post.id}`)}>{post.title}</Card.Title>
-                  <Card.Text onClick={(e: any) => navigate(`/post/${post.id}`)}>
+                  {/* <Card.Text onClick={(e: any) => navigate(`/post/${post.id}`)}>
                     {post.description}
-                  </Card.Text>
+                  </Card.Text> */}
                   <Card.Text className="card-text text-muted small"
                     onClick={(e: any) => navigate(`/profile/${post.author.id}`)}
                   >

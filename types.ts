@@ -11,6 +11,7 @@ export interface User extends DocumentData {
   phone: string;
   github: string;
   twitter: string;
+  creator: boolean;
   reddit: string;
   linkedin: string;
   headline: string;
@@ -26,7 +27,7 @@ export type Author = Pick<User, 'name' | 'username' | 'phone' | 'email' | 'githu
 export interface Article extends DocumentData {
   title: string;
   createdAt: number;
-  tags: Array<string>;
+  tags: Array<{ label: string, value: string }>;
   category: string;
   body: string;
   coverPhoto: string;

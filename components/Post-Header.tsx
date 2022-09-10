@@ -15,6 +15,12 @@ const PostHeader: FC<_Article> = ({ article }) => {
     router.push(route);
   }
 
+  function isAuthor() {
+    if (typeof window !== 'undefined') {
+      return article.author.id === localStorage.getItem('userId')
+    }
+  }
+
   return (
     <div className="container">
       <div className="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
@@ -25,9 +31,15 @@ const PostHeader: FC<_Article> = ({ article }) => {
               <img src={article.coverPhoto} className="img-fluid" alt={article.title} />
             </div>
             <div className="col-md-12 pt pb-6 pr-6 align-self-center">
-              {/* <p className="text-uppercase font-weight-bold">
-                <a className="text-danger" href="./category.html">Stories</a>
-              </p> */}
+              {isAuthor() && (<p className="text-uppercase font-weight-bold">
+                <a className="text-danger" href="./category.html"
+                  onClick={e => {
+                    e.preventDefault(); 
+                    navigate(`/edit-post/${article.id}`)
+                  }
+                  }
+                >Edit</a>
+              </p>)}
               <h1 className="display-4 secondfont mb-3 font-weight-bold">{article.title}</h1>
               <p className="mb-3">
                 {article.description}...

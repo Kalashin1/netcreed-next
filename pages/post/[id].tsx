@@ -49,7 +49,7 @@ const Post: NextPage = ({ article, articles }) => {
       <Head>
         <meta name="title" content="Netcreed, Software Development" />
         <meta name="description" content="Software development platform for FullStack Development, JavaScript Development and Mobile Development" />
-        <meta name="keywords" content={article.tags.join(', ')} />
+        <meta name="keywords" content={article.tags.map((t: any) => t.value).join(', ')} />
         <meta name="robots" content="index, follow" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="English" />
@@ -62,10 +62,9 @@ const Post: NextPage = ({ article, articles }) => {
         <meta name="twitter:title" content={article.title} />
         <meta name="twitter:description" content={article.description} />
         <meta name="twitter:image" content={`${article.coverPhoto}`} />
-        <meta name="twitter:domain" content={`https://netcreed-blog.web.app/post/${article.id}`} />
         {/* Open Graph  */}
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://netcreed-blog.web.app/post/${article.id}`} />
+        <meta property="og:url" content={`https://netcreed-blog.vercel.app/post/${article.id}`} />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.description} />
         <meta property="og:image" itemProp="image" content={`${article.coverPhoto}`} />

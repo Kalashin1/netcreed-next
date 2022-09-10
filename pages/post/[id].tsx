@@ -5,7 +5,7 @@ import AlikePost from "../../components/Alike-Post";
 import { NextPage } from "next";
 import Head from "next/head";
 import { db } from '../../Firebase-settings';
-import { collection, getDocs, query, getDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, query, getDoc, doc, where, limit, orderBy } from 'firebase/firestore';
 import { Article } from "../../types";
 import NewsLetter from "../../components/Newletter";
 
@@ -29,7 +29,7 @@ export const getStaticProps = async (context: any) => {
   const docRes = await getDoc(ref);
   const article = ({ ...docRes.data(), id: docRes.id }) as Article;
 
-  const _q = query(collection(db, 'articles'));
+  const _q =  query(collection(db, 'articles'), where('tags', 'array-contains', article.tags[0]), orderBy('createdAt', 'desc'), limit(10))
   const _docRes = await getDocs(_q);
   const articles = _docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
 

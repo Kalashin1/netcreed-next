@@ -2,6 +2,8 @@ import { DocumentData } from 'firebase/firestore'
 
 export type ARTICLE_STATUS = 'published' | 'archived' | 'saved'
 
+export type ARTICLE_ENGAGEMENT = 'views' | 'saves' | 'likes';
+
 export interface User extends DocumentData {
   name: string;
   id: string;
@@ -37,10 +39,13 @@ export interface Article extends DocumentData {
   readingTimeInMins: number;
   description: string;
   author: Author;
-  views: number;
-  likes: number;
-  saves: number;
+  views: Author[];
+  likes: Author[];
+  saves: Author[];
   url: string;
   status: ARTICLE_STATUS;
 }
 
+type engagement = {
+  user: Author
+}

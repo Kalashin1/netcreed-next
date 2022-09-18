@@ -19,7 +19,7 @@ import {
 } from 'firebase/firestore';
 
 export const getStaticProps = async () => {
-  const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'), limit(10));
+  const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'));
   const docRes = await getDocs(q);
   const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
   const sQ = query(collection(db, 'articles'), where('tags', 'array-contains', articles[0].tags[0]), orderBy('createdAt', 'desc'), limit(10))
@@ -70,8 +70,8 @@ const Home: NextPage = ({ articles, alikePosts }) => {
         <meta property="og:image" itemProp="image" content="https://firebasestorage.googleapis.com/v0/b/foodkal-01.appspot.com/o/Untitled%20design.png?alt=media&token=6fc883b7-cb07-4c96-9633-16a0ccea05fe" />
       </Head>
       { articles && (<Header article={articles[0]} />) }
-      { articles && (<RecentPosts posts={articles.slice(1, articles.length)} />)}
       { alikePosts && (<OtherPosts allPosts={alikePosts.slice(1, 5)} featuredPosts={alikePosts.slice(5, alikePosts.length)} />)}
+      { articles && (<RecentPosts posts={articles.slice(1, articles.length)} />)}
     </Layout>
   );
 }

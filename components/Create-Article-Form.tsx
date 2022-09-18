@@ -105,12 +105,12 @@ const CreateArticleForm: NextComponentType = () => {
         coverPhoto: imageUrl,
         readingTimeInMins: (body.value.length / 2000),
         author,
-        likes: 0,
-        saves: 0,
+        likes: [],
+        saves: [],
         tags: selectedTags,
         category: selectedCategory,
         status: staus!,
-        views: 0,
+        views: [],
       }
       await addDoc(collection(db, 'articles'), article);
       setShowSpinner(true)

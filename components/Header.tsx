@@ -2,6 +2,7 @@ import { NextComponentType } from "next"
 import { FC } from 'react';
 import { Article } from "../types";
 import Link from 'next/link';
+const marked = require('marked');
 
 type _Article = {
   article: Article
@@ -15,8 +16,8 @@ const Header: FC<_Article> = ({ article }) => {
           <div className="row justify-content-between">
             <div className="col-md-6 pt-6 pb-6 align-self-center">
               <h1 className="secondfont mb-3 font-weight-bold">{article.title}</h1>
-              <p className="mb-3">
-                {article.description}
+              <p className="mb-3" dangerouslySetInnerHTML={{ __html: marked.marked(article.description) }}>
+        
               </p>
               <Link href={`/post/${article.id}`} className="btn btn-dark">Read More</Link>
             </div>

@@ -102,7 +102,6 @@ const LoginForm: NextComponentType = () => {
           {!showSpinner && 'Login'}
         </Button>
       </Form>
-      <h5 className="text-center mt-4">Or</h5>
       {/* <Button variant="primary" onClick={signinWithGoogle} style={{ width: '100%', marginTop: '.5rem' }}>
         {showSpinner2 && (<Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>

@@ -27,7 +27,7 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
       <div className="row justify-content-center">
 
         <Col xs lg="6">
-          <h5 className="font-weight-bold spanborder"><span>All Stories</span></h5>
+          <h5 className="font-weight-bold spanborder"><span>Latest Stories</span></h5>
           {allPosts.map((post, index) => (
             <Container key={index} className="my-4">
               <Card.Img src={post.coverPhoto} style={{ cursor: 'pointer' }} alt="Card image" onClick={(e: any) => navigate(`/post/${post.id}`)} />
@@ -50,7 +50,7 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
           ))}
         </Col>
         <div className="col-md-6 pl-4">
-          <h5 className="font-weight-bold spanborder"><span>Popular</span></h5>
+          <h5 className="font-weight-bold spanborder"><span>Other Stories</span></h5>
           <ol className="list-featured">
             {featuredPosts && featuredPosts.map((article, index) => (
               <Card className="p-4 my-4" key={index}>

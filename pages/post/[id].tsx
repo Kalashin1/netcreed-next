@@ -30,7 +30,7 @@ export const getStaticProps = async (context: any) => {
   const docRes = await getDoc(ref);
   const article = ({ ...docRes.data(), id: docRes.id }) as Article;
 
-  const _q =  query(collection(db, 'articles'), where('tags', 'array-contains', article.tags[0]), orderBy('createdAt', 'desc'), limit(5))
+  const _q =  query(collection(db, 'articles'), where('tags', 'array-contains', article.tags[0]), orderBy('createdAt', 'desc'), limit(6))
   const _docRes = await getDocs(_q);
   const articles = _docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
 
@@ -72,7 +72,9 @@ const Post: NextPage = ({ article, articles }) => {
       <div className={AppCss.body}>
         {article && (<PostHeader article={article} />)}
         {article && (<PostContent article={article} />)}
-        <AlikePost articles={articles.slice(1, articles.length)} /> 
+        <div className="my-4">
+          <AlikePost articles={articles.slice(0, articles.length)} /> 
+        </div>
       </div>
     </Layout>
   );

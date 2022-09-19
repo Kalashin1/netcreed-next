@@ -4,10 +4,11 @@ import type { NextPage } from 'next'
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FC } from "react";
-import AppStyle from "./app.module.css"
+import AppStyle from "./app.module.css";
 
 //@ts-ignore
 const Layout: FC = function ({ children }) {
+
   return (
     <>
       <Head>

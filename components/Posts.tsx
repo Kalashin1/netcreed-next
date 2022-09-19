@@ -83,9 +83,9 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
                       <p>{post.status}</p>
                     </td>
                     <td onClick={e => navigate(`/edit-post/${post.id}`)}>{new Date(post.createdAt).toDateString()}</td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.views}</td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.saves}</td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.likes}</td>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.views.length}</td>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.saves.length}</td>
+                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.likes.length}</td>
                   </tr>
                 ))
               }

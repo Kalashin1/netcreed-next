@@ -57,8 +57,6 @@ const Home: NextPage = ({ articles, alikePosts }) => {
         <title>Netcreed</title>
         {/* TWITTER CARD */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@kinanee_samson" />
-        <meta name="twitter:creator" content="@kinanee_samson" />
         <meta name="twitter:title" content="Netcreed" />
         <meta name="twitter:description" content="Software development platform for FullStack Development, JavaScript Development and Mobile Development." />
         <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/foodkal-01.appspot.com/o/Untitled%20design.png?alt=media&token=6fc883b7-cb07-4c96-9633-16a0ccea05fe" />

@@ -46,7 +46,7 @@ const UserProfile: NextComponentType = () => {
     const user = auth.currentUser;
     if (user) {
       const userDocRef = doc(db, 'users', userId)
-      console.log(userId)
+      // console.log(userId)
       let userDoc = await getDoc(userDocRef);
       if (userDoc.exists()) {
         const user: Partial<User> = userDoc.data()!
@@ -55,7 +55,7 @@ const UserProfile: NextComponentType = () => {
         const articles = docs.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
         setArticles(articles);
         user.id = userDoc.id;
-        console.log(user);
+        // console.log(user);
         setUser(user);
       }
     } else {
@@ -184,7 +184,7 @@ const UserProfile: NextComponentType = () => {
       router.reload();
     } catch (error) {
       setShowSpinner2(false);
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -348,12 +348,13 @@ const UserProfile: NextComponentType = () => {
                 <div key={index} className="mb-3 sm-d-flex justify-content-between">
                   <Card className="p-4">
                     <h2 className="mb-1 h4 font-weight-bold">
-                      <a className="text-dark" onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
+                      <a className="text-dark" style={{ cursor: 'pointer'}} onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
                     </h2>
-                    <p onClick={(e: any) => navigate(`/post/${article.id}`)} dangerouslySetInnerHTML={{ __html: marked.marked(article.description) }}>
+                    <p onClick={(e: any) => navigate(`/post/${article.id}`)} style={{ cursor: 'pointer'}} dangerouslySetInnerHTML={{ __html: marked.marked(article.description) }}>
 
                     </p>
                     <div className="card-text text-muted small"
+                      style={{ cursor: 'pointer'}}
                       onClick={(e: any) => navigate(`/profile/${article.author.id}`)}
                     >
                       {article.author.name}

@@ -39,9 +39,11 @@ const NavbarComponent: NextComponentType = () => {
       if (userId){
         const docRef = await getDoc(doc(db, "users", userId!));
         const user = docRef.data() as User;
+        console.log(user)
         setUser(user);
+      } else {
+        setUser({} as User);
       }
-      setUser({} as User);
     }
 
     getUser();

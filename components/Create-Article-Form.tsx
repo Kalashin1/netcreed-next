@@ -21,6 +21,10 @@ const tags = [
   { label: "Angular", value: "angular" },
 ];
 
+type SelectType = {
+  label: string, value: string
+}
+
 
 const CreateArticleForm: NextComponentType = () => {
   

@@ -5,7 +5,7 @@ import { Article } from "../types";
 import Image from 'next/image';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 const marked = require('marked');
 
 type Posts = {
@@ -23,8 +23,8 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
   }
 
   return (
-    <div className="container">
-      <div className="row justify-content-center">
+    <Container>
+      <Row className="justify-content-center">
 
         <Col xs lg="6">
           <h5 className="font-weight-bold spanborder"><span>Latest Stories</span></h5>
@@ -49,14 +49,14 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
             </Container>
           ))}
         </Col>
-        <div className="col-md-6 pl-4">
+        <Col md={6} className="pl-4">
           <h5 className="font-weight-bold spanborder"><span>Other Stories</span></h5>
           <ol className="list-featured">
             {featuredPosts && featuredPosts.map((article, index) => (
               <Card className="p-4 my-4" key={index}>
-                <h2 className="mb-1 h4 font-weight-bold">
+                <Card.Title className="mb-1 h4 font-weight-bold">
                   <a className="text-dark" style={{ cursor: 'pointer' }} onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
-                </h2>
+                </Card.Title>
                 <p onClick={(e: any) => navigate(`/post/${article.id}`)} style={{ cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: marked.marked(article.description)}}>
                       
                     </p>
@@ -70,9 +70,9 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
               </Card>
             ))}
           </ol>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   )
 };
 

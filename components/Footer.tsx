@@ -1,9 +1,10 @@
 import { NextComponentType } from "next"
 import Image from "next/image";
+import { Container } from "react-bootstrap";
 
 const Footer: NextComponentType = () =>{
   return (
-    <div className="container mt-5">
+    <Container className="mt-5">
       <footer className="bg-white border-top p-3 text-muted small">
         <div className="row align-items-center justify-content-between">
           <div>
@@ -14,7 +15,7 @@ const Footer: NextComponentType = () =>{
           </div>
         </div>
       </footer>
-    </div>
+    </Container>
   )
 }
 

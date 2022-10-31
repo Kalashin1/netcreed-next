@@ -5,7 +5,7 @@ import { getDoc, doc, updateDoc, collection, query, where, limit, orderBy, getDo
 import { updateProfile } from 'firebase/auth'
 import { User, Article } from '../types';
 import { randomBytes } from "crypto";
-import { Tab, Tabs, Form, Button, Spinner, Card } from 'react-bootstrap';
+import { Tab, Tabs, Form, Button, Spinner, Card, Row, Col, Container } from 'react-bootstrap';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { useRouter } from "next/router";
 import PersonalDetailsComponent from "./Personal-Details-Component";
@@ -190,11 +190,11 @@ const UserProfile: NextComponentType = () => {
 
   return (
     <section className="section">
-      <div className="section-body container">
-        <div className="row mt-sm-4">
-          <div className="col-12 col-md-12 col-lg-4">
-            <div className="card author-box">
-              <div className="card-body">
+      <Container className="section-body">
+        <Row className="mt-sm-4">
+          <Col md={12} lg={4}>
+            <Card className="author-box">
+              <Card.Body>
                 <div className="author-box-center"
                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                   <img
@@ -242,13 +242,13 @@ const UserProfile: NextComponentType = () => {
                   </a> */}
                   <div className="w-100 d-sm-none"></div>
                 </div>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
             {
               user && (
                 <PersonalDetailsComponent username={user.username!} github={user.github!} twitter={user.twitter!} email={user.email!} phone={user.phone!} />)
             }
-          </div>
+          </Col>
           <div className="col-12 col-md-12 col-lg-8">
             <div className="card">
               <div className="padding-20">
@@ -374,8 +374,8 @@ const UserProfile: NextComponentType = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Row>
+      </Container>
     </section>
   );
 };

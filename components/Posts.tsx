@@ -1,7 +1,7 @@
-import { MultiSelect } from "react-multi-select-component";
+// import { MultiSelect } from "react-multi-select-component";
 import { useState, FC } from "react";
 import { Article } from "../types";
-import { Button } from 'react-bootstrap';
+import { Pagination, Card, Table } from 'react-bootstrap';
 import { useRouter } from "next/router";
 
 const options = [
@@ -24,12 +24,23 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
 
   const [selected, setSelected] = useState([]);
 
+  let active = 1;
+  let items = [];
+
+  for (let num = 1; num <= 2; num++) {
+    items.push(
+      <Pagination.Item key={num} active={num == active}>
+        {num}
+      </Pagination.Item>
+    )
+  }
+
   return (
-    <div className="card">
-      <div className="card-header">
-        <h4>All Posts</h4>
-      </div>
-      <div className="card-body">
+    <Card>
+      <Card.Header>
+        <Card.Title>All Posts</Card.Title>
+      </Card.Header>
+      <Card.Body>
         {/* <div style={{ width: '50vw' }} className="my-4">
 
           <label>Add To</label>
@@ -52,7 +63,7 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
         </div> */}
         <div className="clearfix mb-3"></div>
         <div className="table-responsive">
-          <table className="table table-striped">
+          <Table striped hover>
             <tbody><tr>
               <th className="pt-2">
                 <div className="custom-checkbox custom-checkbox-table custom-control">
@@ -89,10 +100,13 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
                   </tr>
                 ))
               }
-            </tbody></table>
+            </tbody></Table>
         </div>
         <div className="float-right">
-          <nav>
+          <Pagination>
+            {items}
+          </Pagination>
+          {/* <nav>
             <ul className="pagination">
               <li className="page-item disabled">
                 <a className="page-link" href="#" aria-label="Previous">
@@ -116,10 +130,10 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
                 </a>
               </li>
             </ul>
-          </nav>
+          </nav> */}
         </div>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   )
 };
 

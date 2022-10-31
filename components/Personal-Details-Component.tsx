@@ -1,16 +1,16 @@
 import React from 'react'
-import { AppProps } from "next/app";
+import { Card } from 'react-bootstrap';
 import { User } from "../types";
 
 type appProps = Pick<User, 'username' | 'phone' | 'email' | 'github' | 'twitter'> 
 
 const PersonalDetailsComponent: React.FC<appProps> = ({ username, email, phone, github, twitter }) => {
   return (
-    <div className="card my-4">
-      <div className="card-header">
+    <Card className="my-4">
+      <Card.Header>
         <h4>Personal Details</h4>
-      </div>
-      <div className="card-body">
+      </Card.Header>
+      <Card.Body>
         <div className="py-4">
           <p className="clearfix">
             <span className="float-left">
@@ -53,8 +53,8 @@ const PersonalDetailsComponent: React.FC<appProps> = ({ username, email, phone, 
             </span>
           </p>
         </div>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   )
 }
 

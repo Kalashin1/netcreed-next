@@ -8,7 +8,6 @@ import AppCss from '../app.module.css';
 import { db } from '../../Firebase-settings';
 import { collection, getDocs, query, getDoc, doc, where, limit, orderBy } from 'firebase/firestore';
 import { Article } from "../../types";
-import NewsLetter from "../../components/Newletter";
 
 
 export const getStaticPaths = async () => {

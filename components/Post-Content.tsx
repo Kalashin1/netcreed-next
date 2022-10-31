@@ -9,6 +9,7 @@ import SaveOutlined from './svg/save-outline';
 import SaveFilled from './svg/save-filled';
 import { db } from '../Firebase-settings';
 import { getDoc, updateDoc, doc } from '@firebase/firestore';
+import { Container, Row, Col } from 'react-bootstrap';
 
 
 import 'highlight.js/styles/github-dark.css';
@@ -68,9 +69,9 @@ const PostContent: FC<_Article> = ({ article }) => {
   const [save, toggleSave] = useState([])
   // const [viw]
   return (
-    <div className="container pt-4 pb-4">
-      <div className="row justify-content-center">
-        <div className="col-lg-2 pr-4 mb-4 col-md-12">
+    <Container className="pt-4 pb-4">
+      <Row className="justify-content-center">
+        <Col lg={2} md={12} className="pr-4 mb-4">
           <div className="sticky-top text-center">
             <div className="text-muted">
               Share this
@@ -84,12 +85,12 @@ const PostContent: FC<_Article> = ({ article }) => {
               <Script async src="https://static.addtoany.com/menu/page.js"></Script>
             </div>
           </div>
-        </div>
-        <div className="col-md-12 col-lg-8">
+        </Col>
+        <Col md={12} lg={8}>
           <article className="article-post" dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}>
 
           </article>
-          {/* <div className="fixed-bottom bg-light mx-auto my-4 px-2" style={{ width: 'fit-content', display: 'flex', justifyContent: 'between', flexDirection: 'row' }}>
+          {/* <div className="fixed-bottom bg-light mx-auto my-4 px-2" style={{ width: 'fit-content', display: 'flex', justifyContent: 'between', flexDirection: 'row', borderRadius: '.9rem' }}>
             <a href={`https://linkedin.com/in/`} style={{ display: 'flex', margin: '0 1rem' }}>
               <SeenOutline />
               <p className="mx-2 lead" style={{ position: 'relative', top: '.4rem' }}>1</p>
@@ -103,9 +104,9 @@ const PostContent: FC<_Article> = ({ article }) => {
               <p className="mx-2 lead" style={{ position: 'relative', top: '.4rem' }}>1</p>
             </a>
           </div> */}
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

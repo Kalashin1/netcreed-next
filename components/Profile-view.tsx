@@ -22,7 +22,7 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
   }
 
   return (
-    <section className="section">
+    <div className="section">
       <Container className="section-body">
         <Row className="mt-sm-4">
           <Col md={12} lg={4}>
@@ -78,9 +78,9 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
           <Col md={12} lg={8}>
             <Card className="mb-4">
               <div className="padding-20">
-                <div className="card-header">
+                <Card.Header>
                   <h4>About {user.name}</h4>
-                </div>
+                </Card.Header>
                 <p className="px-4 py-4">
                   {user && user.bio}
                 </p>
@@ -105,14 +105,14 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                     </div>
                     <small className="text-muted">{new Date(article.createdAt).toDateString()} · {article.readingTimeInMins} min read</small>
                   </Card>
-                  {/* <img className='img-fluid' src={article.coverPhoto} onClick={(e: any) => navigate(`/post/${article.id}`)} /> */}
+                  
                 </div>
               ))}
             </div>
           </Col>
         </Row>
       </Container>
-    </section>
+    </div>
   )
 }
 

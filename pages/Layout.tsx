@@ -6,8 +6,12 @@ import Footer from "../components/Footer";
 import { FC } from "react";
 import AppStyle from "./app.module.css";
 
+
+type Props = {
+  children: JSX.Element
+}
 //@ts-ignore
-const Layout: FC = function ({ children }) {
+const Layout: FC<Props> = function ({ children }) {
 
   return (
     <>

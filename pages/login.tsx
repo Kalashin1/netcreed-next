@@ -1,6 +1,7 @@
 import Layout from './Layout';
 import { NextPage } from 'next';
 import LoginForm from '../components/Login-Form';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const LoginPage: NextPage = ()=>{
   return (
@@ -9,15 +10,15 @@ const LoginPage: NextPage = ()=>{
       <div className='text-center my-4'>
         <h3>Login To your account</h3>
       </div>
-      <div className='container my-4'>
-        <div className='row justify-content-center'>
-          <div className='col-md-6'>
-            <div className='container'>
+      <Container className='my-4'>
+        <Row className='justify-content-center'>
+          <Col md={6}>
+            <Container>
               <LoginForm />
-            </div>
-          </div>
-        </div>
-      </div>
+            </Container>
+          </Col>
+        </Row>
+      </Container>
     </Layout>
   )
 };

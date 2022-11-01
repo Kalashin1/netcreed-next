@@ -1,11 +1,12 @@
 import { NextComponentType } from 'next';
 import Script from 'next/script';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const About: NextComponentType = () => {
   return (
-    <div className="container pt-4 pb-4">
-      <div className="row justify-content-center">
-        <div className="col-lg-2 pr-4 mb-4 col-md-12 text-center">
+    <Container className="pt-4 pb-4">
+      <Row className="justify-content-center">
+        <Col lg={2} md={12} className="pr-4 mb-4 text-center">
           <div className="sticky-top text-center">
             <div className="text-muted">
               Share this
@@ -19,7 +20,7 @@ const About: NextComponentType = () => {
               <Script async src="https://static.addtoany.com/menu/page.js"></Script>
             </div>
           </div>
-        </div>
+        </Col>
         <div className="col-md-12 col-lg-8">
           <article className="article-post">
             <p>
@@ -39,8 +40,8 @@ const About: NextComponentType = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Row>
+    </Container>
   )
 }
 

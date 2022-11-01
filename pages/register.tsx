@@ -1,6 +1,7 @@
 import SignupForm from "../components/Signup-Form"
 import { NextPage } from "next";
 import Layout from "./Layout";
+import { Container, Row, Col } from 'react-bootstrap';
 
 const Register: NextPage = () => {
   return (
@@ -9,15 +10,15 @@ const Register: NextPage = () => {
       <div className='text-center my-4'>
         <h3 className='my-4'>Create a new account</h3>
       </div>
-      <div className='container my-4'>
-        <div className='row justify-content-center'>
-          <div className='col-md-6'>
-            <div className='container'>
+      <Container>
+        <Row className='justify-content-center'>
+          <Col md={6}>
+            <Container>
               <SignupForm creator={true} />
-            </div>
-          </div>
-        </div>
-      </div>
+            </Container>
+          </Col>
+        </Row>
+      </Container>
     </Layout>
   )
 }

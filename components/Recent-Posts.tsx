@@ -22,8 +22,8 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
         {posts && posts.map((post, index) => (
           <Col lg={6}  key={index} className="my-2">
             <Container>
-              <Card.Img style={{ cursor: 'pointer', height: '200px', objectFit: 'cover' }} className="img-fluid" src={post.coverPhoto} alt="Card image" onClick={(e: any) => navigate(`/post/${post.id}`)} />
-              <Card className="bg-white text-dark">
+              <Card bg="dark" text="light">
+                <Card.Img style={{ cursor: 'pointer', height: '200px', objectFit: 'cover' }} className="img-fluid" src={post.coverPhoto} alt="Card image" onClick={(e: any) => navigate(`/post/${post.id}`)} />
                 <Card.Body>
                   <Card.Title style={{ cursor: 'pointer' }} onClick={(e: any) => navigate(`/post/${post.id}`)}>{post.title}</Card.Title>
                   {/* <Card.Text style={{ cursor: 'pointer' }} onClick={(e: any) => navigate(`/post/${post.id}`)}>

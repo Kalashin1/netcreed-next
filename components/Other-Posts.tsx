@@ -1,8 +1,5 @@
-import { NextComponentType } from "next"
-import Link from "next/link";
 import { FC } from 'react'
 import { Article } from "../types";
-import Image from 'next/image';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import { Container, Row } from "react-bootstrap";
@@ -11,10 +8,11 @@ const marked = require('marked');
 type Posts = {
   allPosts: Article[],
   featuredPosts: Article[],
+  theme: string
 }
 import { useRouter } from "next/router";
 
-const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
+const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts, theme }) => {
   // console.log(allPosts)
   const router = useRouter()
 
@@ -31,7 +29,7 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
           {allPosts.map((post, index) => (
             <Container key={index} className="my-4">
               <Card.Img src={post.coverPhoto} style={{ cursor: 'pointer' }} alt="Card image" onClick={(e: any) => navigate(`/post/${post.id}`)} />
-              <Card className="bg-light text-dark">
+              <Card bg={theme} text={theme === 'dark' ? 'light': 'dark' }>
                 <Card.Body>
                   <Card.Title style={{ cursor: 'pointer' }} onClick={(e: any) => navigate(`/post/${post.id}`)}>{post.title}</Card.Title>
                   {/* <Card.Text onClick={(e: any) => navigate(`/post/${post.id}`)}>
@@ -53,7 +51,7 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
           <h5 className="font-weight-bold spanborder"><span>Other Stories</span></h5>
           <ol className="list-featured">
             {featuredPosts && featuredPosts.map((article, index) => (
-              <Card className="p-4 my-4" key={index}>
+              <Card bg={theme} text={theme === 'dark' ? 'light': 'dark'} className="p-4 my-4" key={index}>
                 <Card.Title className="mb-1 h4 font-weight-bold">
                   <a className="text-dark" style={{ cursor: 'pointer' }} onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
                 </Card.Title>

@@ -1,15 +1,18 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Article } from '../types';
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 const marked = require('marked');
 import { Container, Row, Col } from 'react-bootstrap';
+import { ThemeContext } from "../pages/_app";
 
 type _Article = {
   article: Article
 }
 
 const PostHeader: FC<_Article> = ({ article }) => {
+
+  let theme: string = useContext(ThemeContext).theme;
 
   const router = useRouter();
 
@@ -25,7 +28,7 @@ const PostHeader: FC<_Article> = ({ article }) => {
 
   return (
     <Container>
-      <div className="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
+      <div className={`jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-${theme} text-${theme === 'light'? 'dark': 'light'} px-4 position-relative`}>
         <div className="h-100 tofront">
           <Row className="justify-content-between">
             <Col md={12} className="mb-4 pr-0">

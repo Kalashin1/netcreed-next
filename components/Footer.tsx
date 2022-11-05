@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 const Footer: NextComponentType = () =>{
   return (
     <Container className="mt-5">
-      <footer className="bg-white border-top p-3 text-muted small">
+      <footer className="border-top p-3 text-muted small">
         <div className="row align-items-center justify-content-between">
           <div>
             <span className="navbar-brand mr-2" style={{ position: 'relative', top: '1rem'}}>

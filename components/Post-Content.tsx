@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useContext } from 'react';
 import { Article, Author, ARTICLE_ENGAGEMENT, User } from '../types';
 import Script from 'next/script';
 import SeenOutline from './svg/seen-outline';
@@ -10,7 +10,7 @@ import SaveFilled from './svg/save-filled';
 import { db } from '../Firebase-settings';
 import { getDoc, updateDoc, doc } from '@firebase/firestore';
 import { Container, Row, Col } from 'react-bootstrap';
-
+import { ThemeContext } from "../pages/_app";
 
 import 'highlight.js/styles/github-dark.css';
 const marked = require('marked');
@@ -65,6 +65,8 @@ async function toogleEngagement(userId: string, articleId: string, type: ARTICLE
 
 const PostContent: FC<_Article> = ({ article }) => {
 
+  let theme: string = useContext(ThemeContext).theme;
+
   const [like, toggleLike] = useState([])
   const [save, toggleSave] = useState([])
   // const [viw]
@@ -87,7 +89,7 @@ const PostContent: FC<_Article> = ({ article }) => {
           </div>
         </Col>
         <Col md={12} lg={8}>
-          <article className="article-post" dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}>
+          <article className={`article-post text-${theme === 'light'? 'dark': 'light'}`} dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}>
 
           </article>
           {/* <div className="fixed-bottom bg-light mx-auto my-4 px-2" style={{ width: 'fit-content', display: 'flex', justifyContent: 'between', flexDirection: 'row', borderRadius: '.9rem' }}>

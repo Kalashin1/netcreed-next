@@ -37,7 +37,6 @@ const About: NextPage = ({ articles }) => {
     //@ts-ignore
     <Layout>
       <div>
-        {articles && (<Header article={articles[0]} />)}
         <AboutUs />
         <OtherPosts allPosts={articles.slice(0, 2)} featuredPosts={articles.slice(5, articles.length - 2)} />
         <NewsLetter />

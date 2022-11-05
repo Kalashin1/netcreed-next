@@ -37,19 +37,6 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
 
   const [user, setUser] = useState({} as User);
 
-  const updateTheme = () => {
-    if (theme === 'light') {
-      localStorage.setItem('theme', 'dark');
-      changeTheme('dark')
-    } else if (theme === 'dark') {
-      localStorage.setItem('theme', 'light');
-      changeTheme('light')
-    } else {
-      localStorage.setItem('theme', 'dark');
-      changeTheme('dark')
-    }
-  }
-
   useEffect(() => {
     async function getUser() {
       const userId = localStorage.getItem('userId');
@@ -67,10 +54,10 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
   }, [])
 
   return (
-    <Navbar bg={theme === 'light' ? 'white' : 'dark'} expand="lg" fixed="top">
+    <Navbar bg={theme} expand="lg" fixed="top">
       <Container>
         <Navbar.Brand href="/">
-          <Image src="/logo.png" width={50} height={60} alt="Netcreed" />
+          <Image src="/logo.png"  width={50} height={60} alt="Netcreed" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -98,26 +85,24 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
             }
 
 
-            {theme === 'light' && (
-              <Nav.Item style={{ margin: '.5rem 1rem' }}>
-                <span
-                  onClick={e => updateTheme()}
-                  style={{ cursor: 'pointer' }}><i className={`fas fa-sun text-dark`} />
-                </span>
-              </Nav.Item>
-            )}
-
-            {theme === 'dark' && (
-              <Nav.Item style={{ margin: '.5rem 1rem' }}>
-                <span
-                  onClick={e => updateTheme()}
-                style={{ cursor: 'pointer' }}><i className={`fas fa-moon text-white`} />
+            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+              <span
+                onClick={e =>  changeTheme('dark')}
+                className="text-dark"
+                style={{ cursor: 'pointer', fontWeight: 'bold'}}>
+                Dark Mode
               </span>
             </Nav.Item>
-              )}
-        </Nav>
-      </Navbar.Collapse>
-    </Container>
+            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+              <span
+                onClick={e => changeTheme('light')}
+                className="text-light"
+                style={{ cursor: 'pointer', fontWeight: 'bold'}}>Light Mode
+              </span>
+            </Nav.Item>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
     </Navbar >
   )
 }

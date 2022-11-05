@@ -1,10 +1,12 @@
-import { NextComponentType } from "next"
-import { FormEvent, useState } from "react";
+import { FC, useContext, FormEvent, useState } from "react";
 import { db } from "../Firebase-settings";
 import { addDoc, collection } from "@firebase/firestore";
 import { Spinner } from "react-bootstrap";
+import { ThemeContext } from "../pages/_app";
 
-const NewsLetter: NextComponentType = () => {
+const NewsLetter: FC = () => {
+
+  let theme: string = useContext(ThemeContext).theme;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -22,10 +24,10 @@ const NewsLetter: NextComponentType = () => {
   }
   return (
     <div className="container pt-4 pb-4">
-      <div className="border p-5 bg-lightblue">
+      <div className="border p-5">
         <div className="row justify-content-between">
-          <div className="col-md-6">
-            <h5 className="font-weight-bold secondfont">Become a member</h5>
+          <div className={`col-md-6 text-${theme === 'light'? 'dark': 'light'}`}>
+            <h5 className={`font-weight-bold secondfont `}>Become a member</h5>
             Get the latest news right in your inbox. Its free and you can unsubscribe at any time. We hate spam as much as we do, so we never spam!
           </div>
           <form className="col-md-6" onSubmit={regForNewsLetter}>

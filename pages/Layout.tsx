@@ -1,11 +1,12 @@
 import Head from 'next/head'
 import Script from 'next/script';
 import type { NextPage } from 'next'
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FC } from "react";
 import AppStyle from "./app.module.css";
+import { ThemeContext } from './_app';
 
 
 type Props = {
@@ -13,12 +14,10 @@ type Props = {
 }
 //@ts-ignore
 const Layout: FC<Props> = function ({ children }) {
-  let _theme: string = 'dark';
-
-  if (typeof window !== 'undefined') {
-    _theme = localStorage.getItem('theme')!;
-  }
-  const [theme, setTheme] = useState(_theme);
+  
+  
+  let _theme: string = useContext(ThemeContext).theme;
+  let setTheme = useContext(ThemeContext).setTheme!;
 
   return (
     <>
@@ -50,8 +49,8 @@ const Layout: FC<Props> = function ({ children }) {
           }
         `}</style>
       </Head>
-      <div style={{  backgroundColor: theme === 'dark'? 'black' : 'white' }}>
-        <Navbar theme={theme} changeTheme={setTheme}  />
+      <div style={{  backgroundColor: _theme === 'dark'? 'black' : 'white' }}>
+        <Navbar theme={_theme} changeTheme={setTheme}  />
         <div style={{ padding: '4rem .5rem' }}>
       
           {children}

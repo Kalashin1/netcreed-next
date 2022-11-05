@@ -5,8 +5,8 @@ import RecentPosts from '../components/Recent-Posts';
 import OtherPosts from '../components/Other-Posts';
 import Layout from './Layout';
 import NewsLetter from '../components/Newletter';
-import { useState } from 'react';
-
+import { useContext, useState } from 'react';
+import { ThemeContext } from './_app';
 
 import { Article } from '../types';
 import { db } from '../Firebase-settings';
@@ -43,12 +43,8 @@ export type Articles = {
 //@ts-ignore
 const Home: NextPage = ({ articles, alikePosts }) => {
 
-  let _theme: string = 'dark';
-
-  if (typeof window !== 'undefined') {
-    _theme = localStorage.getItem('theme')!;
-  }
-  const [theme, setTheme] = useState(_theme);
+  let theme: string = useContext(ThemeContext).theme;
+  let setTheme = useContext(ThemeContext).setTheme;
 
   return (
     //@ts-ignore
@@ -78,7 +74,7 @@ const Home: NextPage = ({ articles, alikePosts }) => {
         <meta property="og:image" itemProp="image" content="https://firebasestorage.googleapis.com/v0/b/foodkal-01.appspot.com/o/Untitled%20design.png?alt=media&token=6fc883b7-cb07-4c96-9633-16a0ccea05fe" />
       </Head>
       { articles && (<Header article={articles[0]} />) }
-      { alikePosts && (<OtherPosts theme={theme} allPosts={alikePosts.slice(1, 5)} featuredPosts={alikePosts.slice(5, alikePosts.length)} />)}
+      { alikePosts && (<OtherPosts allPosts={alikePosts.slice(1, 5)} featuredPosts={alikePosts.slice(5, alikePosts.length)} />)}
       { articles && (<RecentPosts posts={articles.slice(1, articles.length)} />)}
     </Layout>
   );

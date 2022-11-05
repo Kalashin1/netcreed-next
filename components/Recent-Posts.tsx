@@ -1,9 +1,10 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import Link from "next/link";
 import { Col, Container, Card, Row } from "react-bootstrap";
 import Image from "next/image";
 import { Article } from "../types";
 import { useRouter } from 'next/router'
+import { ThemeContext } from "../pages/_app";
 
 type Posts = {
   posts: Article[]
@@ -11,6 +12,7 @@ type Posts = {
 
 const RecentPosts: FC<Posts> = ({ posts }) => {
   const router = useRouter();
+  let theme: string = useContext(ThemeContext).theme;
 
   const navigate = (route: string) => {
     router.push(route)
@@ -22,7 +24,7 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
         {posts && posts.map((post, index) => (
           <Col lg={6}  key={index} className="my-2">
             <Container>
-              <Card bg="dark" text="light">
+              <Card bg={theme} className={`text-${theme === 'light'? 'dark': 'light'}`}>
                 <Card.Img style={{ cursor: 'pointer', height: '200px', objectFit: 'cover' }} className="img-fluid" src={post.coverPhoto} alt="Card image" onClick={(e: any) => navigate(`/post/${post.id}`)} />
                 <Card.Body>
                   <Card.Title style={{ cursor: 'pointer' }} onClick={(e: any) => navigate(`/post/${post.id}`)}>{post.title}</Card.Title>

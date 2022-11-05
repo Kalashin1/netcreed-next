@@ -1,8 +1,10 @@
-import { NextComponentType } from 'next';
 import Script from 'next/script';
+import { FC, useContext } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { ThemeContext } from '../pages/_app'
 
-const About: NextComponentType = () => {
+const About: FC = () => {
+  let theme: string = useContext(ThemeContext).theme;
   return (
     <Container className="pt-4 pb-4">
       <Row className="justify-content-center">
@@ -22,23 +24,13 @@ const About: NextComponentType = () => {
           </div>
         </Col>
         <div className="col-md-12 col-lg-8">
-          <article className="article-post">
+          <article className={`article-post text-${theme === 'light'? 'dark': 'light'}`}>
             <p>
               Welcome to Netcreed, where you can get articles written by Tech professionals to help others in tech find solution to problems, grow and expand their knowledge and network. You will find top notch articles on different topics in IT and Tech space.
             </p>
             
           </article>
-          <div className="border p-5 bg-lightblue mt-5">
-            <div className="row justify-content-center align-items-center">
-              <div className="col-md-8 mb-2 mb-md-0">
-                <h5 className="font-weight-bold mb-3">About Kinanee Samson</h5>
-                Hi, Im Kinanee Samson, the creator of the Netcreed. I created this platform out of my passion to share what i have learned during the course of my Tech careers with others. I derive passion from using my experience and knowledge to help others grow in the same field. 
-              </div>
-              {/* <div className="col-md-4">
-                <a target="_blank" rel="noreferrer" href="https://www.buymeacoffee.com/sal" className="btn btn-warning btn-block"><i className="fa fa-coffee"></i> Buy me a coffee</a>
-              </div> */}
-            </div>
-          </div>
+         
         </div>
       </Row>
     </Container>

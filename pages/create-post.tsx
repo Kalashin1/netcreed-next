@@ -12,7 +12,7 @@ const CreateArticle: NextPage = () => {
       <h2 className={`text-center my-4 text-${theme === "dark"? "light" : "dark"}`}>Create A Post</h2>
       <CreateArticleForm />
     </Layout>
-  )
+  );
 };
 
 export default CreateArticle;

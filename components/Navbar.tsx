@@ -57,7 +57,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
     <Navbar bg={theme} expand="lg" fixed="top">
       <Container>
         <Navbar.Brand href="/">
-          <Image src="/logo.png"  width={50} height={60} alt="Netcreed" />
+          <Image src="/logo.png" width={50} height={60} alt="Netcreed" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -68,28 +68,55 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
             <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <Link href="/about">About</Link>
             </Nav.Item>
-            {/* <Nav.Item style={{ margin: '0 1rem' }}>
-              <Link href="/categories">Categories</Link>
-            </Nav.Item> */}
-            {user.creator && (
-              <Nav.Item style={{ margin: '.5rem 1rem' }}>
-                <Link href="/signup">Create Account</Link>
-              </Nav.Item>
-            )
-            }
-            {user.creator && (
-              <Nav.Item style={{ margin: '.5rem 1rem' }}>
-                <Link href="/login">Login</Link>
-              </Nav.Item>
-            )
-            }
-
 
             <Nav.Item style={{ margin: '.5rem 1rem' }}>
+              <Link href="/profile">Profile</Link>
+            </Nav.Item>
+
+            {
+              //@ts-ignore
+              !user && user.creator &&
+              (
+                <Nav.Item style={{ margin: '.5rem 1rem' }}>
+                  <Link href="/signup">Create Account</Link>
+                </Nav.Item>
+              )
+            }
+
+            {
+              //@ts-ignore
+              (!user) && user.creator &&
+              (
+                <Nav.Item style={{ margin: '.5rem 1rem' }}>
+                  <Link href="/login">Login</Link>
+                </Nav.Item>
+              )
+            }
+
+
+            {/* {
+              user && user.twitter === "kinanee_samson" &&
+              (
+                <Nav.Item style={{ margin: '.5rem 1rem' }}>
+                  <Link href="/courses">Courses</Link>
+                </Nav.Item>
+              )
+            } */}
+
+            {
+
+              user && user.creator &&
+              (
+                <Nav.Item style={{ margin: '.5rem 1rem' }}>
+                  <Link href="/login">Logout</Link>
+                </Nav.Item>
+              )
+            }
+            <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <span
-                onClick={e =>  changeTheme('dark')}
+                onClick={e => changeTheme('dark')}
                 className="text-dark"
-                style={{ cursor: 'pointer', fontWeight: 'bold'}}>
+                style={{ cursor: 'pointer', fontWeight: 'bold' }}>
                 Dark Mode
               </span>
             </Nav.Item>
@@ -97,7 +124,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
               <span
                 onClick={e => changeTheme('light')}
                 className="text-light"
-                style={{ cursor: 'pointer', fontWeight: 'bold'}}>Light Mode
+                style={{ cursor: 'pointer', fontWeight: 'bold' }}>Light Mode
               </span>
             </Nav.Item>
           </Nav>

@@ -19,7 +19,7 @@ import {
   where 
 } from 'firebase/firestore';
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'));
   const docRes = await getDocs(q);
   const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];

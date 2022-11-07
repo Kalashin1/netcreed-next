@@ -20,7 +20,7 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
   return (
     <div className="container pt-4 pb-4">
       <Row>
-        <h5 className="font-weight-bold spanborder"><span>All Stories</span></h5>
+        <h5 className={`font-weight-bold spanborder text-${theme === "dark" ? "light": "dark"}`}><span>All Stories</span></h5>
         {posts && posts.map((post, index) => (
           <Col lg={6}  key={index} className="my-2">
             <Container>

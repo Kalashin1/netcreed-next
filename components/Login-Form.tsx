@@ -1,11 +1,13 @@
 import { NextComponentType } from "next"
-import { useState, useRef, MutableRefObject, FormEvent } from "react";
+import { useState, useRef, MutableRefObject, FormEvent, useContext } from "react";
 import { auth } from "../Firebase-settings";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "@firebase/auth";
 import { useRouter } from "next/router";
+import { ThemeContext } from "../pages/_app";
 import { Form, Button, Spinner } from 'react-bootstrap'
 
 const LoginForm: NextComponentType = () => {
+  let theme: string = useContext(ThemeContext).theme;
 
   const router = useRouter();
   const provider = new GoogleAuthProvider();
@@ -78,7 +80,7 @@ const LoginForm: NextComponentType = () => {
     <>
       <Form ref={loginForm} name="loginForm" onSubmit={e => login(e, loginForm.current as HTMLFormElement)}>
         <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`}>Email address</Form.Label>
           <Form.Control type="email" name="email" required placeholder="Enter email" />
           <Form.Text className="text-muted">
             Well never share your email with anyone else.
@@ -86,7 +88,7 @@ const LoginForm: NextComponentType = () => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`}>Password</Form.Label>
           <Form.Control type={inputType} name="password" required placeholder="Password" />
           <Form.Text className="text-muted" style={{ cursor: 'pointer' }} onClick={toggleShowPassword}>
             show password

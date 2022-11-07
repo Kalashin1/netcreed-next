@@ -37,6 +37,8 @@ type _article = {
 
 const EditArticleForm: FC<_article> = ({ id }) => {
 
+  let theme: string = useContext(ThemeContext).theme;
+
   const [selectedTags, setSelectedTags] = useState([] as typeof tags);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [title, setTitle] = useState('');
@@ -144,11 +146,11 @@ const EditArticleForm: FC<_article> = ({ id }) => {
       <div>
         <Form name="articleForm" ref={createArticleForm} onSubmit={e => createArticle(e, 'saved')}>
           <Form.Group>
-            <Form.Label htmlFor="exampleFormControlInput1">Title</Form.Label>
+            <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`} htmlFor="exampleFormControlInput1">Title</Form.Label>
             <Form.Control type="text" name="articleName" value={title} onChange={e => setTitle(e.target.value)} className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
           </Form.Group>
           <Form.Group>
-            <Form.Label htmlFor="exampleFormControlFile1">Select Cover Photo</Form.Label>
+            <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`} htmlFor="exampleFormControlFile1">Select Cover Photo</Form.Label>
             <Form.Control type="file" name="coverPhoto" ref={coverPhoto} className="form-control" id="exampleFormControlFile1" />
           </Form.Group>
           <Form.Group>
@@ -160,7 +162,7 @@ const EditArticleForm: FC<_article> = ({ id }) => {
             </select>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Select Tag</Form.Label>
+            <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`}>Select Tag</Form.Label>
             <MultiSelect
               options={tags}
               value={selectedTags}
@@ -169,7 +171,9 @@ const EditArticleForm: FC<_article> = ({ id }) => {
             />
           </Form.Group>
           <Form.Group>
-            <label htmlFor="exampleFormControlTextarea1">Post Content</label>
+            <label className={`text-${theme === "dark" ? "light": "dark"}`} htmlFor="exampleFormControlTextarea1">
+              Post Content
+            </label>
             <textarea className="form-control" value={body} onChange={e => setBody(e.target.value)} name="body" id="exampleFormControlTextarea1" rows={8}></textarea>
           </Form.Group>
 

@@ -1,9 +1,11 @@
 import { Card, Button } from "react-bootstrap";
-import { FC } from 'react';
+import { FC, useContext } from 'react';
+import { ThemeContext } from "../pages/_app";
 
 const CourseComponent: FC = () => {
+  let theme: string = useContext(ThemeContext).theme;
   return (
-    <Card>
+    <Card bg={theme} className={`text-${theme === "dark"? "light": "dark"}`}>
       <Card.Img src="/assets/img/demo/blog4.jpg" style={{ cursor: 'pointer', height: '200px', objectFit: 'cover' }} />
       <Card.Header>
         <Card.Title className="mb-1 h4 font-weight-bold">

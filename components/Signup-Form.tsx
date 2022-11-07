@@ -1,4 +1,4 @@
-import { useState, useRef, MutableRefObject, FC,  FormEvent } from "react";
+import { useState, useRef, MutableRefObject, FC,  FormEvent, useContext } from "react";
 import { auth, db } from '../Firebase-settings';
 import { 
   createUserWithEmailAndPassword, 
@@ -11,12 +11,15 @@ import {
 import { setDoc, doc } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import { Form, Button, Spinner } from "react-bootstrap";
+import { ThemeContext } from "../pages/_app";
 
 
 type isCreator = {
   creator: boolean
 }
 const SignupForm: FC<isCreator> = ({ creator }) => {
+
+  let theme: string = useContext(ThemeContext).theme;
 
   const router = useRouter();
 
@@ -111,12 +114,12 @@ const SignupForm: FC<isCreator> = ({ creator }) => {
       <Form ref={registrationForm} name="loginForm" onSubmit={e => createAccount(e, registrationForm.current as HTMLFormElement)}>
 
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Your full name</Form.Label>
+          <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`}>Your full name</Form.Label>
           <Form.Control type="text" name="fullName" required placeholder="Enter your name" />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`}>Email address</Form.Label>
           <Form.Control type="email" name="email" required placeholder="Enter email" />
           <Form.Text className="text-muted">
             Well never share your email with anyone else.
@@ -124,7 +127,7 @@ const SignupForm: FC<isCreator> = ({ creator }) => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`}>Password</Form.Label>
           <Form.Control type={inputType} name="password" required placeholder="Password" />
           <Form.Text className="text-muted" style={{ cursor: 'pointer' }} onClick={toggleShowPassword}>
             show password
@@ -132,7 +135,7 @@ const SignupForm: FC<isCreator> = ({ creator }) => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`}>Confirm Password</Form.Label>
           <Form.Control type={inputType} name="confirmPassword" required placeholder="Password" />
           <Form.Text className="text-muted" style={{ cursor: 'pointer' }} onClick={toggleShowPassword}>
             show password

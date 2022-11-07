@@ -351,8 +351,8 @@ const UserProfile: NextComponentType = () => {
               {articles && articles.map((article, index) => (
                 <div key={index} className="mb-3 sm-d-flex justify-content-between">
                   <Card bg={theme} className={`p-4 text-${theme === "dark" ? "light": "dark"}`}>
-                    <h2 className="mb-1 h4 font-weight-bold">
-                      <a className="text-dark" style={{ cursor: 'pointer'}} onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
+                    <h2 className={`mb-1 h4 font-weight-bold text-${theme === "dark" ? "light": "dark"}`}>
+                      <a style={{ cursor: 'pointer'}} onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
                     </h2>
                     <p onClick={(e: any) => navigate(`/post/${article.id}`)} style={{ cursor: 'pointer'}} dangerouslySetInnerHTML={{ __html: marked.marked(article.description) }}>
 

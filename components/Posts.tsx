@@ -11,10 +11,11 @@ const options = [
 ];
 
 type PostPayload = {
-  posts: Article[]
+  posts: Article[],
+  theme: string
 }
 
-const PostTable: FC<PostPayload> = ({ posts }) => {
+const PostTable: FC<PostPayload> = ({ posts, theme }) => {
 
   const router = useRouter()
 
@@ -36,7 +37,7 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
   }
 
   return (
-    <Card>
+    <Card bg={theme} className={`text-${theme === "dark" ? "light": "dark"}`}>
       <Card.Header>
         <Card.Title>All Posts</Card.Title>
       </Card.Header>
@@ -63,7 +64,7 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
         </div> */}
         <div className="clearfix mb-3"></div>
         <div className="table-responsive">
-          <Table striped hover>
+          <Table className={`text-${theme === "dark" ? "light": "dark"}`}>
             <tbody><tr>
               <th className="pt-2">
                 <div className="custom-checkbox custom-checkbox-table custom-control">
@@ -80,7 +81,7 @@ const PostTable: FC<PostPayload> = ({ posts }) => {
             </tr>
               {
                 posts && posts.map((post, index) => (
-                  <tr key={index}>
+                  <tr key={index} style={{ cursor: 'pointer'}}>
                     <td>
                       <div className="custom-checkbox custom-control">
                         <input type="checkbox" data-checkboxes="mygroup" className="custom-control-input" id="checkbox-2" />

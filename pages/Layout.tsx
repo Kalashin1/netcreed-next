@@ -49,7 +49,7 @@ const Layout: FC<Props> = function ({ children }) {
           }
         `}</style>
       </Head>
-      <div style={{  backgroundColor: _theme === 'dark'? 'black' : 'white' }}>
+      <div className={`bg-${_theme}`}>
         <Navbar theme={_theme} changeTheme={setTheme}  />
         <div style={{ padding: '4rem .5rem' }}>
       

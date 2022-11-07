@@ -61,7 +61,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="mr-auto">
             <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <Link href="/">Home</Link>
             </Nav.Item>

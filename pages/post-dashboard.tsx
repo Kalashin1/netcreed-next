@@ -1,12 +1,14 @@
 import Layout from './Layout';
 import { NextPage } from 'next';
 import Posts from '../components/Posts';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Article } from '../types';
 import { db } from '../Firebase-settings';
 import { collection, getDocs, query, where } from '@firebase/firestore';
+import { ThemeContext } from './_app';
 
 const PostDashboard: NextPage = () => {
+  let theme: string = useContext(ThemeContext).theme;
 
   let userId: string;
   const [posts, setPosts] = useState<Article[]>([])
@@ -29,7 +31,7 @@ const PostDashboard: NextPage = () => {
   return (
     //@ts-ignore
     <Layout>
-      { posts && (<Posts posts={posts} />) }
+      { posts && (<Posts posts={posts} theme={theme} />) }
     </Layout>
   )
 };

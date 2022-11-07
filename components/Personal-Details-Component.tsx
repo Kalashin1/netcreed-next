@@ -1,14 +1,17 @@
 import React from 'react'
 import { Card } from 'react-bootstrap';
 import { User } from "../types";
+import { useContext } from "react";
+import { ThemeContext } from "../pages/_app";
 
 type appProps = Pick<User, 'username' | 'phone' | 'email' | 'github' | 'twitter'> 
 
 const PersonalDetailsComponent: React.FC<appProps> = ({ username, email, phone, github, twitter }) => {
+  let theme: string = useContext(ThemeContext).theme;
   return (
-    <Card className="my-4">
+    <Card bg={theme} className={`my-4 text-${theme === "dark" ? "light" : "dark"}`}>
       <Card.Header>
-        <h4>Personal Details</h4>
+        <h4 className={`${theme === "dark" ? "light" : "dark"}`}>Personal Details</h4>
       </Card.Header>
       <Card.Body>
         <div className="py-4">

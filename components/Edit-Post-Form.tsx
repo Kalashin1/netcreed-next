@@ -7,7 +7,8 @@ import { getDoc, doc, updateDoc } from "@firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
 import { Article, ARTICLE_STATUS, Author, User as _User } from "../types";
 import { User } from "@firebase/auth";
-
+import { useContext } from "react";
+import { ThemeContext } from "../pages/_app";
 import { useRouter } from "next/router";
 import { Button, Spinner, Form, Container } from "react-bootstrap";
 
@@ -20,6 +21,14 @@ const tags = [
   { label: "Python", value: "python" },
   { label: "React", value: "react" },
   { label: "Angular", value: "angular" },
+  { label: "Go", value: "go"},
+  { label: "Vue", value: "vue"},
+  { label: "Svelte", value: "svelte"},
+  { label: "Solidity", value: "solidity"},
+  { label: "AWS", value: 'aws'},
+  { label: "GCP", value: "gcp"},
+  { label: "MongoDB", value: "mongodb"},
+  { label: "SQL", value: "sql"}
 ];
 
 type _article = {
@@ -33,6 +42,7 @@ const EditArticleForm: FC<_article> = ({ id }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [article, setArticle] = useState({} as Article)
+
 
 
   useEffect(() => {

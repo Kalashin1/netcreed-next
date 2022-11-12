@@ -162,7 +162,7 @@ export const createCourseFormHandler = async (
     }
 
 
-    await addDoc(collection(db, 'articles'), course);
+    await addDoc(collection(db, 'courses'), course);
     setShowSpinner(true)
     alert('Article created');
     router.push('/courses');
@@ -332,7 +332,7 @@ export const getArticle = async (id: string) => {
   const docRes = await getDoc(ref);
   const article = ({ ...docRes.data(), id: docRes.id }) as Article;
 
-  const _q = query(collection(db, 'articles'), where('tags', 'array-contains', article.tags[0]), orderBy('createdAt', 'desc'), limit(6))
+  const _q = query(collection(db, 'articles'), where('tags', 'array-contains-any', article.tags), orderBy('createdAt', 'desc'), limit(7))
   const _docRes = await getDocs(_q);
   const articles = _docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
   return { article, articles };
@@ -342,7 +342,8 @@ export const getArticles = async () => {
   const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'));
   const docRes = await getDocs(q);
   const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
-  const sQ = query(collection(db, 'articles'), where('tags', 'array-contains', articles[0].tags[0]), orderBy('createdAt', 'desc'), limit(10))
+  console.log(articles[0].tags)
+  const sQ = query(collection(db, 'articles'), where('tags', 'array-contains-any', articles[0].tags), orderBy('createdAt', 'desc'), limit(10))
   const sQDocRef = await getDocs(sQ);
   const secArticles = sQDocRef.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
   return { articles, secArticles }

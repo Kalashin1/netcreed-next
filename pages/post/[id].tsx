@@ -50,7 +50,7 @@ const Post: NextPage = ({ article, articles }) => {
         {article && (<PostHeader article={article} />)}
         {article && (<PostContent article={article} />)}
         <div className="my-4">
-          <AlikePost articles={articles.slice(0, articles.length)} /> 
+          <AlikePost articles={articles.slice(1, articles.length)} /> 
         </div>
       </div>
     </Layout>

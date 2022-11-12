@@ -19,7 +19,7 @@ export interface User extends DocumentData {
   headline: string;
   bio: string;
   createdAt: number;
-  updatedAt: number;
+  updatedAt?: number;
   articles: Array<Article>;
   savedArticles: Array<Article>
 }
@@ -46,6 +46,34 @@ export interface Article extends DocumentData {
   status: ARTICLE_STATUS;
 }
 
-type engagement = {
+export type engagement = {
   user: Author
+}
+
+export type LessonRef = Pick<LessonSchema, "id" | "title" | "url" | "slug" | "description">[];
+
+export type CourseSchema = {
+  description: string
+  id?: string
+  slug?: string
+  url?: string
+  title: string
+  photoUrl: string
+  status: 'APPROVED' | 'SAVED' | 'REJECTED'
+  lessons: LessonRef | []
+  createdAt: number
+  updatedAt?: number
+}
+
+export type LessonSchema = {
+  id?: string
+  title: string
+  slug?: string
+  description: string
+  course: Pick<CourseSchema, "id" | "title" | "description" | "slug" | "url">
+  createdAt: number
+  status: 'APPROVED' | 'SAVED' | 'REJECTED'
+  updatedAt?: number
+  courseContent: string
+  url?: string
 }

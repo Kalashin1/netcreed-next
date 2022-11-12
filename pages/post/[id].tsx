@@ -5,34 +5,12 @@ import AlikePost from "../../components/Alike-Post";
 import { NextPage } from "next";
 import Head from "next/head";
 import AppCss from '../app.module.css';
-import { db } from '../../Firebase-settings';
-import { collection, getDocs, query, getDoc, doc, where, limit, orderBy } from 'firebase/firestore';
-import { Article } from "../../types";
+import { getArticle } from '../../helper'
 
 
-export const getStaticPaths = async () => {
-  const q = query(collection(db, 'articles'));
-  const docRes = await getDocs(q);
-  const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
-
-  const paths = articles.map(article => ({ params: { id: article.id } }))
-
-  return {
-    paths,
-    fallback: false
-  }
-}
-
-export const getStaticProps = async (context: any) => {
-  const id = context.params.id;
-  const ref = doc(db, 'articles', id);
-  const docRes = await getDoc(ref);
-  const article = ({ ...docRes.data(), id: docRes.id }) as Article;
-
-  const _q =  query(collection(db, 'articles'), where('tags', 'array-contains', article.tags[0]), orderBy('createdAt', 'desc'), limit(6))
-  const _docRes = await getDocs(_q);
-  const articles = _docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
-
+export const getServerSideProps = async (context: any) => {
+  const { id } = context.query;
+  const { article, articles } = await getArticle(id) 
   return {
     props: { article, articles }
   }

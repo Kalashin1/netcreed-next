@@ -1,11 +1,11 @@
 import { NextPage } from "next";
 import { Container, Row, Col } from "react-bootstrap";
-import CreateCourseForm from "../components/Create-Course-Form";
+import CreateLessonForm from "../components/Create-Lesson-Form";
 import Layout from "./Layout";
 import { useContext } from 'react';
 import { ThemeContext } from './_app';
 
-const CreateCourse: NextPage = () => {
+const CreateLesson: NextPage = () => {
   let theme: string = useContext(ThemeContext).theme;
   return (
     <Layout>
@@ -17,7 +17,7 @@ const CreateCourse: NextPage = () => {
           <Row className='justify-content-center'>
             <Col md={12}>
               <Container>
-                <CreateCourseForm />
+                <CreateLessonForm />
               </Container>
             </Col>
           </Row>
@@ -27,4 +27,4 @@ const CreateCourse: NextPage = () => {
   );
 }
 
-export default CreateCourse;
+export default CreateLesson;

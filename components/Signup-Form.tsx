@@ -1,17 +1,8 @@
-import { useState, useRef, MutableRefObject, FC,  FormEvent, useContext } from "react";
-import { auth, db } from '../Firebase-settings';
-import { 
-  createUserWithEmailAndPassword, 
-  sendEmailVerification, 
-  User, 
-  updateProfile, 
-  GoogleAuthProvider, 
-  signInWithPopup,
-} from 'firebase/auth'
-import { setDoc, doc } from 'firebase/firestore'
+import { useState, useRef, MutableRefObject, FC,  useContext } from "react";
 import { useRouter } from 'next/router'
 import { Form, Button, Spinner } from "react-bootstrap";
 import { ThemeContext } from "../pages/_app";
+import { createAccount } from "../helper"
 
 
 type isCreator = {
@@ -23,7 +14,6 @@ const SignupForm: FC<isCreator> = ({ creator }) => {
 
   const router = useRouter();
 
-  const provider = new GoogleAuthProvider();
 
   const registrationForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
 
@@ -41,77 +31,15 @@ const SignupForm: FC<isCreator> = ({ creator }) => {
     }
   }
 
-  const createAccount = async (e: FormEvent<HTMLFormElement>, form: HTMLFormElement) => {
-    e.preventDefault();
-    setShowSpinner(true);
-    try {
-      const { fullName, email, password, confirmPassword } = form;
-      const userPayload = {
-        name: fullName.value,
-        email: email.value.toLowerCase(),
-        password: password.value,
-        confirmPassword: confirmPassword.value
-      };
-
-      if (userPayload.password !== userPayload.confirmPassword) {
-        throw Error('Passwords does not match')
-      }
-
-      const { user } = await createUserWithEmailAndPassword(auth, userPayload.email, userPayload.password);
-      await sendEmailVerification(auth.currentUser as User);
-      localStorage.setItem('userId', user.uid);
-      console.log(user)
-      await setDoc(doc(db, 'users', user.uid), {
-        name: userPayload.name,
-        email: userPayload.email,
-        articles: [],
-        createdAt: new Date().getTime(),
-        creator: creator ? true: false,
-      })
-      await updateProfile(auth.currentUser!, {
-        displayName: userPayload.name,
-      })
-      setShowSpinner(false);
-      alert('Your account has been created successfully');
-      router.push('/profile');
-    } catch (error) {
-      setShowSpinner(false);
-      console.log(error)
-    }
-  }
-
-  const signinWithGoogle = async (e: any) => {
-    e.preventDefault();
-    setShowSpinner2(true);
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential!.accessToken;
-      const user = result.user;
-      localStorage.setItem('userToken', token!)
-      localStorage.setItem('userId', user.uid);
-      console.log(credential, token, user)
-      setShowSpinner2(false);
-      await setDoc(doc(db, 'users', user.uid), {
-        name: user.displayName,
-        email: user.email,
-        articles: [],
-        createdAt: new Date().getTime(),
-        creator: creator ? true: false,
-      })
-      alert('Your account has been created successfully');
-      router.push('/profile');
-    } catch (error) {
-      setShowSpinner2(false);
-      console.log(error);
-    }
-
-  }
-
-
   return (
     <>
-      <Form ref={registrationForm} name="loginForm" onSubmit={e => createAccount(e, registrationForm.current as HTMLFormElement)}>
+      <Form ref={registrationForm} name="loginForm" onSubmit={e => createAccount(
+        e, 
+        registrationForm.current as HTMLFormElement,
+        setShowSpinner,
+        creator,
+        router
+      )}>
 
         <Form.Group className="mb-3" controlId="name">
           <Form.Label className={`text-${theme === "dark" ? "light": "dark"}`}>Your full name</Form.Label>

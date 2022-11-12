@@ -21,7 +21,7 @@ const LessonHeader: FC = () => {
           <Row className="justify-content-between">
             <Col md={12} className="mb-4 pr-0">
               { /* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/assets/img/demo/blog6.jpg`} className="img-fluid" alt="Leson 1" />
+              {/* <img src={`/assets/img/demo/blog6.jpg`} className="img-fluid" alt="Leson 1" /> */}
             </Col>
             <Col md={12} className="pt pb-6 pr-6 align-self-center">
               {(<p className="text-uppercase font-weight-bold">

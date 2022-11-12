@@ -5,29 +5,13 @@ import RecentPosts from '../components/Recent-Posts';
 import OtherPosts from '../components/Other-Posts';
 import Layout from './Layout';
 import NewsLetter from '../components/Newletter';
-import { useContext, useState } from 'react';
-import { ThemeContext } from './_app';
-
+import { getArticles } from "../helper"
 import { Article } from '../types';
-import { db } from '../Firebase-settings';
-import {
-  collection,
-  getDocs,
-  query,
-  limit,
-  orderBy,
-  where 
-} from 'firebase/firestore';
+
 
 export const getServerSideProps = async () => {
-  const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'));
-  const docRes = await getDocs(q);
-  const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
-  const sQ = query(collection(db, 'articles'), where('tags', 'array-contains', articles[0].tags[0]), orderBy('createdAt', 'desc'), limit(10))
-  const sQDocRef = await getDocs(sQ);
-  const secArticles = sQDocRef.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
+  const { articles, secArticles } = await getArticles();
   // console.log(articles)
-
   return {
     props: {
       articles,
@@ -42,10 +26,6 @@ export type Articles = {
 
 //@ts-ignore
 const Home: NextPage = ({ articles, alikePosts }) => {
-
-  let theme: string = useContext(ThemeContext).theme;
-  let setTheme = useContext(ThemeContext).setTheme;
-
   return (
     //@ts-ignore
     <Layout>

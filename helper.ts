@@ -164,7 +164,7 @@ export const createCourseFormHandler = async (
 
     await addDoc(collection(db, 'courses'), course);
     setShowSpinner(true)
-    alert('Article created');
+    alert('Course created');
     router.push('/courses');
   } catch (error) {
     setShowSpinner(true)

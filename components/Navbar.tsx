@@ -43,7 +43,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
       if (userId) {
         const docRef = await getDoc(doc(db, "users", userId!));
         const user = docRef.data() as User;
-        console.log(user)
+        // console.log(user)
         setUser(user);
       } else {
         setUser({} as User);

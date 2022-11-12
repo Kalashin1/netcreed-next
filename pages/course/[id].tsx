@@ -4,8 +4,22 @@ import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
 import { ThemeContext } from '../_app';
 import { useContext } from "react";
+import { getCourse } from "../../helper";
 
-const Course: NextPage = () => {
+export const getServerSideProps = async (context: any) => {
+  const { id } = context.query;
+  const [course, err] = await getCourse(id); 
+  if(err) {
+    console.log(err)
+  }
+  return {
+    props: { course }
+  }
+
+}
+
+// @ts-ignore
+const Course: NextPage = ({ course }) => {
   let theme: string = useContext(ThemeContext).theme;
   const courseLessons = [0, 2, 4, 5, 8, 9];
   return (

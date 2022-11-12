@@ -15,16 +15,16 @@ const CourseComponent: FC<Props> = ({ title, description, img, id }) => {
 
   return (
     <Card bg={theme} className={`text-${theme === "dark"? "light": "dark"}`}>
-      <Card.Img src={img} style={{ cursor: 'pointer', height: '200px', objectFit: 'cover' }} />
-      <Card.Header>
-        <Card.Title className="mb-1 h4 font-weight-bold">
+      <Card.Img src={img} style={{ cursor: 'pointer', height: '200px', objectFit: 'cover' }} onClick={e => router.push(`/course/${id}`)} />
+      <Card.Header onClick={e => router.push(`/course/${id}`)} >
+        <Card.Title className="mb-1 h4 font-weight-bold" onClick={(e: any) => router.push(`/course/${id}`)} >
           {title}
         </Card.Title>
       </Card.Header>
       <Card.Body>
         <p className="my-4">{ description }</p>
-        <div className="my-2" onClick={e => router.push(`/courses/${id}`)}>
-          <Button>
+        <div className="my-2" onClick={e => router.push(`/course/${id}`)}>
+          <Button onClick={e => router.push(`/course/${id}`)} >
             View Course
           </Button>
         </div>

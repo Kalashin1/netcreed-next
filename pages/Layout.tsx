@@ -17,7 +17,7 @@ const Layout: FC<Props> = function ({ children }) {
   
   
   let _theme: string = useContext(ThemeContext).theme;
-  let setTheme = useContext(ThemeContext).setTheme!;
+  let setTheme = useContext(ThemeContext).updateTheme!;
 
   return (
     <>

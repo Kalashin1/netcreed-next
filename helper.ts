@@ -318,7 +318,7 @@ export const getCourse = async (id: string): Promise<[CourseSchema | null, any |
 
 export const getCourses = async (): Promise<[CourseSchema[]|null, string|null]> => {
   try {
-    const _q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'))
+    const _q = query(collection(db, 'courses'), orderBy('createdAt', 'desc'))
     const _docRes = await getDocs(_q);
     const courses = _docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as CourseSchema[];
     return [courses, null]

@@ -29,7 +29,7 @@ const links = [
 ] as const;
 
 type Props = {
-  changeTheme: Dispatch<SetStateAction<string>>;
+  changeTheme: (theme: string) => void;
   theme: string
 }
 

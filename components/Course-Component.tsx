@@ -7,7 +7,7 @@ type Props = {
   title: string;
   description: string;
   img: string;
-  id: string
+  id: string;
 }
 const CourseComponent: FC<Props> = ({ title, description, img, id }) => {
   let theme: string = useContext(ThemeContext).theme;

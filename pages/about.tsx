@@ -1,4 +1,3 @@
-import Header from "../components/Header";
 import Layout from "./Layout";
 import AboutUs from "../components/About-us";
 import OtherPosts from "../components/Other-Posts";
@@ -6,14 +5,10 @@ import NewsLetter from "../components/Newletter";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { Article } from "../types";
-import { db } from "../Firebase-settings";
-import { query, collection, getDocs, orderBy, limit } from "@firebase/firestore";
+import { getArticles } from "../helper";
 
-export const getStaticProps = async () => {
-  const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'), limit(10));
-  const docRes = await getDocs(q);
-  const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
-
+export const getServerSideProps = async () => {
+ const { articles, } = await getArticles()
   return {
     props: {
       articles,

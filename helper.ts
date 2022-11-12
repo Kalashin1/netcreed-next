@@ -165,7 +165,7 @@ export const createCourseFormHandler = async (
     await addDoc(collection(db, 'articles'), course);
     setShowSpinner(true)
     alert('Article created');
-    router.push('/post-dashboard');
+    router.push('/courses');
   } catch (error) {
     setShowSpinner(true)
     console.log(error)
@@ -316,7 +316,7 @@ export const getCourse = async (id: string): Promise<[CourseSchema | null, any |
   }
 }
 
-export const getCourses = async () => {
+export const getCourses = async (): Promise<[CourseSchema[]|null, string|null]> => {
   try {
     const _q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'))
     const _docRes = await getDocs(_q);
@@ -484,5 +484,18 @@ export  const _updateProfile = async ( form: HTMLFormElement, userId: string) =>
     return['Your profile has been updated successfully!', null];
   } catch (error: any) {
     return [null, error.message];
+  }
+}
+
+export const updateBio = async (form: HTMLFormElement, userId: string) => {
+  try {
+    const { bio } = form;
+    const payload = {
+      bio: bio.value,
+    }
+    await updateDoc(doc(db, 'users', userId), payload);
+    return ['Your bio has been updated successfully!', null]
+  } catch (error: any) {
+    return [null, error.message]
   }
 }

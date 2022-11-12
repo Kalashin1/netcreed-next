@@ -2,23 +2,18 @@ import { NextPage } from "next";
 import Layout from "./Layout";
 import { Container, Row, Col } from "react-bootstrap";
 import CourseComponent from "../components/Course-Component";
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { ThemeContext } from './_app';
-import { db } from '../Firebase-settings';
-import {
-  collection,
-  getDocs,
-  query,
-  limit,
-  orderBy,
-  where 
-} from 'firebase/firestore';
+import { getCourses } from "../helper";
+import { CourseSchema } from "../types";
 
 
 export async function getServerSideProps() {
-  const q = query(collection(db, 'courses'), orderBy('createdAt', 'desc'));
-  const docRes = await getDocs(q);
-  const courses = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+
+  const [courses, err] = await getCourses();
+  if (err) {
+    console.log(err);
+  }
   return {
     props: {
       courses
@@ -28,18 +23,24 @@ export async function getServerSideProps() {
 
 //@ts-ignore
 const Courses: NextPage = ({ courses }) => {
+
   let theme: string = useContext(ThemeContext).theme;
   const arr = [1, 2, 3, 4];
   return (
     <Layout>
       <Container className="my-4">
-        <h3 className={`display-4 text-${theme === "dark"? "light": "dark"}`}>Courses</h3>
+        <h3 className={`display-4 text-${theme === "dark" ? "light" : "dark"}`}>Courses</h3>
         <Row className="justify-content-center">
-          { arr.map((ar, i) => (
-            <Col md={6} key={i}>
+          {courses && courses.map((course: CourseSchema, index: number) => (
+            <Col md={6} key={index}>
               <div className="my-4">
-                <CourseComponent />
-              </div>      
+                <CourseComponent 
+                  description={course.description} 
+                  id={course.id!}
+                  img={course.photoUrl} 
+                  title={course.title} 
+                />
+              </div>
             </Col>
           ))}
         </Row>

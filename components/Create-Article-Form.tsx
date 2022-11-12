@@ -1,10 +1,11 @@
 import { NextComponentType } from "next";
 import { MultiSelect } from "react-multi-select-component";
-import { useState, useRef, MutableRefObject, FormEvent } from "react";
+import { useState, useRef, MutableRefObject, FormEvent, useContext } from "react";
 import { User as _User } from "../types";
 import { useRouter } from "next/router";
 import { Button, Spinner, Form, Container } from "react-bootstrap";
-import { tags, categories, createArticleHandler } from "../helper"
+import { tags, categories, createArticleHandler } from "../helper";
+import { ThemeContext } from "../pages/_app";
 
 
 type SelectType = {
@@ -13,6 +14,7 @@ type SelectType = {
 
 
 const CreateArticleForm: NextComponentType = () => {
+  let theme: string = useContext(ThemeContext).theme;
   
   const router = useRouter();
 
@@ -35,15 +37,15 @@ const CreateArticleForm: NextComponentType = () => {
           router
         )}>
           <Form.Group>
-            <Form.Label htmlFor="exampleFormControlInput1">Title</Form.Label>
+            <Form.Label className={`text-${theme === "dark" ? "light" : "dark"}`} htmlFor="exampleFormControlInput1">Title</Form.Label>
             <Form.Control type="text" name="articleName" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
           </Form.Group>
           <Form.Group>
-            <Form.Label htmlFor="exampleFormControlFile1">Select Cover Photo</Form.Label>
+            <Form.Label className={`text-${theme === "dark" ? "light" : "dark"}`} htmlFor="exampleFormControlFile1">Select Cover Photo</Form.Label>
             <Form.Control type="file" name="coverPhoto" className="form-control" id="exampleFormControlFile1" />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Select Category</Form.Label>
+            <Form.Label className={`text-${theme === "dark" ? "light" : "dark"}`}>Select Category</Form.Label>
             <Form.Select onChange={e => setSelectedCategory(e.target.value)} className="form-control">
              { categories.map((cat, index) => (
                 <option key={index} value={cat.value}>{cat.label}</option>
@@ -51,7 +53,7 @@ const CreateArticleForm: NextComponentType = () => {
             </Form.Select>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Select Tag</Form.Label>
+            <Form.Label className={`text-${theme === "dark" ? "light" : "dark"}`}>Select Tag</Form.Label>
             <MultiSelect
               options={tags}
               value={selectedTags}

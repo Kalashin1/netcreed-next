@@ -35,13 +35,13 @@ const Post: NextPage = ({ article, articles }) => {
          {/* TWITTER CARD  */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={article.title} />
-        <meta name="twitter:site" content="@kinanee_samson" />
-        <meta name="twitter:creator" content="@kinanee_samson" />
+        <meta name="twitter:site" content="@netcreed" />
+        <meta name="twitter:creator" content="@netcreed" />
         <meta name="twitter:description" content={article.description} />
         <meta name="twitter:image" content={article.coverPhoto} />
         {/* Open Graph  */}
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://netcreed-blog.vercel.app/post/${article.id}`} />
+        <meta property="og:url" content={`https://blog.thenetcreed.com/post/${article.id}`} />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.description} />
         <meta property="og:image" itemProp="image" content={`${article.coverPhoto}`} />

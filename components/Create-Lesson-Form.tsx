@@ -20,7 +20,7 @@ const CreateLessonForm: NextPage = () => {
     const _getCourses = async () => {
       const [_courses, err] = await getCourses();
       if (!err) {
-        setCourses(_courses);
+        setCourses(_courses!);
       }
     }
 

@@ -63,17 +63,20 @@ export type CourseSchema = {
   lessons: LessonRef | []
   createdAt: number
   updatedAt?: number
-}
+};
+
+
+export type CourseRef = Pick<CourseSchema, "id" | "title" | "description" | "slug" | "url">;
 
 export type LessonSchema = {
-  id?: string
-  title: string
-  slug?: string
-  description: string
-  course: Pick<CourseSchema, "id" | "title" | "description" | "slug" | "url">
-  createdAt: number
-  status: 'APPROVED' | 'SAVED' | 'REJECTED'
-  updatedAt?: number
-  courseContent: string
-  url?: string
+  id?: string;
+  title: string;
+  slug?: string;
+  description: string;
+  course: CourseRef;
+  createdAt: number;
+  status: 'APPROVED' | 'SAVED' | 'REJECTED';
+  updatedAt?: number;
+  courseContent: string;
+  url?: string;
 }

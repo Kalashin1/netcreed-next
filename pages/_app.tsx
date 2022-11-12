@@ -2,6 +2,7 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import React, { Dispatch, SetStateAction, useState } from 'react';
+import SSRProvider from 'react-bootstrap/SSRProvider';
 import Script from 'next/script';
 import Router from 'next/router';
 
@@ -29,9 +30,11 @@ function CustomApp({ Component, pageProps, router }: AppProps) {
         
       </Script>
       { /** @ts-ignore **/ }
-      <ThemeContext.Provider value={{theme, setTheme}}>
-        <Component {...pageProps} />
-      </ThemeContext.Provider>
+      <SSRProvider>
+        <ThemeContext.Provider value={{theme, setTheme}}>
+          <Component {...pageProps} />
+        </ThemeContext.Provider>
+      </SSRProvider>
     </>
   );
 }

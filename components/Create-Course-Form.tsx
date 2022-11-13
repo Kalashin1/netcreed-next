@@ -35,7 +35,7 @@ const CreateCourseForm: NextPage = () => {
         </Form.Group>
         <Form.Group>
           <label className={`text-${theme === "dark" ? "light" : "dark"}`} htmlFor="exampleFormControlTextarea1">Description</label>
-          <textarea className="form-control" name="description" id="exampleFormControlTextarea1" rows={15}></textarea>
+          <textarea className="form-control" name="description" id="exampleFormControlTextarea1" rows={5}></textarea>
         </Form.Group>
 
         <div className="my-2 flex">

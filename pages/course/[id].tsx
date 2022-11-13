@@ -25,11 +25,11 @@ const Course: NextPage = ({ course }) => {
   return (
     <Layout>
       <Container className="my-4">
-        <h3 className={`my-4 display-6 text-${theme === "dark" ? "light": "dark"}`}>Intro To JavaScript</h3>
+        <h3 className={`my-4 display-6 text-${theme === "dark" ? "light": "dark"}`}>{ course.title }</h3>
         <Row className="justify-content-center">
           <Col md={5}>
             <Container className={`px-2 text-${theme === "dark" ? "light": "dark"}`}>
-              <p>Lorem ipsum dolor sit amet consectetur adipiscing elit, montes euismod penatibus convallis rhoncus inceptos eu tincidunt, fringilla non pretium volutpat vestibulum sagittis</p>
+              <p>{course.description}</p>
               <ListGroup variant="flush" className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>
                 <ListGroup.Item className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>Cras justo odio</ListGroup.Item>
                 <ListGroup.Item className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>Dapibus ac facilisis in</ListGroup.Item>

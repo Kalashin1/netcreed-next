@@ -33,6 +33,8 @@ export const uploadImage = async (file: HTMLInputElement, folder: string) => {
   return imageUrl;
 }
 
+export const baseDomain =`https://blog.thenetcreed.com`
+
 
 export const tags = [
   { label: "JavaScript", value: "js" },
@@ -162,7 +164,12 @@ export const createCourseFormHandler = async (
     }
 
 
-    await addDoc(collection(db, 'courses'), course);
+    const courseDoc = await addDoc(collection(db, 'courses'), course);
+    await updateDoc(doc(db, 'courses', courseDoc.id), {
+      url: `${baseDomain}/courses/${courseDoc.id}`,
+      slug: `${baseDomain}/courses/${convertToSlug(course.title)}`,
+      updatedAt: new Date().getTime()
+    })
     setShowSpinner(true)
     alert('Course created');
     router.push('/courses');
@@ -214,7 +221,12 @@ export const createArticleHandler = async (
       status: staus!,
       views: [],
     }
-    await addDoc(collection(db, 'articles'), article);
+    const articleDoc = await addDoc(collection(db, 'articles'), article);
+    await updateDoc(doc(db, 'articles', articleDoc.id), {
+      url: `${baseDomain}/articles/${articleDoc.id}`,
+      slug: `${baseDomain}/articles/${convertToSlug(article.title!)}`,
+      updatedAt: new Date().getTime()
+    })
     setShowSpinner(true)
     alert('Article created');
     router.push('/post-dashboard');
@@ -316,6 +328,7 @@ export const getCourse = async (id: string): Promise<[CourseSchema | null, any |
   }
 }
 
+
 export const getCourses = async (): Promise<[CourseSchema[]|null, string|null]> => {
   try {
     const _q = query(collection(db, 'courses'), orderBy('createdAt', 'desc'))
@@ -338,6 +351,12 @@ export const getArticle = async (id: string) => {
   return { article, articles };
 }
 
+export const convertToSlug = (text: string) => {
+  return text.toLowerCase()
+    .replace(/[^\w-]+/g, '')
+    .replace(/ /g, '-')
+}
+
 export const getArticles = async () => {
   const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'));
   const docRes = await getDocs(q);
@@ -351,9 +370,7 @@ export const getArticles = async () => {
 
 export const createLessonFormHandler = async (
   form: HTMLFormElement,
-  setShowSpinner: Dispatch<SetStateAction<boolean>>,
   _course: string,
-  router: NextRouter
 ) => {
   const { title, content, description } = form;
   try {
@@ -366,8 +383,8 @@ export const createLessonFormHandler = async (
       title: course!.title,
       description: course!.description,
       id: course!.id,
-      url: course!.url,
-      slug: course!.slug
+      url: course!.url ? course?.url: '',
+      slug: course!.slug ? course?.slug: ''
     };
 
     const lesson: LessonSchema = {
@@ -381,8 +398,13 @@ export const createLessonFormHandler = async (
     }
 
 
-    const doc = await addDoc(collection(db, 'lessons'), lesson);
-    return [doc, null];
+    const lessonDoc = await addDoc(collection(db, 'lessons'), lesson);
+    await updateDoc(doc(db, 'lessons', lessonDoc.id), {
+      url: `${baseDomain}/lessons/${lessonDoc.id}`,
+      slug: `${baseDomain}/lessons/${convertToSlug(lesson.title)}`,
+      updatedAt: new Date().getTime()
+    })
+    return [lessonDoc, null];
   } catch (error: any) {
     return [null, error.message]
   }

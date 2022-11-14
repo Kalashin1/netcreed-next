@@ -64,8 +64,8 @@ const ProfileForm: FC<Props> = ({ userID }) => {
     </Form.Group>
 
     <Form.Group className="mb-3" controlId="reddit">
-      <Form.Label>Reddit</Form.Label>
-      <Form.Control type="text" name="reddit" required placeholder="Enter your reddit username" />
+      <Form.Label>DEV</Form.Label>
+      <Form.Control type="text" name="dev" required placeholder="Enter your reddit username" />
     </Form.Group>
 
 

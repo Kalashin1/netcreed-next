@@ -33,7 +33,7 @@ const PostHeader: FC<_Article> = ({ article }) => {
           <Row className="justify-content-between">
             <Col md={12} className="mb-4 pr-0">
               { /* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={article.coverPhoto} className="img-fluid" alt={article.title} />
+              <img src={article.coverPhoto} height={500} className="img-fluid" alt={article.title} />
             </Col>
             <Col md={12} className="pt pb-6 pr-6 align-self-center">
               {isAuthor() && (<p className="text-uppercase font-weight-bold">

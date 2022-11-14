@@ -1,6 +1,6 @@
-import Layout from './Layout';
+import Layout from '../Layout';
 import { NextPage } from 'next';
-import UserProfile from '../components/Profile';
+import UserProfile from '../../components/Profile';
 
 const Profile: NextPage = () => {
 

@@ -1,8 +1,9 @@
-import CreateArticleForm from "../components/Create-Article-Form";
-import Layout from "./Layout";
+import CreateArticleForm from "../../components/Create-Article-Form";
+import Layout from "../Layout";
 import { NextPage } from "next";
 import { useContext } from "react";
-import { ThemeContext } from "./_app";
+import { ThemeContext } from "../_app";
+import React from "react";
 
 const CreateArticle: NextPage = () => {
   let theme: string = useContext(ThemeContext).theme;

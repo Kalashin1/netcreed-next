@@ -40,6 +40,9 @@ const UserProfile: FC = () => {
         setUser(payload?.user!);
       } else {
         console.log(err)
+        if (err === 'Please login') {
+          router.push('/login');
+        }
       }
     }
 
@@ -231,7 +234,7 @@ const UserProfile: FC = () => {
 
             <div>
               {user.creator && (<Button variant="primary" className="my-4" type="submit" style={{ width: '100%' }}
-                onClick={(e: any) => navigate(`/create-post`)}
+                onClick={(e: any) => navigate(`/post/create`)}
               >
                 Create Post
               </Button>)}
@@ -239,7 +242,7 @@ const UserProfile: FC = () => {
               {articles && articles.map((article, index) => (
                 <div key={index} className="mb-3 sm-d-flex justify-content-between">
                   <Card bg={theme} className={`p-4 text-${theme === "dark" ? "light" : "dark"}`}>
-                    <h2 className={`mb-1 h4 font-weight-bold text-${theme === "dark" ? "light" : "dark"}`}>
+                    <h2 className={`mb-4 h4 font-weight-bold text-${theme === "dark" ? "light" : "dark"}`}>
                       <a style={{ cursor: 'pointer' }} onClick={(e: any) => { e.preventDefault(); navigate(`/post/${article.id}`) }}>{article.title}</a>
                     </h2>
                     <p onClick={(e: any) => navigate(`/post/${article.id}`)} style={{ cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: marked.marked(article.description) }}>

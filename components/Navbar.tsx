@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import Link from 'next/link'
 import Image from "next/image";
 import Container from 'react-bootstrap/Container';
@@ -59,7 +60,13 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
         <Navbar.Brand href="/">
           <Image src="/logo.png" width={50} height={60} alt="Netcreed" />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" children={
+          (<span>
+            <i
+              className={`fas fa-bars ${theme === "dark" ? "light" : "dark"}`}
+            />
+          </span>)
+        } />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Item style={{ margin: '.5rem 1rem' }}>
@@ -70,7 +77,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
             </Nav.Item>
 
             <Nav.Item style={{ margin: '.5rem 1rem' }}>
-              <Link href="/profile">Profile</Link>
+              <Link href="/user/profile">Profile</Link>
             </Nav.Item>
 
             {

@@ -1,11 +1,9 @@
-import EditArticleForm from "../../components/Edit-Post-Form";
-import Layout from "../Layout";
+import EditArticleForm from "../../../components/Edit-Post-Form";
+import Layout from "../../Layout";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { Article } from "../../types";
 import { useContext } from "react";
-import { ThemeContext } from "../_app";
+import { ThemeContext } from "../../_app";
 
 const EditPost: NextPage = () => {
   let theme: string = useContext(ThemeContext).theme;

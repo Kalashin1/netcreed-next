@@ -1,11 +1,12 @@
-import Layout from './Layout';
+import Layout from '../Layout';
 import { NextPage } from 'next';
-import Posts from '../components/Posts';
+import Posts from '../../components/Posts';
 import { useState, useEffect, useContext } from 'react';
-import { Article } from '../types';
-import { db } from '../Firebase-settings';
+import { Article } from '../../types';
+import { db } from '../../Firebase-settings';
 import { collection, getDocs, query, where } from '@firebase/firestore';
-import { ThemeContext } from './_app';
+import { ThemeContext } from '../_app';
+
 
 const PostDashboard: NextPage = () => {
   let theme: string = useContext(ThemeContext).theme;

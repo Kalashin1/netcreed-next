@@ -45,7 +45,7 @@ const LoginForm: NextComponentType = () => {
       localStorage.setItem('userId', user.uid);
       setShowSpinner(false)
       alert('Login successfull')
-      router.push('/profile')
+      router.push('/user/profile')
     } catch (error:any) {
       setShowSpinner(false)
       if (error.message.includes('auth/wrong-password')){
@@ -68,7 +68,7 @@ const LoginForm: NextComponentType = () => {
       console.log(credential, token, user)
       setShowSpinner2(false);
       alert('Login successfull')
-      router.push('/profile')
+      router.push('/user/profile')
     } catch (error) {
       setShowSpinner2(false);
       console.log(error);

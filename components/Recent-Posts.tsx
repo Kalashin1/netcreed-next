@@ -1,7 +1,5 @@
 import { FC, useContext } from "react";
-import Link from "next/link";
 import { Col, Container, Card, Row } from "react-bootstrap";
-import Image from "next/image";
 import { Article } from "../types";
 import { useRouter } from 'next/router'
 import { ThemeContext } from "../pages/_app";

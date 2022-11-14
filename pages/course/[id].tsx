@@ -4,22 +4,30 @@ import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
 import { ThemeContext } from '../_app';
 import { useContext } from "react";
-import { getCourse } from "../../helper";
+import { getCourse, getLessonsByCourseId } from "../../helper";
+import { LessonSchema } from "../../types";
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
   const [course, err] = await getCourse(id); 
+
   if(err) {
     console.log(err)
   }
+
+  const [lessons, lessonErr] = await getLessonsByCourseId(id);
+
+  if (lessonErr) {
+    console.log(lessonErr)
+  }
   return {
-    props: { course }
+    props: { course, lessons }
   }
 
 }
 
 // @ts-ignore
-const Course: NextPage = ({ course }) => {
+const Course: NextPage = ({ course, lessons }) => {
   let theme: string = useContext(ThemeContext).theme;
   const courseLessons = [0, 2, 4, 5, 8, 9];
   return (
@@ -31,9 +39,9 @@ const Course: NextPage = ({ course }) => {
             <Container className={`px-2 text-${theme === "dark" ? "light": "dark"}`}>
               <p>{course.description}</p>
               <ListGroup variant="flush" className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>
-                <ListGroup.Item className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>Cras justo odio</ListGroup.Item>
-                <ListGroup.Item className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>Dapibus ac facilisis in</ListGroup.Item>
-                <ListGroup.Item className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>Vestibulum at eros</ListGroup.Item>
+                { lessons && lessons.map((l: LessonSchema, index: number) => (
+                  <ListGroup.Item key={index} className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>{l.title}</ListGroup.Item>
+                ))}
               </ListGroup>
               <Button style={{ width: '100%' }}>
                 Start Course
@@ -41,9 +49,12 @@ const Course: NextPage = ({ course }) => {
             </Container>
           </Col>
           <Col md={7}>
-            {courseLessons.map((c, i) => (
+            {lessons && lessons.map((l: LessonSchema, i: number) => (
               <div className="my-2" key={i}>
-                <CourseLessonHeader />
+                <CourseLessonHeader
+                  description={l.description}
+                  title={l.title}
+                />
               </div>
             ))}
           </Col>

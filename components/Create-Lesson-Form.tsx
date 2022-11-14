@@ -35,16 +35,15 @@ const CreateLessonForm: NextPage = () => {
     try {
       const [data, err] = await createLessonFormHandler(
         createLessonForm.current!,
-        setShowSpinner,
         course,
-        router
       )
       setShowSpinner(false);
       if (err) {
-        throw Error(err)
+        console.log(err)
       } else if (data) {
         console.log(data)
       }
+      router.push(`/course/${course}`)
     } catch (error: any) {
       setShowSpinner(true);
       console.log(error);

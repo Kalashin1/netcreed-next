@@ -9,6 +9,7 @@ import { Article, ARTICLE_STATUS, CourseSchema, User, Author, LessonSchema, Cour
 import { NextRouter } from "next/router";
 import { getDoc, getDocs, limit, query, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, sendEmailVerification, signInWithPopup, updateProfile } from "firebase/auth";
+import slugify from "slugify";
 
 
 export const uploadImage = async (file: HTMLInputElement, folder: string) => {
@@ -107,10 +108,10 @@ export const updateArticle = async (
       category: selectedCategory,
       status: staus!,
     }
-    await updateDoc(doc(db, 'articles', article.id), articleUpdate);
+  await updateDoc(doc(db, 'articles', article.id), articleUpdate);
     setShowSpinner(true)
     alert('Article Edited');
-    router.push('/post-dashboard');
+    router.push('/user/posts');
   } catch (error) {
     setShowSpinner(true)
     console.log(error)
@@ -166,8 +167,8 @@ export const createCourseFormHandler = async (
 
     const courseDoc = await addDoc(collection(db, 'courses'), course);
     await updateDoc(doc(db, 'courses', courseDoc.id), {
-      url: `${baseDomain}/courses/${courseDoc.id}`,
-      slug: `${baseDomain}/courses/${convertToSlug(course.title)}`,
+      url: `courses/${courseDoc.id}`,
+      slug: `courses/${convertToSlug(course.title)}`,
       updatedAt: new Date().getTime()
     })
     setShowSpinner(true)
@@ -223,13 +224,13 @@ export const createArticleHandler = async (
     }
     const articleDoc = await addDoc(collection(db, 'articles'), article);
     await updateDoc(doc(db, 'articles', articleDoc.id), {
-      url: `${baseDomain}/articles/${articleDoc.id}`,
-      slug: `${baseDomain}/articles/${convertToSlug(article.title!)}`,
+      url: `articles/${articleDoc.id}`,
+      slug: `articles/${convertToSlug(article.title!)}`,
       updatedAt: new Date().getTime()
     })
     setShowSpinner(true)
     alert('Article created');
-    router.push('/post-dashboard');
+    router.push('/user/posts');
   } catch (error) {
     setShowSpinner(true)
     console.log(error)
@@ -310,7 +311,7 @@ export const createAccount = async (
     })
     setShowSpinner(false);
     alert('Your account has been created successfully');
-    router.push('/profile');
+    router.push('/user/profile');
   } catch (error: any) {
     setShowSpinner(false);
     console.log(error)
@@ -339,6 +340,42 @@ export const getCourses = async (): Promise<[CourseSchema[]|null, string|null]> 
     return [null, error.message]
   }
 }
+
+export const getLessonsByCourseId = async (course: string): Promise<[LessonSchema[]|null, string|null]> => {
+  try {
+    const _q = query(collection(db, 'lessons'), where("course", "==", {
+      id: course,
+    }), orderBy('createdAt', 'desc'))
+    const _docRes = await getDocs(_q);
+    const lessons = _docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as LessonSchema[];
+    return [lessons, null]
+  } catch (error: any) {
+    return [null, error.message]
+  }
+}
+
+export const getLessons = async (course: string): Promise<[LessonSchema[]|null, string|null]> => {
+  try {
+    const _q = query(collection(db, 'lessons'), orderBy('createdAt', 'desc'), limit(10))
+    const _docRes = await getDocs(_q);
+    const lessons = _docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as LessonSchema[];
+    return [lessons, null]
+  } catch (error: any) {
+    return [null, error.message]
+  }
+}
+
+export const getLesson = async (id: string): Promise<[LessonSchema | null, any | null]> => {
+  try {
+    const docRef = doc(db, 'lessons', id);
+    const docRes = await getDoc(docRef);
+    const lesson = ({ ...docRes.data(), id: docRes.id }) as LessonSchema;
+    return [lesson, null]
+  } catch (error: any) {
+    return [null, error.message]
+  }
+}
+ 
 
 export const getArticle = async (id: string) => {
   const ref = doc(db, 'articles', id);
@@ -399,13 +436,18 @@ export const createLessonFormHandler = async (
 
 
     const lessonDoc = await addDoc(collection(db, 'lessons'), lesson);
+    // const slug = slugify(lesson.title, {
+    //   lower: true
+    // })
     await updateDoc(doc(db, 'lessons', lessonDoc.id), {
-      url: `${baseDomain}/lessons/${lessonDoc.id}`,
-      slug: `${baseDomain}/lessons/${convertToSlug(lesson.title)}`,
+      url: `lessons/${lessonDoc.id}`,
+      slug: `lessons/${lesson.title.replace(' ', '-').toLowerCase()}`,
       updatedAt: new Date().getTime()
     })
     return [lessonDoc, null];
   } catch (error: any) {
+    console.log(error)
+    console.log(error)
     return [null, error.message]
   }
 }
@@ -493,7 +535,7 @@ export const uploadProfilePhoto = async (userId: string, fileInput: HTMLInputEle
 
 export  const _updateProfile = async ( form: HTMLFormElement, userId: string) => {
   try {
-    const { username, phone, headline, github, twitter, linkedin, reddit } = form;
+    const { username, phone, headline, github, twitter, linkedin, dev } = form;
     const payload = {
       username: username.value,
       phone: phone.value,
@@ -501,7 +543,7 @@ export  const _updateProfile = async ( form: HTMLFormElement, userId: string) =>
       github: github.value,
       twitter: twitter.value,
       linkedin: linkedin.value,
-      reddit: reddit.value,
+      dev: dev.value,
     }
     await updateDoc(doc(db, 'users', userId), payload);
     return['Your profile has been updated successfully!', null];

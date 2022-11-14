@@ -1,11 +1,11 @@
 import { NextPage } from "next";
-import Layout from "./Layout";
+import Layout from "../Layout";
 import { Container, Row, Col } from "react-bootstrap";
-import CourseComponent from "../components/Course-Component";
+import CourseComponent from "../../components/Course-Component";
 import { useContext } from 'react';
-import { ThemeContext } from './_app';
-import { getCourses } from "../helper";
-import { CourseSchema } from "../types";
+import { ThemeContext } from './../_app';
+import { getCourses } from "../../helper";
+import { CourseSchema } from "../../types";
 
 
 export async function getServerSideProps() {

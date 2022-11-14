@@ -88,16 +88,16 @@ const PostTable: FC<PostPayload> = ({ posts, theme }) => {
                         <label htmlFor="checkbox-2" className="custom-control-label">&nbsp;</label>
                       </div>
                     </td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>
+                    <td onClick={e => navigate(`/post/edit-post/${post.id}`)}>
                       {post.title}
                     </td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>
+                    <td onClick={e => navigate(`/post/edit-post/${post.id}`)}>
                       <p>{post.status}</p>
                     </td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{new Date(post.createdAt).toDateString()}</td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.views.length}</td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.saves.length}</td>
-                    <td onClick={e => navigate(`/edit-post/${post.id}`)}>{post.likes.length}</td>
+                    <td onClick={e => navigate(`/post/edit-post/${post.id}`)}>{new Date(post.createdAt).toDateString()}</td>
+                    <td>{post.views.length}</td>
+                    <td>{post.saves.length}</td>
+                    <td>{post.likes.length}</td>
                   </tr>
                 ))
               }

@@ -2,7 +2,6 @@ import { FC, useState, useRef, MutableRefObject, FormEvent } from "react";
 import { Form, Spinner, Button } from "react-bootstrap";
 import { _updateProfile } from "../helper"
 import { useRouter } from 'next/router';
-import { truncate } from "fs/promises";
 
 type Props = {
   userID: string

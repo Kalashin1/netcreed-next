@@ -9,13 +9,14 @@ import { LessonSchema } from "../../types";
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
-  const [course, err] = await getCourse(id); 
+  const [course, err] = await getCourse(id);
 
-  if(err) {
+  if (err) {
     console.log(err)
   }
 
   const [lessons, lessonErr] = await getLessonsByCourseId(id);
+  console.log(lessons)
 
   if (lessonErr) {
     console.log(lessonErr)
@@ -29,18 +30,18 @@ export const getServerSideProps = async (context: any) => {
 // @ts-ignore
 const Course: NextPage = ({ course, lessons }) => {
   let theme: string = useContext(ThemeContext).theme;
-  const courseLessons = [0, 2, 4, 5, 8, 9];
+  console.log(lessons)
   return (
     <Layout>
       <Container className="my-4">
-        <h3 className={`my-4 display-6 text-${theme === "dark" ? "light": "dark"}`}>{ course.title }</h3>
+        <h3 className={`my-4 display-6 text-${theme === "dark" ? "light" : "dark"}`}>{course.title}</h3>
         <Row className="justify-content-center">
           <Col md={5}>
-            <Container className={`px-2 text-${theme === "dark" ? "light": "dark"}`}>
+            <Container className={`px-2 text-${theme === "dark" ? "light" : "dark"}`}>
               <p>{course.description}</p>
-              <ListGroup variant="flush" className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>
-                { lessons && lessons.map((l: LessonSchema, index: number) => (
-                  <ListGroup.Item key={index} className={`text-${theme === "dark" ? "light": "dark"} bg-${theme}`}>{l.title}</ListGroup.Item>
+              <ListGroup variant="flush" className={`text-${theme === "dark" ? "light" : "dark"} bg-${theme}`}>
+                {lessons && lessons.map((l: LessonSchema, index: number) => (
+                  <ListGroup.Item key={index} className={`text-${theme === "dark" ? "light" : "dark"} bg-${theme}`}>{l.title}</ListGroup.Item>
                 ))}
               </ListGroup>
               <Button style={{ width: '100%' }}>
@@ -57,6 +58,9 @@ const Course: NextPage = ({ course, lessons }) => {
                 />
               </div>
             ))}
+            <Button style={{ width: '100%' }}>
+              Start Course
+            </Button>
           </Col>
         </Row>
       </Container>

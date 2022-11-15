@@ -97,6 +97,9 @@ export const updateArticle = async (
     }
 
     console.log(imageUrl);
+    const slug = slugify(article?.title!, {
+      lower: true
+    })
 
     const articleUpdate: Partial<Article> = {
       title: title,
@@ -107,6 +110,8 @@ export const updateArticle = async (
       tags: selectedTags,
       category: selectedCategory,
       status: staus!,
+      url: `post/${article.id}`,
+      slug: `post/${slug}`
     }
   await updateDoc(doc(db, 'articles', article.id), articleUpdate);
     setShowSpinner(true)
@@ -164,11 +169,14 @@ export const createCourseFormHandler = async (
       title: title.value,
     }
 
+    const slug = slugify(course.title!, {
+      lower: true
+    })
 
     const courseDoc = await addDoc(collection(db, 'courses'), course);
     await updateDoc(doc(db, 'courses', courseDoc.id), {
-      url: `courses/${courseDoc.id}`,
-      slug: `courses/${convertToSlug(course.title)}`,
+      url: `course/${courseDoc.id}`,
+      slug: `course/${slug}`,
       updatedAt: new Date().getTime()
     })
     setShowSpinner(true)
@@ -177,6 +185,32 @@ export const createCourseFormHandler = async (
   } catch (error) {
     setShowSpinner(true)
     console.log(error)
+  }
+}
+
+export const editCourseFormHandler = async (
+  { title, description }: any,
+  courseId: string,
+) => {
+  try {
+
+    const slug = slugify(title, {
+      lower: true
+    })
+
+    const course: Partial<CourseSchema> = {
+      updatedAt: new Date().getTime(),
+      description: description,
+      title,
+      url: `course/${courseId}`,
+      slug: `course/${slug}`,
+    }
+
+    await updateDoc(doc(db, 'courses', courseId), course)
+    return [true, null]
+  } catch (error: any) {
+    console.log(error)
+    return [false, error.message]
   }
 }
 
@@ -223,9 +257,12 @@ export const createArticleHandler = async (
       views: [],
     }
     const articleDoc = await addDoc(collection(db, 'articles'), article);
+     const slug = slugify(article?.title!, {
+      lower: true
+    })
     await updateDoc(doc(db, 'articles', articleDoc.id), {
-      url: `articles/${articleDoc.id}`,
-      slug: `articles/${convertToSlug(article.title!)}`,
+      url: `post/${articleDoc.id}`,
+      slug: `post/${slug}`,
       updatedAt: new Date().getTime()
     })
     setShowSpinner(true)
@@ -343,11 +380,11 @@ export const getCourses = async (): Promise<[CourseSchema[]|null, string|null]> 
 
 export const getLessonsByCourseId = async (course: string): Promise<[LessonSchema[]|null, string|null]> => {
   try {
-    const _q = query(collection(db, 'lessons'), where("course", "==", {
-      id: course,
-    }), orderBy('createdAt', 'desc'))
+    // console.log(course)
+    const _q = query(collection(db, 'lessons'), where("courseId", "==", course), orderBy('createdAt', 'desc'))
     const _docRes = await getDocs(_q);
     const lessons = _docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as LessonSchema[];
+    console.log(lessons)
     return [lessons, null]
   } catch (error: any) {
     return [null, error.message]
@@ -410,24 +447,26 @@ export const createLessonFormHandler = async (
   _course: string,
 ) => {
   const { title, content, description } = form;
+  console.log(_course)
   try {
     const [course, err] = await getCourse(_course);
     if (err) {
       return [null, err];
     }
 
+    console.log(course)
+
     const coursePayload: CourseRef = {
-      title: course!.title,
-      description: course!.description,
-      id: course!.id,
-      url: course!.url ? course?.url: '',
-      slug: course!.slug ? course?.slug: ''
+      id: course?.id,
+      url: course?.url ? course?.url: '',
+      slug: course?.slug ? course?.slug: ''
     };
 
     const lesson: LessonSchema = {
       course: coursePayload,
       status: "SAVED",
       description: description.value,
+      courseId: course?.id!,
       // @ts-ignore
       title: title.value,
       courseContent: content.value!,
@@ -436,12 +475,12 @@ export const createLessonFormHandler = async (
 
 
     const lessonDoc = await addDoc(collection(db, 'lessons'), lesson);
-    // const slug = slugify(lesson.title, {
-    //   lower: true
-    // })
+    const slug = slugify(lesson.title, {
+      lower: true
+    })
     await updateDoc(doc(db, 'lessons', lessonDoc.id), {
       url: `lessons/${lessonDoc.id}`,
-      slug: `lessons/${lesson.title.replace(' ', '-').toLowerCase()}`,
+      slug: `lessons/${slug}`,
       updatedAt: new Date().getTime()
     })
     return [lessonDoc, null];
@@ -451,6 +490,47 @@ export const createLessonFormHandler = async (
     return [null, error.message]
   }
 }
+
+export const editLessonFormHandler = async (
+ { title, description, content }: any,
+  _course: string,
+  _lesson: string,
+) => {
+  try {
+    const [course, err] = await getCourse(_course);
+    if (err) {
+      return [null, err];
+    }
+
+    const coursePayload: CourseRef = {
+      id: course!.id,
+      url: course!.url ? course?.url: '',
+      slug: course!.slug ? course?.slug: ''
+    };
+    
+    const slug = slugify(title, {
+      lower: true
+    })
+    const lesson: Partial<LessonSchema> = {
+      course: coursePayload,
+      status: "SAVED",
+      description: description,
+      // @ts-ignore
+      title,
+      courseContent: content!,
+      courseId: coursePayload?.id,
+      url: `lessons/${_lesson}`,
+      slug: `lessons/${slug}`,
+      updatedAt: new Date().getTime()
+    }
+    await updateDoc(doc(db, 'lessons', _lesson), lesson);
+    return [true, null];
+  } catch (error: any) {
+    console.log(error)
+    return [false, error.message]
+  }
+}
+
 
 export const getUserWithoutID = async (): Promise<[{ articles: Article[], user: User } | null, string | null]> => {
   let userId: string

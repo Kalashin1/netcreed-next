@@ -50,7 +50,7 @@ export type engagement = {
   user: Author
 }
 
-export type LessonRef = Pick<LessonSchema, "id" | "title" | "url" | "slug" | "description">[];
+export type LessonRef = Pick<LessonSchema, "id" | "url" | "slug" >[];
 
 export type CourseSchema = {
   description: string
@@ -66,7 +66,7 @@ export type CourseSchema = {
 };
 
 
-export type CourseRef = Pick<CourseSchema, "id" | "title" | "description" | "slug" | "url">;
+export type CourseRef = Pick<CourseSchema, "id" | "slug" | "url">;
 
 export type LessonSchema = {
   id?: string;
@@ -75,6 +75,7 @@ export type LessonSchema = {
   description: string;
   course: CourseRef;
   createdAt: number;
+  courseId: string;
   status: 'APPROVED' | 'SAVED' | 'REJECTED';
   updatedAt?: number;
   courseContent: string;

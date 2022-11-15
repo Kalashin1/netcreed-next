@@ -40,7 +40,7 @@ const PostHeader: FC<_Article> = ({ article }) => {
                 <a className="text-danger" href="./category.html"
                   onClick={e => {
                     e.preventDefault(); 
-                    navigate(`/edit-post/${article.id}`)
+                    navigate(`/post/edit-post/${article.id}`)
                   }
                   }
                 >Edit</a>

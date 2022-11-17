@@ -9,29 +9,33 @@ import Router from 'next/router';
 let _theme: string;
 
 if (typeof window !== 'undefined') {
-  _theme = localStorage.getItem('theme')!
+  _theme = localStorage.getItem('theme')!;
 }
 
-export const ThemeContext = React.createContext<{ theme: string, updateTheme?: (theme: string) => void}>({
+export const ThemeContext = React.createContext<{
+  theme: string;
+  updateTheme?: (theme: string) => void;
+}>({
   // @ts-ignore;
   // 'dark',
   theme: 'dark'
-  //localStorage.getItem('theme') 
+  //localStorage.getItem('theme')
 });
 
-
 function CustomApp({ Component, pageProps, router }: AppProps) {
-
-  const [theme, setTheme] = useState(_theme)
+  const [theme, setTheme] = useState(_theme);
 
   const updateTheme = (theme: string) => {
     setTheme(theme);
     localStorage.setItem('theme', theme);
-  }
+  };
 
   return (
     <>
-      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-8JWZ8XRQMV"></Script>
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-8JWZ8XRQMV"
+      ></Script>
       <Script id="h1">
         {`
           window.dataLayer = window.dataLayer || [];
@@ -41,17 +45,15 @@ function CustomApp({ Component, pageProps, router }: AppProps) {
 
           gtag('config', 'G-8JWZ8XRQMV');        
         `}
-        
       </Script>
-      { /** @ts-ignore **/ }
+      {/** @ts-ignore **/}
       <SSRProvider>
-        <ThemeContext.Provider value={{theme, updateTheme}}>
+        <ThemeContext.Provider value={{ theme, updateTheme }}>
           <Component {...pageProps} />
         </ThemeContext.Provider>
       </SSRProvider>
     </>
   );
 }
-
 
 export default CustomApp;

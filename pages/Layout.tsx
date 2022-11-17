@@ -1,21 +1,18 @@
-import Head from 'next/head'
+import Head from 'next/head';
 import Script from 'next/script';
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
 import { useContext, useState } from 'react';
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { FC } from "react";
-import AppStyle from "./app.module.css";
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { FC } from 'react';
+import AppStyle from './app.module.css';
 import { ThemeContext } from './_app';
 
-
 type Props = {
-  children: JSX.Element
-}
+  children: JSX.Element;
+};
 //@ts-ignore
 const Layout: FC<Props> = function ({ children }) {
-  
-  
   let _theme: string = useContext(ThemeContext).theme;
   let setTheme = useContext(ThemeContext).updateTheme!;
 
@@ -30,7 +27,13 @@ const Layout: FC<Props> = function ({ children }) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
           name="viewport"
         />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css" integrity="sha512-XWTTruHZEYJsxV3W/lSXG1n3Q39YIWOstqvmFsdNEEQfHoZ6vm6E9GK2OrF6DSJSpIbRbi+Nn0WDPID9O7xB2Q==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css"
+          integrity="sha512-XWTTruHZEYJsxV3W/lSXG1n3Q39YIWOstqvmFsdNEEQfHoZ6vm6E9GK2OrF6DSJSpIbRbi+Nn0WDPID9O7xB2Q=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
 
         <link href="/assets/css/main.css" rel="stylesheet" />
 
@@ -43,18 +46,15 @@ const Layout: FC<Props> = function ({ children }) {
         />
 
         <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap')
+          @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap')
           body {
-            font-family: "Lato", sans-serif;
+            font-family: 'Lato', sans-serif;
           }
         `}</style>
       </Head>
       <div className={`bg-${_theme}`}>
-        <Navbar theme={_theme} changeTheme={setTheme}  />
-        <div style={{ padding: '4rem .5rem' }}>
-      
-          {children}
-        </div>
+        <Navbar theme={_theme} changeTheme={setTheme} />
+        <div style={{ padding: '4rem .5rem' }}>{children}</div>
         <Footer />
       </div>
 
@@ -65,9 +65,14 @@ const Layout: FC<Props> = function ({ children }) {
         crossOrigin="anonymous"
         referrerPolicy="no-referrer"
       ></Script>
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.min.js" integrity="sha512-8Y8eGK92dzouwpROIppwr+0kPauu0qqtnzZZNEF8Pat5tuRNJxJXCkbQfJ0HlUG3y1HB3z18CSKmUo7i2zcPpg==" crossOrigin="anonymous" referrerPolicy="no-referrer"></Script>
+      <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.min.js"
+        integrity="sha512-8Y8eGK92dzouwpROIppwr+0kPauu0qqtnzZZNEF8Pat5tuRNJxJXCkbQfJ0HlUG3y1HB3z18CSKmUo7i2zcPpg=="
+        crossOrigin="anonymous"
+        referrerPolicy="no-referrer"
+      ></Script>
     </>
-  )
-}
+  );
+};
 
 export default Layout;

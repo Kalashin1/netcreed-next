@@ -1,6 +1,6 @@
-import { DocumentData } from 'firebase/firestore'
+import { DocumentData } from 'firebase/firestore';
 
-export type ARTICLE_STATUS = 'published' | 'archived' | 'saved'
+export type ARTICLE_STATUS = 'published' | 'archived' | 'saved';
 
 export type ARTICLE_ENGAGEMENT = 'views' | 'saves' | 'likes';
 
@@ -20,16 +20,28 @@ export interface User extends DocumentData {
   bio: string;
   createdAt: number;
   updatedAt?: number;
+  followers: Author[];
+  following: Author[];
   articles: Array<Article>;
-  savedArticles: Array<Article>
+  savedArticles: Array<Article>;
 }
 
-export type Author = Pick<User, 'name' | 'username' | 'phone' | 'email' | 'github' | 'twitter' | 'coverPhoto' | 'id'>;
+export type Author = Pick<
+  User,
+  | 'name'
+  | 'username'
+  | 'phone'
+  | 'email'
+  | 'github'
+  | 'twitter'
+  | 'coverPhoto'
+  | 'id'
+>;
 
 export interface Article extends DocumentData {
   title: string;
   createdAt: number;
-  tags: Array<{ label: string, value: string }>;
+  tags: Array<{ label: string; value: string }>;
   category: string;
   body: string;
   coverPhoto: string;
@@ -47,28 +59,27 @@ export interface Article extends DocumentData {
 }
 
 export type engagement = {
-  user: Author
-}
-
-export type LessonRef = Pick<LessonSchema, "id" | "url" | "slug" >[];
-
-export type CourseSchema = {
-  description: string
-  id?: string
-  slug?: string
-  url?: string
-  title: string
-  photoUrl: string
-  status: 'APPROVED' | 'SAVED' | 'REJECTED'
-  lessons: LessonRef | []
-  createdAt: number
-  updatedAt?: number
+  user: Author;
 };
 
+export type LessonRef = Pick<LessonSchema, 'id' | 'url' | 'slug'>[];
 
-export type CourseRef = Pick<CourseSchema, "id" | "slug" | "url">;
+export interface CourseSchema extends DocumentData {
+  description: string;
+  id?: string;
+  slug?: string;
+  url?: string;
+  title: string;
+  photoUrl: string;
+  status: 'APPROVED' | 'SAVED' | 'REJECTED';
+  lessons: LessonRef | [];
+  createdAt: number;
+  updatedAt?: number;
+};
 
-export type LessonSchema = {
+export type CourseRef = Pick<CourseSchema, 'id' | 'slug' | 'url'>;
+
+export interface LessonSchema extends DocumentData{
   id?: string;
   title: string;
   slug?: string;
@@ -80,4 +91,22 @@ export type LessonSchema = {
   updatedAt?: number;
   courseContent: string;
   url?: string;
+};
+
+
+export type NOTIFICATION_TYPE = 'FOLLOW' | 'COMMENT' | 'LIKE';
+
+export interface NotificiationSchema extends DocumentData {
+  id?: string;
+  userId: string;
+  type: NOTIFICATION_TYPE;
+  body: string;
+  head: string;
+  createdAt: number;
+  isRead: boolean;
+}
+
+export interface UserProfile extends Author {
+  bio: string
+  creator: boolean
 }

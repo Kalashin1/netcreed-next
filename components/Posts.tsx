@@ -1,26 +1,25 @@
 // import { MultiSelect } from "react-multi-select-component";
-import { useState, FC } from "react";
-import { Article } from "../types";
+import { useState, FC } from 'react';
+import { Article } from '../types';
 import { Pagination, Card, Table } from 'react-bootstrap';
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 const options = [
-  { label: "Grapes 🍇", value: "grapes" },
-  { label: "Mango 🥭", value: "mango" },
-  { label: "Strawberry 🍓", value: "strawberry", disabled: true },
+  { label: 'Grapes 🍇', value: 'grapes' },
+  { label: 'Mango 🥭', value: 'mango' },
+  { label: 'Strawberry 🍓', value: 'strawberry', disabled: true }
 ];
 
 type PostPayload = {
-  posts: Article[],
-  theme: string
-}
+  posts: Article[];
+  theme: string;
+};
 
 const PostTable: FC<PostPayload> = ({ posts, theme }) => {
-
-  const router = useRouter()
+  const router = useRouter();
 
   function navigate(route: string) {
-    router.push(route)
+    router.push(route);
   }
 
   const [selected, setSelected] = useState([]);
@@ -33,11 +32,11 @@ const PostTable: FC<PostPayload> = ({ posts, theme }) => {
       <Pagination.Item key={num} active={num == active}>
         {num}
       </Pagination.Item>
-    )
+    );
   }
 
   return (
-    <Card bg={theme} className={`text-${theme === "dark" ? "light": "dark"}`}>
+    <Card bg={theme} className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
       <Card.Header>
         <Card.Title>All Posts</Card.Title>
       </Card.Header>
@@ -64,49 +63,71 @@ const PostTable: FC<PostPayload> = ({ posts, theme }) => {
         </div> */}
         <div className="clearfix mb-3"></div>
         <div className="table-responsive">
-          <Table className={`text-${theme === "dark" ? "light": "dark"}`}>
-            <tbody><tr>
-              <th className="pt-2">
-                <div className="custom-checkbox custom-checkbox-table custom-control">
-                  <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" className="custom-control-input" id="checkbox-all" />
-                  <label htmlFor="checkbox-all" className="custom-control-label">&nbsp;</label>
-                </div>
-              </th>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Created At</th>
-              <th>Views</th>
-              <th>Saves</th>
-              <th>Likes</th>
-            </tr>
-              {
-                posts && posts.map((post, index) => (
-                  <tr key={index} style={{ cursor: 'pointer'}}>
+          <Table className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
+            <tbody>
+              <tr>
+                <th className="pt-2">
+                  <div className="custom-checkbox custom-checkbox-table custom-control">
+                    <input
+                      type="checkbox"
+                      data-checkboxes="mygroup"
+                      data-checkbox-role="dad"
+                      className="custom-control-input"
+                      id="checkbox-all"
+                    />
+                    <label
+                      htmlFor="checkbox-all"
+                      className="custom-control-label"
+                    >
+                      &nbsp;
+                    </label>
+                  </div>
+                </th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Created At</th>
+                <th>Views</th>
+                <th>Saves</th>
+                <th>Likes</th>
+              </tr>
+              {posts &&
+                posts.map((post, index) => (
+                  <tr key={index} style={{ cursor: 'pointer' }}>
                     <td>
                       <div className="custom-checkbox custom-control">
-                        <input type="checkbox" data-checkboxes="mygroup" className="custom-control-input" id="checkbox-2" />
-                        <label htmlFor="checkbox-2" className="custom-control-label">&nbsp;</label>
+                        <input
+                          type="checkbox"
+                          data-checkboxes="mygroup"
+                          className="custom-control-input"
+                          id="checkbox-2"
+                        />
+                        <label
+                          htmlFor="checkbox-2"
+                          className="custom-control-label"
+                        >
+                          &nbsp;
+                        </label>
                       </div>
                     </td>
-                    <td onClick={e => navigate(`/post/edit-post/${post.id}`)}>
+                    <td onClick={(e) => navigate(`/post/edit-post/${post.id}`)}>
                       {post.title}
                     </td>
-                    <td onClick={e => navigate(`/post/edit-post/${post.id}`)}>
+                    <td onClick={(e) => navigate(`/post/edit-post/${post.id}`)}>
                       <p>{post.status}</p>
                     </td>
-                    <td onClick={e => navigate(`/post/edit-post/${post.id}`)}>{new Date(post.createdAt).toDateString()}</td>
+                    <td onClick={(e) => navigate(`/post/edit-post/${post.id}`)}>
+                      {new Date(post.createdAt).toDateString()}
+                    </td>
                     <td>{post.views.length}</td>
                     <td>{post.saves.length}</td>
                     <td>{post.likes.length}</td>
                   </tr>
-                ))
-              }
-            </tbody></Table>
+                ))}
+            </tbody>
+          </Table>
         </div>
         <div className="float-right">
-          <Pagination>
-            {items}
-          </Pagination>
+          <Pagination>{items}</Pagination>
           {/* <nav>
             <ul className="pagination">
               <li className="page-item disabled">
@@ -135,7 +156,7 @@ const PostTable: FC<PostPayload> = ({ posts, theme }) => {
         </div>
       </Card.Body>
     </Card>
-  )
+  );
 };
 
 export default PostTable;

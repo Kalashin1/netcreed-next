@@ -7,12 +7,11 @@ import { db } from '../../Firebase-settings';
 import { collection, getDocs, query, where } from '@firebase/firestore';
 import { ThemeContext } from '../_app';
 
-
 const PostDashboard: NextPage = () => {
   let theme: string = useContext(ThemeContext).theme;
 
   let userId: string;
-  const [posts, setPosts] = useState<Article[]>([])
+  const [posts, setPosts] = useState<Article[]>([]);
 
   if (typeof window !== 'undefined') {
     userId = localStorage.getItem('userId')!;
@@ -20,21 +19,25 @@ const PostDashboard: NextPage = () => {
 
   useEffect(() => {
     const getDocuments = async () => {
-      const q = query(collection(db, 'articles'), where('author.id', '==', `${userId}`));
+      const q = query(
+        collection(db, 'articles'),
+        where('author.id', '==', `${userId}`)
+      );
       const docRes = await getDocs(q);
-      const articles = docRes.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Article[];
+      const articles = docRes.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id
+      })) as Article[];
       console.log(articles);
       setPosts(articles);
-    }
-    getDocuments()
-  }, [])
+    };
+    getDocuments();
+  }, []);
 
   return (
     //@ts-ignore
-    <Layout>
-      { posts && (<Posts posts={posts} theme={theme} />) }
-    </Layout>
-  )
+    <Layout>{posts && <Posts posts={posts} theme={theme} />}</Layout>
+  );
 };
 
 export default PostDashboard;

@@ -1,0 +1,14 @@
+# Ignore artifacts
+node_modules
+.firebase
+.next
+.out
+.firebasesrc
+.gitignore
+firebase-debug.log
+firebase.json
+firestore.indexes.json
+firestore.rules
+storage.rules
+ui-debug.log
+public

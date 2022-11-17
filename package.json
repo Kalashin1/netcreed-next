@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "firebase deploy --only hosting:netcreed"
+    "deploy": "firebase deploy --only hosting:netcreed",
+    "prettier-format-page": "prettier --config .prettierrc ./pages/** --write",
+    "prettier-format-comp": "prettier --config .prettierrc ./components/**/*.ts --write",
+    "prettier-format-helper": "prettier --config .prettierrc './helper.ts' --write",
+    "prettier-format-types": "prettier --config .prettierrc './types.ts' --write"
   },
   "dependencies": {
     "@types/highlight.js": "^10.1.0",
@@ -30,6 +34,7 @@
     "@types/react-dom": "18.0.6",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
+    "prettier": "^2.7.1",
     "typescript": "4.7.4"
   }
 }

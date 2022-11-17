@@ -5,16 +5,18 @@ import LoginForm from '../components/Login-Form';
 import { Container, Row, Col } from 'react-bootstrap';
 import { ThemeContext } from './_app';
 
-const LoginPage: NextPage = ()=>{
+const LoginPage: NextPage = () => {
   let theme: string = useContext(ThemeContext).theme;
   return (
     //@ts-ignore
     <Layout>
-      <div className='text-center my-4'>
-        <h3 className={`text-${theme === "dark" ? 'light': 'dark'}`}>Login To your account</h3>
+      <div className="text-center my-4">
+        <h3 className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
+          Login To your account
+        </h3>
       </div>
-      <Container className='my-4'>
-        <Row className='justify-content-center'>
+      <Container className="my-4">
+        <Row className="justify-content-center">
           <Col md={6}>
             <Container>
               <LoginForm />
@@ -23,7 +25,7 @@ const LoginPage: NextPage = ()=>{
         </Row>
       </Container>
     </Layout>
-  )
+  );
 };
 
 export default LoginPage;

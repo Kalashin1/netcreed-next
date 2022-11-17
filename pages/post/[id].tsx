@@ -11,7 +11,7 @@ export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
   const { article, articles } = await getArticle(id);
   return {
-    props: { article, articles }
+    props: { article, articles },
   };
 };
 

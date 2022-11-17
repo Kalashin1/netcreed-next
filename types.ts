@@ -75,11 +75,11 @@ export interface CourseSchema extends DocumentData {
   lessons: LessonRef | [];
   createdAt: number;
   updatedAt?: number;
-};
+}
 
 export type CourseRef = Pick<CourseSchema, 'id' | 'slug' | 'url'>;
 
-export interface LessonSchema extends DocumentData{
+export interface LessonSchema extends DocumentData {
   id?: string;
   title: string;
   slug?: string;
@@ -91,8 +91,7 @@ export interface LessonSchema extends DocumentData{
   updatedAt?: number;
   courseContent: string;
   url?: string;
-};
-
+}
 
 export type NOTIFICATION_TYPE = 'FOLLOW' | 'COMMENT' | 'LIKE';
 
@@ -107,6 +106,6 @@ export interface NotificiationSchema extends DocumentData {
 }
 
 export interface UserProfile extends Author {
-  bio: string
-  creator: boolean
+  bio: string;
+  creator: boolean;
 }

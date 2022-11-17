@@ -37,7 +37,7 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
                     style={{
                       cursor: 'pointer',
                       height: '200px',
-                      objectFit: 'cover'
+                      objectFit: 'cover',
                     }}
                     className="img-fluid"
                     src={post.coverPhoto}

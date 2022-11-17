@@ -61,7 +61,7 @@ const UserProfile: FC = () => {
                 profilePhoto={user.profilePhoto!}
                 headline={user.headline!}
                 id={user.id!}
-                dev={user.dev ? user.dev: ''}
+                dev={user.dev ? user.dev : ''}
               />
             )}
             {user && (
@@ -158,7 +158,7 @@ const UserProfile: FC = () => {
                         onClick={(e: any) => navigate(`/post/${article.id}`)}
                         style={{ cursor: 'pointer' }}
                         dangerouslySetInnerHTML={{
-                          __html: marked.marked(article.description)
+                          __html: marked.marked(article.description),
                         }}
                       ></p>
                       <div

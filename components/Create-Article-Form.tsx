@@ -5,7 +5,7 @@ import {
   useRef,
   MutableRefObject,
   FormEvent,
-  useContext
+  useContext,
 } from 'react';
 import { User as _User } from '../types';
 import { useRouter } from 'next/router';

@@ -6,7 +6,7 @@ import {
   collection,
   where,
   orderBy,
-  DocumentReference
+  DocumentReference,
 } from '@firebase/firestore';
 import { db, auth } from './Firebase-settings';
 import { User as AuthUser } from '@firebase/auth';
@@ -23,7 +23,7 @@ import {
   CourseRef,
   ARTICLE_ENGAGEMENT,
   NOTIFICATION_TYPE,
-  NotificiationSchema
+  NotificiationSchema,
 } from './types';
 import { NextRouter } from 'next/router';
 import { getDoc, getDocs, limit, query, setDoc } from 'firebase/firestore';
@@ -33,7 +33,7 @@ import {
   sendEmailVerification,
   signInWithPopup,
   updateProfile,
-  UserProfile
+  UserProfile,
 } from 'firebase/auth';
 import slugify from 'slugify';
 
@@ -48,7 +48,7 @@ export const uploadImage = async (file: HTMLInputElement, folder: string) => {
   const articleImagesRef = ref(storageRef, `${folder}/${name}`);
 
   const metadata = {
-    contentType: 'image/jpeg'
+    contentType: 'image/jpeg',
   };
 
   const res = await uploadBytes(articleImagesRef, file.files![0], metadata);
@@ -83,14 +83,14 @@ export const tags = [
   { label: 'MongoDB', value: 'mongodb' },
   { label: 'SQL', value: 'sql' },
   { label: 'Dart', value: 'dart' },
-  { label: 'Flutter', value: 'flutter' }
+  { label: 'Flutter', value: 'flutter' },
 ];
 
 export const categories = [
   { label: 'Programming', value: 'coding' },
   { label: 'UI/UX', value: 'ui/ux' },
   { label: 'Digital Marketing', value: 'digiMarketing' },
-  { label: 'Game Development', value: 'gameDev' }
+  { label: 'Game Development', value: 'gameDev' },
 ];
 
 interface EditArticlePayload {
@@ -125,7 +125,7 @@ export const updateArticle = async (
 
     console.log(imageUrl);
     const slug = slugify(article?.title!, {
-      lower: true
+      lower: true,
     });
 
     const articleUpdate: Partial<Article> = {
@@ -138,7 +138,7 @@ export const updateArticle = async (
       category: selectedCategory,
       status: staus!,
       url: `post/${article.id}`,
-      slug: `post/${slug}`
+      slug: `post/${slug}`,
     };
     await updateDoc(doc(db, 'articles', article.id), articleUpdate);
     setShowSpinner(true);
@@ -163,16 +163,14 @@ export const getUser = async (user: AuthUser): Promise<Author> => {
     github: userDoc.github,
     coverPhoto: userDoc.profilePhoto,
     email: userDoc.email,
-    id: document.id
+    id: document.id,
   };
 };
-
-
 
 export const getProfile = async (userId: string): Promise<UserProfile> => {
   const docRef = await doc(db, 'users', userId);
   const document = await getDoc(docRef);
-  const userDoc = await document.data() as User;
+  const userDoc = (await document.data()) as User;
   return {
     username: userDoc.username,
     phone: userDoc.phone,
@@ -183,7 +181,7 @@ export const getProfile = async (userId: string): Promise<UserProfile> => {
     email: userDoc.email,
     id: document.id,
     bio: userDoc.bio,
-    creator: userDoc.creator
+    creator: userDoc.creator,
   };
 };
 
@@ -213,18 +211,18 @@ export const createCourseFormHandler = async (
       photoUrl: imageUrl,
       status: 'SAVED',
       // @ts-ignore
-      title: title.value
+      title: title.value,
     };
 
     const slug = slugify(course.title!, {
-      lower: true
+      lower: true,
     });
 
     const courseDoc = await addDoc(collection(db, 'courses'), course);
     await updateDoc(doc(db, 'courses', courseDoc.id), {
       url: `course/${courseDoc.id}`,
       slug: `course/${slug}`,
-      updatedAt: new Date().getTime()
+      updatedAt: new Date().getTime(),
     });
     setShowSpinner(true);
     alert('Course created');
@@ -241,7 +239,7 @@ export const editCourseFormHandler = async (
 ) => {
   try {
     const slug = slugify(title, {
-      lower: true
+      lower: true,
     });
 
     const course: Partial<CourseSchema> = {
@@ -249,7 +247,7 @@ export const editCourseFormHandler = async (
       description: description,
       title,
       url: `course/${courseId}`,
-      slug: `course/${slug}`
+      slug: `course/${slug}`,
     };
 
     await updateDoc(doc(db, 'courses', courseId), course);
@@ -304,16 +302,16 @@ export const createArticleHandler = async (
       tags: selectedTags,
       category: selectedCategory,
       status: staus!,
-      views: []
+      views: [],
     };
     const articleDoc = await addDoc(collection(db, 'articles'), article);
     const slug = slugify(article?.title!, {
-      lower: true
+      lower: true,
     });
     await updateDoc(doc(db, 'articles', articleDoc.id), {
       url: `post/${articleDoc.id}`,
       slug: `post/${slug}`,
-      updatedAt: new Date().getTime()
+      updatedAt: new Date().getTime(),
     });
     setShowSpinner(true);
     alert('Article created');
@@ -348,7 +346,7 @@ export const signinWithGoogle = async (
       email: user.email,
       articles: [],
       createdAt: new Date().getTime(),
-      creator: creator
+      creator: creator,
     });
     alert('Your account has been created successfully');
     router.push('/profile');
@@ -373,7 +371,7 @@ export const createAccount = async (
       name: fullName.value,
       email: email.value.toLowerCase(),
       password: password.value,
-      confirmPassword: confirmPassword.value
+      confirmPassword: confirmPassword.value,
     };
 
     if (userPayload.password !== userPayload.confirmPassword) {
@@ -393,10 +391,10 @@ export const createAccount = async (
       email: userPayload.email,
       articles: [],
       createdAt: new Date().getTime(),
-      creator: creator
+      creator: creator,
     });
     await updateProfile(auth.currentUser!, {
-      displayName: userPayload.name
+      displayName: userPayload.name,
     });
     setShowSpinner(false);
     alert('Your account has been created successfully');
@@ -428,7 +426,7 @@ export const getCourses = async (): Promise<
     const _docRes = await getDocs(_q);
     const courses = _docRes.docs.map((doc) => ({
       ...doc.data(),
-      id: doc.id
+      id: doc.id,
     })) as CourseSchema[];
     return [courses, null];
   } catch (error: any) {
@@ -449,7 +447,7 @@ export const getLessonsByCourseId = async (
     const _docRes = await getDocs(_q);
     const lessons = _docRes.docs.map((doc) => ({
       ...doc.data(),
-      id: doc.id
+      id: doc.id,
     })) as LessonSchema[];
     console.log(lessons);
     return [lessons, null];
@@ -470,7 +468,7 @@ export const getLessons = async (
     const _docRes = await getDocs(_q);
     const lessons = _docRes.docs.map((doc) => ({
       ...doc.data(),
-      id: doc.id
+      id: doc.id,
     })) as LessonSchema[];
     return [lessons, null];
   } catch (error: any) {
@@ -491,14 +489,16 @@ export const getLesson = async (
   }
 };
 
-export const getCurrentUser = async (): Promise<[AuthUser|null, string|null]> => {
+export const getCurrentUser = async (): Promise<
+  [AuthUser | null, string | null]
+> => {
   try {
     const user = auth.currentUser;
     return [user, null];
   } catch (error: any) {
     return [null, error.message];
   }
-}
+};
 
 export const getArticle = async (id: string) => {
   const ref = doc(db, 'articles', id);
@@ -514,21 +514,24 @@ export const getArticle = async (id: string) => {
   const _docRes = await getDocs(_q);
   const articles = _docRes.docs.map((doc) => ({
     ...doc.data(),
-    id: doc.id
+    id: doc.id,
   })) as Article[];
   return { article, articles };
 };
 
-
 export const getUserArticles = async (user: UserProfile) => {
   delete user.bio, user.creator;
-  const q = query(collection(db, "articles"), where("author", "==", user), limit(7)); 
+  const q = query(
+    collection(db, 'articles'),
+    where('author', '==', user),
+    limit(7)
+  );
   const docs = await getDocs(q);
-  const articles = docs.docs.map((docRes) => ({ ...docRes.data(), id: docRes.id }) as Article);
+  const articles = docs.docs.map(
+    (docRes) => ({ ...docRes.data(), id: docRes.id } as Article)
+  );
   return articles;
 };
-
-
 
 export const convertToSlug = (text: string) => {
   return text
@@ -542,7 +545,7 @@ export const getArticles = async () => {
   const docRes = await getDocs(q);
   const articles = docRes.docs.map((doc) => ({
     ...doc.data(),
-    id: doc.id
+    id: doc.id,
   })) as Article[];
   const sQ = query(
     collection(db, 'articles'),
@@ -553,7 +556,7 @@ export const getArticles = async () => {
   const sQDocRef = await getDocs(sQ);
   const secArticles = sQDocRef.docs.map((doc) => ({
     ...doc.data(),
-    id: doc.id
+    id: doc.id,
   })) as Article[];
   return { articles, secArticles };
 };
@@ -575,7 +578,7 @@ export const createLessonFormHandler = async (
     const coursePayload: CourseRef = {
       id: course?.id,
       url: course?.url ? course?.url : '',
-      slug: course?.slug ? course?.slug : ''
+      slug: course?.slug ? course?.slug : '',
     };
 
     const lesson: LessonSchema = {
@@ -586,17 +589,17 @@ export const createLessonFormHandler = async (
       // @ts-ignore
       title: title.value,
       courseContent: content.value!,
-      createdAt: new Date().getTime()
+      createdAt: new Date().getTime(),
     };
 
     const lessonDoc = await addDoc(collection(db, 'lessons'), lesson);
     const slug = slugify(lesson.title, {
-      lower: true
+      lower: true,
     });
     await updateDoc(doc(db, 'lessons', lessonDoc.id), {
       url: `lessons/${lessonDoc.id}`,
       slug: `lessons/${slug}`,
-      updatedAt: new Date().getTime()
+      updatedAt: new Date().getTime(),
     });
     return [lessonDoc, null];
   } catch (error: any) {
@@ -620,11 +623,11 @@ export const editLessonFormHandler = async (
     const coursePayload: CourseRef = {
       id: course!.id,
       url: course!.url ? course?.url : '',
-      slug: course!.slug ? course?.slug : ''
+      slug: course!.slug ? course?.slug : '',
     };
 
     const slug = slugify(title, {
-      lower: true
+      lower: true,
     });
     const lesson: Partial<LessonSchema> = {
       course: coursePayload,
@@ -636,7 +639,7 @@ export const editLessonFormHandler = async (
       courseId: coursePayload?.id,
       url: `lessons/${_lesson}`,
       slug: `lessons/${slug}`,
-      updatedAt: new Date().getTime()
+      updatedAt: new Date().getTime(),
     };
     await updateDoc(doc(db, 'lessons', _lesson), lesson);
     return [true, null];
@@ -675,7 +678,7 @@ export const getUserWithoutID = async (): Promise<GetUserWithoutIdPayload> => {
       const docs = await getDocs(q);
       const articles = docs.docs.map((doc) => ({
         ...doc.data(),
-        id: doc.id
+        id: doc.id,
       })) as Article[];
 
       user.id = userDoc.id;
@@ -691,12 +694,12 @@ async function getFile() {
       {
         description: 'Images',
         accept: {
-          'image/*': ['.png', '.gif', '.jpeg', '.jpg']
-        }
-      }
+          'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
+        },
+      },
     ],
     excludeAcceptAllOption: true,
-    multiple: false
+    multiple: false,
   };
   try {
     // @ts-ignore
@@ -753,7 +756,7 @@ export const _updateProfile = async (form: HTMLFormElement, userId: string) => {
       github: github.value,
       twitter: twitter.value,
       linkedin: linkedin.value,
-      dev: dev.value
+      dev: dev.value,
     };
     await updateDoc(doc(db, 'users', userId), payload);
     return ['Your profile has been updated successfully!', null];
@@ -766,7 +769,7 @@ export const updateBio = async (form: HTMLFormElement, userId: string) => {
   try {
     const { bio } = form;
     const payload = {
-      bio: bio.value
+      bio: bio.value,
     };
     await updateDoc(doc(db, 'users', userId), payload);
     return ['Your bio has been updated successfully!', null];
@@ -834,8 +837,8 @@ export const toogleEngagement = async (
             github: user.github,
             coverPhoto: user.profilePhoto,
             email: user.email,
-            id: user.id
-          }
+            id: user.id,
+          },
         ];
         updateObj[type] = updatedEngagements;
         await updateDoc(doc(db, 'articles', article.id), { ...updateObj });
@@ -860,60 +863,63 @@ export const createNotification = async (
       userId,
       type,
       createdAt: new Date().getTime(),
-      isRead: false
-    }
+      isRead: false,
+    };
     await addDoc(collection(db, 'notifications'), notification);
     return [true, null];
   } catch (error: any) {
-    return [false, error.message]
+    return [false, error.message];
   }
-}
+};
 
 export const markNotificationAsRead = async (id: string) => {
   try {
     await updateDoc(doc(db, 'notifications', id), { isRead: true });
-    return true
+    return true;
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     return false;
   }
-}
+};
 
 export const getNotification = async (id: string) => {
   try {
     const docRef = doc(db, 'users', id);
     const document = await getDoc(docRef);
-    const notification = { ...document.data(), id: document.id }
-    return [notification, null]
+    const notification = { ...document.data(), id: document.id };
+    return [notification, null];
   } catch (error: any) {
-    return [null, error.message]
+    return [null, error.message];
   }
-}
+};
 
 export const getUserNotifications = async (userId: string) => {
   try {
-    const _q = query(collection(db, 'notifications'), orderBy('createdAt', 'desc'));
+    const _q = query(
+      collection(db, 'notifications'),
+      orderBy('createdAt', 'desc')
+    );
     const _docRes = await getDocs(_q);
     const notifications = _docRes.docs.map((doc) => ({
       ...doc.data(),
-      id: doc.id
+      id: doc.id,
     })) as NotificiationSchema[];
-    return [notifications, null]
+    return [notifications, null];
   } catch (error: any) {
-    return [null, error.message]
+    return [null, error.message];
   }
-}
+};
 
 export const markMultipleNotificationsAsRead = async (ids: string[]) => {
   try {
     ids.forEach(async (id: string) => {
       const res = await markNotificationAsRead(id);
-      if(!res) {
-      return [res, 'No notification with that id'];
+      if (!res) {
+        return [res, 'No notification with that id'];
       }
-    })
-    return [true, null]
+    });
+    return [true, null];
   } catch (error: any) {
-    return [false, error.message]
+    return [false, error.message];
   }
-}
+};

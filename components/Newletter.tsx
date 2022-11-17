@@ -16,7 +16,7 @@ const NewsLetter: FC = () => {
     e.preventDefault();
     await addDoc(collection(db, 'newsletter'), {
       name,
-      email
+      email,
     });
     alert('Newsletter registration successfull!');
     setShowSpiner(false);

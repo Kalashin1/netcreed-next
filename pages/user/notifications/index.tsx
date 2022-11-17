@@ -1,9 +1,9 @@
-import { NextPage } from "next";
-import Layout from "../../Layout";
-import { Container, Row, Col, ListGroup, Card } from "react-bootstrap";
-import NotificationsComponent from "../../../components/Notifcation";
-import { useContext } from "react";
-import { ThemeContext } from "../../_app";
+import { NextPage } from 'next';
+import Layout from '../../Layout';
+import { Container, Row, Col, ListGroup, Card } from 'react-bootstrap';
+import NotificationsComponent from '../../../components/Notifcation';
+import { useContext } from 'react';
+import { ThemeContext } from '../../_app';
 
 const Notification: NextPage = () => {
   const theme = useContext(ThemeContext).theme;
@@ -20,16 +20,31 @@ const Notification: NextPage = () => {
             <Col lg={4}>
               <ListGroup
                 variant="flush"
-                className={`text-${theme === 'dark' ? 'light' : 'dark'
-                  } bg-${theme}`}
+                className={`text-${
+                  theme === 'dark' ? 'light' : 'dark'
+                } bg-${theme}`}
               >
-                <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-                  } bg-${theme}`}>All</ListGroup.Item>
-                <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-                  } bg-${theme}`}>Posts</ListGroup.Item>
-                <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
+                <ListGroup.Item
+                  className={`text-${
+                    theme === 'dark' ? 'light' : 'dark'
                   } bg-${theme}`}
-                  >Messages</ListGroup.Item>
+                >
+                  All
+                </ListGroup.Item>
+                <ListGroup.Item
+                  className={`text-${
+                    theme === 'dark' ? 'light' : 'dark'
+                  } bg-${theme}`}
+                >
+                  Posts
+                </ListGroup.Item>
+                <ListGroup.Item
+                  className={`text-${
+                    theme === 'dark' ? 'light' : 'dark'
+                  } bg-${theme}`}
+                >
+                  Messages
+                </ListGroup.Item>
               </ListGroup>
             </Col>
             <Col lg={8}>
@@ -39,7 +54,7 @@ const Notification: NextPage = () => {
         </Container>
       </div>
     </Layout>
-  )
+  );
 };
 
 export default Notification;

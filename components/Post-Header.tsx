@@ -28,8 +28,9 @@ const PostHeader: FC<_Article> = ({ article }) => {
   return (
     <Container>
       <div
-        className={`jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-${theme} text-${theme === 'light' ? 'dark' : 'light'
-          } px-4 position-relative`}
+        className={`jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-${theme} text-${
+          theme === 'light' ? 'dark' : 'light'
+        } px-4 position-relative`}
       >
         <div className="h-100 tofront">
           <Row className="justify-content-between">
@@ -57,16 +58,19 @@ const PostHeader: FC<_Article> = ({ article }) => {
                   </a>
                 </p>
               )}
-              {article && article.tags.map((a: { value: string, label: string }) => (
-                <Badge className="mx-1 p-1" bg="primary" key={a.value}>{a.label}</Badge>
-              ))}
+              {article &&
+                article.tags.map((a: { value: string; label: string }) => (
+                  <Badge className="mx-1 p-1" bg="primary" key={a.value}>
+                    {a.label}
+                  </Badge>
+                ))}
               <h1 className="display-4 secondfont mb-3 font-weight-bold">
                 {article.title}
               </h1>
               <p
                 className="mb-3"
                 dangerouslySetInnerHTML={{
-                  __html: marked.marked(article.description)
+                  __html: marked.marked(article.description),
                 }}
               ></p>
               <div className="d-flex align-items-center">

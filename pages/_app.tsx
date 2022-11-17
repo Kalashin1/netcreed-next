@@ -18,7 +18,7 @@ export const ThemeContext = React.createContext<{
 }>({
   // @ts-ignore;
   // 'dark',
-  theme: 'dark'
+  theme: 'dark',
   //localStorage.getItem('theme')
 });
 

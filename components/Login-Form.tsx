@@ -4,13 +4,13 @@ import {
   useRef,
   MutableRefObject,
   FormEvent,
-  useContext
+  useContext,
 } from 'react';
 import { auth } from '../Firebase-settings';
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider
+  GoogleAuthProvider,
 } from '@firebase/auth';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../pages/_app';
@@ -51,7 +51,7 @@ const LoginForm: NextComponentType = () => {
       const { email, password } = form;
       const loginPayload: Record<string, string> = {
         email: email.value,
-        password: password.value
+        password: password.value,
       };
 
       const { user } = await signInWithEmailAndPassword(

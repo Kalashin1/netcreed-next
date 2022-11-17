@@ -26,7 +26,7 @@ const PostDashboard: NextPage = () => {
       const docRes = await getDocs(q);
       const articles = docRes.docs.map((doc) => ({
         ...doc.data(),
-        id: doc.id
+        id: doc.id,
       })) as Article[];
       console.log(articles);
       setPosts(articles);

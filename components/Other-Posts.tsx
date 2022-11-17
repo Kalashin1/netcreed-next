@@ -103,7 +103,7 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                     onClick={(e: any) => navigate(`/post/${article.id}`)}
                     style={{ cursor: 'pointer' }}
                     dangerouslySetInnerHTML={{
-                      __html: marked.marked(article.description)
+                      __html: marked.marked(article.description),
                     }}
                   ></p>
                   <div

@@ -13,20 +13,20 @@ import { User } from '../types';
 const links = [
   {
     text: 'Home',
-    route: '/'
+    route: '/',
   },
   {
     text: 'About',
-    route: '/about'
+    route: '/about',
   },
   {
     text: 'Category',
-    route: '/category'
+    route: '/category',
   },
   {
     text: 'Create Account',
-    route: '/signup'
-  }
+    route: '/signup',
+  },
 ] as const;
 
 type Props = {

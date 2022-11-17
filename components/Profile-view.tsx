@@ -31,8 +31,9 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
         <Row className="mt-sm-4">
           <Col md={12} lg={4}>
             <Card
-              className={`author-box text-${theme === 'dark' ? 'light' : 'dark'
-                }`}
+              className={`author-box text-${
+                theme === 'dark' ? 'light' : 'dark'
+              }`}
               bg={theme}
             >
               <Card.Body>
@@ -42,7 +43,7 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
                   }}
                 >
                   <img
@@ -175,8 +176,9 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                     className="mb-3 sm-d-flex justify-content-between"
                   >
                     <Card
-                      className={`p-4 text-${theme === 'dark' ? 'light' : 'dark'
-                        }`}
+                      className={`p-4 text-${
+                        theme === 'dark' ? 'light' : 'dark'
+                      }`}
                       bg={theme}
                     >
                       <h2 className="my-4 h4 font-weight-bold">
@@ -192,7 +194,7 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                       <p
                         onClick={(e: any) => navigate(`/post/${article.id}`)}
                         dangerouslySetInnerHTML={{
-                          __html: marked.marked(article.description)
+                          __html: marked.marked(article.description),
                         }}
                       ></p>
                       <div

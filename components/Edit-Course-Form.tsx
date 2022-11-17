@@ -6,7 +6,7 @@ import {
   useRef,
   useEffect,
   FC,
-  FormEvent
+  FormEvent,
 } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useRouter } from 'next/router';

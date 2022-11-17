@@ -6,7 +6,7 @@ import {
   useEffect,
   useState,
   FormEvent,
-  FC
+  FC,
 } from 'react';
 import { ThemeContext } from '../pages/_app';
 import { getCourses, editLessonFormHandler, getLesson } from '../helper';

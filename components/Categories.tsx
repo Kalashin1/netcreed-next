@@ -15,7 +15,7 @@ const Categories: NextComponentType = ({}) => {
                 backgroundImage: 'url(/assets/img/demo/1.jpg)',
                 height: '350px',
                 backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat'
+                backgroundRepeat: 'no-repeat',
               }}
             ></div>
             <div className="card-body px-0 pb-0 d-flex flex-column align-items-start">

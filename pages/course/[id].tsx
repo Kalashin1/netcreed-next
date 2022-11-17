@@ -22,7 +22,7 @@ export const getServerSideProps = async (context: any) => {
     console.log(lessonErr);
   }
   return {
-    props: { course, lessons }
+    props: { course, lessons },
   };
 };
 

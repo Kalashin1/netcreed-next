@@ -32,7 +32,7 @@ const ResetPassword: FC = () => {
       const { password, password_2 } = form;
       const payload = {
         password: password.value,
-        password_2: password_2.value
+        password_2: password_2.value,
       };
 
       if (payload.password !== password_2.value) {

@@ -22,7 +22,7 @@ const Header: FC<_Article> = ({ article }) => {
               <p
                 className="mb-3"
                 dangerouslySetInnerHTML={{
-                  __html: marked.marked(article.description)
+                  __html: marked.marked(article.description),
                 }}
               ></p>
               <Link href={`/post/${article.id}`} className="btn btn-dark">
@@ -34,7 +34,7 @@ const Header: FC<_Article> = ({ article }) => {
               className="col-md-6 d-none d-md-block pr-0"
               style={{
                 backgroundSize: 'cover',
-                backgroundImage: `url(${article.coverPhoto})`
+                backgroundImage: `url(${article.coverPhoto})`,
               }}
             >
               {' '}

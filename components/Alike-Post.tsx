@@ -43,7 +43,7 @@ const AlikePost: FC<Articles> = ({ articles }) => {
                   height: '150px',
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
                 }}
                 onClick={(e: any) => navigate(`/posts/${article?.id}`)}
               ></div>
@@ -103,7 +103,7 @@ const AlikePost: FC<Articles> = ({ articles }) => {
                   <p
                     onClick={(e: any) => navigate(`/post/${article.id}`)}
                     dangerouslySetInnerHTML={{
-                      __html: marked.marked(article.description)
+                      __html: marked.marked(article.description),
                     }}
                     style={{ cursor: 'pointer' }}
                   ></p>

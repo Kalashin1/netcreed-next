@@ -14,8 +14,8 @@ export const getServerSideProps = async () => {
   return {
     props: {
       articles,
-      alikePosts: secArticles
-    }
+      alikePosts: secArticles,
+    },
   };
 };
 

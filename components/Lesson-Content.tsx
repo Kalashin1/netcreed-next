@@ -15,7 +15,7 @@ marked.setOptions({
     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
     // return hljs.highlightAuto(code).value;
     return hljs.highlight(code, { language }).value;
-  }
+  },
 });
 
 const LessonContent: FC = () => {

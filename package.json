@@ -8,10 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "deploy": "firebase deploy --only hosting:netcreed",
-    "prettier-format-page": "prettier --config .prettierrc ./pages/** --write",
-    "prettier-format-comp": "prettier --config .prettierrc ./components/**/*.ts --write",
-    "prettier-format-helper": "prettier --config .prettierrc './helper.ts' --write",
-    "prettier-format-types": "prettier --config .prettierrc './types.ts' --write"
+    "prettier": "prettier --config .prettierrc ./pages/** --write && prettier --config .prettierrc ./components/** --write && prettier --config .prettierrc ./helper.ts --write && prettier --config .prettierrc ./types.ts --write"
   },
   "dependencies": {
     "@types/highlight.js": "^10.1.0",

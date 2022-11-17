@@ -13,7 +13,7 @@ import {
   where,
   query,
   limit,
-  orderBy
+  orderBy,
 } from 'firebase/firestore';
 
 const UserProfile: NextPage = () => {
@@ -41,7 +41,7 @@ const UserProfile: NextPage = () => {
         const docs = await getDocs(q);
         const articles = docs.docs.map((doc) => ({
           ...doc.data(),
-          id: doc.id
+          id: doc.id,
         })) as Article[];
         const $user = { ...docSnap.data(), id: docSnap.id };
         console.log($user);

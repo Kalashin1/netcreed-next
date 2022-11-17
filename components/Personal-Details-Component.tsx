@@ -14,7 +14,7 @@ const PersonalDetailsComponent: React.FC<appProps> = ({
   email,
   phone,
   github,
-  twitter
+  twitter,
 }) => {
   let theme: string = useContext(ThemeContext).theme;
   return (

@@ -14,8 +14,8 @@ export async function getServerSideProps() {
   }
   return {
     props: {
-      courses
-    } // will be passed to the page component as props
+      courses,
+    }, // will be passed to the page component as props
   };
 }
 

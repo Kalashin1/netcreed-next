@@ -38,7 +38,7 @@ const ProfileHeader: FC<Props> = ({
   linkedin,
   twitter,
   github,
-  dev
+  dev,
 }) => {
   const profilePhotoForm: MutableRefObject<null | HTMLFormElement> =
     useRef(null);
@@ -57,7 +57,7 @@ const ProfileHeader: FC<Props> = ({
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}
         >
           <img
@@ -84,7 +84,7 @@ const ProfileHeader: FC<Props> = ({
               position: 'relative',
               top: '-7rem',
               right: '-6rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={(e) => uploadPhoto(id, fileInput)}
           >

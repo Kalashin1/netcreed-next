@@ -11,8 +11,8 @@ export const getServerSideProps = async () => {
   const { articles } = await getArticles();
   return {
     props: {
-      articles
-    }
+      articles,
+    },
   };
 };
 

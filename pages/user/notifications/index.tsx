@@ -4,6 +4,7 @@ import { Container, Row, Col, ListGroup, Card } from 'react-bootstrap';
 import NotificationsComponent from '../../../components/Notifcation';
 import { useContext } from 'react';
 import { ThemeContext } from '../../_app';
+import React from 'react';
 
 const Notification: NextPage = () => {
   const theme = useContext(ThemeContext).theme;

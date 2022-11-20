@@ -49,7 +49,7 @@ const AlikePost: FC<Articles> = ({ articles }) => {
               ></div>
               <Card.Body className="d-flex flex-column align-items-start">
                 <h2
-                  className="h4 font-weight-bold"
+                  className={`h4 font-weight-bold`}
                   style={{ cursor: 'pointer' }}
                   onClick={(e: any) => navigate(`/posts/${article?.id}`)}
                 >
@@ -90,7 +90,6 @@ const AlikePost: FC<Articles> = ({ articles }) => {
                 >
                   <Card.Title className="mb-1 h4 font-weight-bold">
                     <a
-                      className="text-dark"
                       style={{ cursor: 'pointer' }}
                       onClick={(e: any) => {
                         e.preventDefault();

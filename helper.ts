@@ -6,7 +6,7 @@ import {
   collection,
   where,
   orderBy,
-  DocumentReference,
+  deleteDoc,
 } from '@firebase/firestore';
 import { db, auth } from './Firebase-settings';
 import { User as AuthUser } from '@firebase/auth';
@@ -24,6 +24,9 @@ import {
   ARTICLE_ENGAGEMENT,
   NOTIFICATION_TYPE,
   NotificiationSchema,
+  UserProfile as _UserProfile,
+  ArticleRef,
+  CreateCommentPayload,
 } from './types';
 import { NextRouter } from 'next/router';
 import { getDoc, getDocs, limit, query, setDoc } from 'firebase/firestore';
@@ -36,6 +39,7 @@ import {
   UserProfile,
 } from 'firebase/auth';
 import slugify from 'slugify';
+import { Comment } from './types';
 
 export const uploadImage = async (file: HTMLInputElement, folder: string) => {
   const extension = file.files![0].name.split('.')[1];
@@ -167,7 +171,7 @@ export const getUser = async (user: AuthUser): Promise<Author> => {
   };
 };
 
-export const getProfile = async (userId: string): Promise<UserProfile> => {
+export const getProfile = async (userId: string): Promise<_UserProfile> => {
   const docRef = await doc(db, 'users', userId);
   const document = await getDoc(docRef);
   const userDoc = (await document.data()) as User;
@@ -517,6 +521,21 @@ export const getArticle = async (id: string) => {
     id: doc.id,
   })) as Article[];
   return { article, articles };
+};
+
+
+export const getArticleRef = async (id: string) => {
+  const ref = doc(db, 'articles', id);
+  const docRes = await getDoc(ref);
+  const article = { ...docRes.data(), id: docRes.id } as Article;
+  const articleRef: ArticleRef = {
+    id: article.id,
+    slug: article.slug,
+    url: article.url,
+    coverPhoto: article.coverPhoto,
+    title: article.title
+  }
+  return { articleRef, article };
 };
 
 export const getUserArticles = async (user: UserProfile) => {
@@ -923,3 +942,76 @@ export const markMultipleNotificationsAsRead = async (ids: string[]) => {
     return [false, error.message];
   }
 };
+
+export const createComment = async ({
+  articleId,
+  body,
+  owner,
+  parentCommentId
+}: CreateCommentPayload): Promise<[boolean, string|null]> => {
+  try {
+    const { articleRef, article } = await getArticleRef(articleId);
+    let comments = article.comments ? article.comments: [];
+    const comment: Comment = parentCommentId ? {
+      article: articleRef,
+      articleId,
+      body,
+      likes: [],
+      createdAt: new Date().getTime(),
+      owner,
+      ownerId: owner.id,
+      id: randomBytes(4).toString('hex'),
+      parentComment: parentCommentId
+    } : {
+      article: articleRef,
+      articleId,
+      body,
+      likes: [],
+      createdAt: new Date().getTime(),
+      owner,
+      ownerId: owner.id,
+      id: randomBytes(4).toString('hex')
+    }
+    comments.push(comment);
+    await updateDoc(doc(db, 'articles', articleId), { comments });
+    return [true, null]
+  } catch (error: any) {
+    return [false, error.message]
+  }
+}
+
+export const updateComment = async (articleId: string, id: string, body: string): Promise<[boolean, string | null]> => {
+  try {
+    const { article } = await getArticleRef(articleId);
+    const comments = article.comments;
+    const comment = comments.find((c) => c.id === id);
+    if (comment) {
+      comment.body = body;
+      const filteredComments = comments.filter((c) => c.id !== comment.id);
+      filteredComments.push(comment);
+      await updateDoc(doc(db, 'articles', id), { comments: filteredComments });
+      return [true, null];
+    };
+    return [false, 'comment not found']
+  } catch (error: any) {
+    console.log(error)
+    return [false, error.message]
+  }
+}
+
+export const deleteComment = async (articleId: string, id: string) => {
+  try {
+    const { article } = await getArticleRef(articleId);
+    const comments = article.comments;
+    const comment = comments.find((c) => c.id === id);
+    if (comment) {
+      const filteredComments = comments.filter((c) => c.id !== comment.id);
+      await updateDoc(doc(db, 'articles', id), { comments: filteredComments });
+      return [true, null];
+    };
+    return [false, 'comment not found']
+  } catch (error: any) {
+    console.log(error)
+    return [false, error.message]
+  }
+}

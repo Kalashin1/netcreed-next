@@ -1,11 +1,16 @@
 import Layout from '../Layout';
 import PostHeader from '../../components/Post-Header';
 import PostContent from '../../components/Post-Content';
+import AddComment from "../../components/Comment-Form";
+import Comments from "../../components/Comments";
 import AlikePost from '../../components/Alike-Post';
+import { Comment } from '../../types';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import AppCss from '../app.module.css';
-import { getArticle } from '../../helper';
+import { useContext, useEffect, useState } from 'react';
+import { ThemeContext } from '../_app';
+import { getArticle, getCurrentUser, getProfile } from '../../helper';
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
@@ -17,7 +22,24 @@ export const getServerSideProps = async (context: any) => {
 
 // @ts-ignore
 const Post: NextPage = ({ article, articles }) => {
-  // console.log(article);
+  const theme = useContext(ThemeContext).theme;
+  const [userId, setUserId] = useState<string>();
+  const [userPhoto, setUserPhoto] = useState('');
+
+  console.log(article.comments)
+
+  useEffect(() => {
+    const setUp = async () => {
+      const [currentUser, err] = await getCurrentUser();
+      if (currentUser) {
+        setUserId(currentUser.uid);
+        const userProfile = await getProfile(currentUser.uid)
+        setUserPhoto(userProfile.coverPhoto);
+      }
+    }
+
+    setUp()
+  }, [])
   return (
     // @ts-ignore
     <Layout>
@@ -60,6 +82,24 @@ const Post: NextPage = ({ article, articles }) => {
       <div className={AppCss.body}>
         {article && <PostHeader article={article} />}
         {article && <PostContent article={article} />}
+        <div className="my-4">
+          <h3 className={`text-left ml-4 mb-4 text-${theme === "dark" ? "light" : "dark"}`}>Add Comment</h3>
+          <AddComment
+            articleId={article?.id}
+            userId={userId ? userId : ''}
+            coverPhoto={userPhoto ? userPhoto : ''}
+          />
+        </div>
+        <div className='my-6'>
+          <h3 className={`text-left ml-4 mb-4 text-${theme === "dark" ? "light" : "dark"}`}>Comments</h3>
+          { article && article.comments.length > 0 && article.comments.map((comment: Comment) => (
+            <Comments
+              key={comment.id}
+              body={comment?.body}
+              owner={comment?.owner}
+            />
+          ))}
+        </div>
         <div className="my-4">
           <AlikePost articles={articles.slice(1, articles.length)} />
         </div>

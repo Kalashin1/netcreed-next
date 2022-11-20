@@ -26,6 +26,20 @@ export interface User extends DocumentData {
   savedArticles: Array<Article>;
 }
 
+export type Comment = {
+  owner: UserProfile;
+  ownerId: string;
+  article: ArticleRef;
+  articleId: string;
+  likes: Author[];
+  createdAt: number;
+  updatedAt?: number;
+  body: string;
+  id: string;
+  parentComment?: string
+  childComments?: Comment;
+}
+
 export type Author = Pick<
   User,
   | 'name'
@@ -56,7 +70,17 @@ export interface Article extends DocumentData {
   saves: Author[];
   url: string;
   status: ARTICLE_STATUS;
+  comments: Comment[]
 }
+
+export type CreateCommentPayload = {
+  articleId: string,
+  body: string,
+  owner: UserProfile,
+  parentCommentId?: string
+}
+
+export type ArticleRef = Pick<Article, 'id' | 'url' | 'slug' | 'coverPhoto' | 'title'>
 
 export type engagement = {
   user: Author;

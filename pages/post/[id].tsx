@@ -82,7 +82,7 @@ const Post: NextPage = ({ article, articles }) => {
       <div className={AppCss.body}>
         {article && <PostHeader article={article} />}
         {article && <PostContent article={article} />}
-        <div className="my-4">
+        {/* <div className="my-4">
           <h3 className={`text-left ml-4 mb-4 text-${theme === "dark" ? "light" : "dark"}`}>Add Comment</h3>
           <AddComment
             articleId={article?.id}
@@ -99,7 +99,7 @@ const Post: NextPage = ({ article, articles }) => {
               owner={comment?.owner}
             />
           ))}
-        </div>
+        </div> */}
         <div className="my-4">
           <AlikePost articles={articles.slice(1, articles.length)} />
         </div>

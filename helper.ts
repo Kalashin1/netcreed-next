@@ -523,7 +523,6 @@ export const getArticle = async (id: string) => {
   return { article, articles };
 };
 
-
 export const getArticleRef = async (id: string) => {
   const ref = doc(db, 'articles', id);
   const docRes = await getDoc(ref);
@@ -533,8 +532,8 @@ export const getArticleRef = async (id: string) => {
     slug: article.slug,
     url: article.url,
     coverPhoto: article.coverPhoto,
-    title: article.title
-  }
+    title: article.title,
+  };
   return { articleRef, article };
 };
 
@@ -947,40 +946,46 @@ export const createComment = async ({
   articleId,
   body,
   owner,
-  parentCommentId
-}: CreateCommentPayload): Promise<[boolean, string|null]> => {
+  parentCommentId,
+}: CreateCommentPayload): Promise<[boolean, string | null]> => {
   try {
     const { articleRef, article } = await getArticleRef(articleId);
-    let comments = article.comments ? article.comments: [];
-    const comment: Comment = parentCommentId ? {
-      article: articleRef,
-      articleId,
-      body,
-      likes: [],
-      createdAt: new Date().getTime(),
-      owner,
-      ownerId: owner.id,
-      id: randomBytes(4).toString('hex'),
-      parentComment: parentCommentId
-    } : {
-      article: articleRef,
-      articleId,
-      body,
-      likes: [],
-      createdAt: new Date().getTime(),
-      owner,
-      ownerId: owner.id,
-      id: randomBytes(4).toString('hex')
-    }
+    let comments = article.comments ? article.comments : [];
+    const comment: Comment = parentCommentId
+      ? {
+          article: articleRef,
+          articleId,
+          body,
+          likes: [],
+          createdAt: new Date().getTime(),
+          owner,
+          ownerId: owner.id,
+          id: randomBytes(4).toString('hex'),
+          parentComment: parentCommentId,
+        }
+      : {
+          article: articleRef,
+          articleId,
+          body,
+          likes: [],
+          createdAt: new Date().getTime(),
+          owner,
+          ownerId: owner.id,
+          id: randomBytes(4).toString('hex'),
+        };
     comments.push(comment);
     await updateDoc(doc(db, 'articles', articleId), { comments });
-    return [true, null]
+    return [true, null];
   } catch (error: any) {
-    return [false, error.message]
+    return [false, error.message];
   }
-}
+};
 
-export const updateComment = async (articleId: string, id: string, body: string): Promise<[boolean, string | null]> => {
+export const updateComment = async (
+  articleId: string,
+  id: string,
+  body: string
+): Promise<[boolean, string | null]> => {
   try {
     const { article } = await getArticleRef(articleId);
     const comments = article.comments;
@@ -991,13 +996,13 @@ export const updateComment = async (articleId: string, id: string, body: string)
       filteredComments.push(comment);
       await updateDoc(doc(db, 'articles', id), { comments: filteredComments });
       return [true, null];
-    };
-    return [false, 'comment not found']
+    }
+    return [false, 'comment not found'];
   } catch (error: any) {
-    console.log(error)
-    return [false, error.message]
+    console.log(error);
+    return [false, error.message];
   }
-}
+};
 
 export const deleteComment = async (articleId: string, id: string) => {
   try {
@@ -1008,10 +1013,10 @@ export const deleteComment = async (articleId: string, id: string) => {
       const filteredComments = comments.filter((c) => c.id !== comment.id);
       await updateDoc(doc(db, 'articles', id), { comments: filteredComments });
       return [true, null];
-    };
-    return [false, 'comment not found']
+    }
+    return [false, 'comment not found'];
   } catch (error: any) {
-    console.log(error)
-    return [false, error.message]
+    console.log(error);
+    return [false, error.message];
   }
-}
+};

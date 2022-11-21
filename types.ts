@@ -37,7 +37,7 @@ export type Comment = {
   body: string;
   id: string;
   parentComment?: string;
-  childComments?: Comment;
+  childComments?: Comment[];
 };
 
 export type Author = Pick<

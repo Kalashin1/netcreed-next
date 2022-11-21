@@ -27,6 +27,7 @@ const AddComment: FC<Props> = ({
     if (!userProfile) {
       router.push('/login');
     }
+    console.log(parentCommentId);
     const [res, err] = await createComment({
       articleId,
       body,

@@ -76,7 +76,7 @@ const PostHeader: FC<_Article> = ({ article }) => {
               <div className="d-flex align-items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  className="rounded-circle "
+                  className="rounded-circle"
                   height="50"
                   onClick={(e) => navigate(`/user/${article.author.id}`)}
                   width="50"

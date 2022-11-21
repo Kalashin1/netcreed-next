@@ -54,7 +54,6 @@ const PostContent: FC<_Article> = ({ article }) => {
   //   setUp();
   // }, [article.id])
 
-  console.log(article.views);
   return (
     <Container className="pt-4 pb-4">
       <Row className="justify-content-center">

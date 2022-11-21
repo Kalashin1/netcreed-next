@@ -1,8 +1,8 @@
 import Layout from '../Layout';
 import PostHeader from '../../components/Post-Header';
 import PostContent from '../../components/Post-Content';
-import AddComment from "../../components/Comment-Form";
-import Comments from "../../components/Comments";
+import AddComment from '../../components/Comment-Form';
+import Comments from '../../components/Comments';
 import AlikePost from '../../components/Alike-Post';
 import { Comment } from '../../types';
 import { NextPage } from 'next';
@@ -26,20 +26,18 @@ const Post: NextPage = ({ article, articles }) => {
   const [userId, setUserId] = useState<string>();
   const [userPhoto, setUserPhoto] = useState('');
 
-  console.log(article.comments)
-
   useEffect(() => {
+    console.log(article.comments);
     const setUp = async () => {
       const [currentUser, err] = await getCurrentUser();
       if (currentUser) {
         setUserId(currentUser.uid);
-        const userProfile = await getProfile(currentUser.uid)
+        const userProfile = await getProfile(currentUser.uid);
         setUserPhoto(userProfile.coverPhoto);
       }
-    }
-
-    setUp()
-  }, [])
+    };
+    setUp();
+  }, []);
   return (
     // @ts-ignore
     <Layout>
@@ -92,11 +90,16 @@ const Post: NextPage = ({ article, articles }) => {
         </div>
         <div className='my-6'>
           <h3 className={`text-left ml-4 mb-4 text-${theme === "dark" ? "light" : "dark"}`}>Comments</h3>
-          { article && article.comments.length > 0 && article.comments.map((comment: Comment) => (
+          { article && article.comments && article.comments.length > 0 && article.comments.filter((c: Comment) => typeof c.parentComment === "undefined").map((comment: Comment) => (
             <Comments
               key={comment.id}
+              parentCommentId={comment.parentComment}
+              commentId={comment.id}
+              articleId={article?.id}
               body={comment?.body}
+              createdAt={comment.createdAt}
               owner={comment?.owner}
+              likes={comment.likes.length ? comment.likes.length: 0}
             />
           ))}
         </div> */}

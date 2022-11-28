@@ -21,6 +21,7 @@ import {
 } from '../helper';
 import FavoriteOutlined from './svg/favorite-outline';
 import FavoriteFilled from './svg/favorite-filled';
+import CommentIcon from './svg/comment';
 const marked = require('marked');
 
 import EclipseVeritical from './svg/eclipse';
@@ -126,7 +127,8 @@ const Comment: FC<Props> = ({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="rounded-circle "
-            style={{ objectFit: 'cover' }}
+            onClick={(e) => router.push('/user/' + owner.id)}
+            style={{ objectFit: 'cover', cursor: 'pointer' }}
             width={60}
             height={60}
             src={owner?.coverPhoto}
@@ -149,14 +151,11 @@ const Comment: FC<Props> = ({
                   <Dropdown.Toggle
                     variant={theme === 'dark' ? 'light' : 'dark'}
                     id="dropdown-basic"
-                  ></Dropdown.Toggle>
+                  >
+                    Actions
+                  </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item
-                      onClick={(e) => updateShowCommentForm(!showCommentForm)}
-                    >
-                      Add Comment
-                    </Dropdown.Item>
                     {id && id === owner.id && (
                       <Dropdown.Item
                         onClick={(e) => updateEditButton(!showEditButton)}
@@ -215,7 +214,6 @@ const Comment: FC<Props> = ({
               >
                 <CommentForm
                   articleId={articleId}
-                  coverPhoto={owner?.coverPhoto}
                   userId={owner?.id}
                   parentCommentId={commentId}
                 />
@@ -224,9 +222,9 @@ const Comment: FC<Props> = ({
               ''
             )}
           </Card>
-          <div className="ml-2 p-2">
+          <div className="ml-2 p-2 d-flex">
             <div
-              className="d-flex align-items-center"
+              className="d-flex align-items-center mr-4"
               onClick={toggleCommentLikes}
             >
               {hasLiked ? <FavoriteFilled /> : <FavoriteOutlined />}
@@ -235,6 +233,12 @@ const Comment: FC<Props> = ({
               >
                 {_likes}
               </span>
+            </div>
+            <div
+              className="d-flex align-items-center ml-2"
+              onClick={(e) => updateShowCommentForm(!showCommentForm)}
+            >
+              <CommentIcon />
             </div>
           </div>
           <div className="ml-4 my-4 border-left">

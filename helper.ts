@@ -27,6 +27,8 @@ import {
   UserProfile as _UserProfile,
   ArticleRef,
   CreateCommentPayload,
+  USER_ENGAGEMENT_TYPE,
+  USER_ENGAGEMENT_ACTION_TYPE,
 } from './types';
 import { NextRouter } from 'next/router';
 import { getDoc, getDocs, limit, query, setDoc } from 'firebase/firestore';
@@ -39,10 +41,14 @@ import {
   UserProfile,
 } from 'firebase/auth';
 import slugify from 'slugify';
-import { Comment } from './types';
+import { Comment, UserEngagements, engagement } from './types';
 
 export const uploadImage = async (file: HTMLInputElement, folder: string) => {
-  const extension = file.files![0].name.split('.')[1];
+  console.log(file);
+  const extension = file.files
+    ? file.files![0].name.split('.')[1]
+    : file.name.split('.')[1];
+  const blob = file as unknown as Blob;
 
   const key = randomBytes(16).toString('hex');
   const name = `${key}.${extension}`;
@@ -55,7 +61,11 @@ export const uploadImage = async (file: HTMLInputElement, folder: string) => {
     contentType: 'image/jpeg',
   };
 
-  const res = await uploadBytes(articleImagesRef, file.files![0], metadata);
+  const res = await uploadBytes(
+    articleImagesRef,
+    file.files ? file.files![0] : blob,
+    metadata
+  );
 
   const imageUrl = await getDownloadURL(articleImagesRef);
 
@@ -186,6 +196,17 @@ export const getProfile = async (userId: string): Promise<_UserProfile> => {
     id: document.id,
     bio: userDoc.bio,
     creator: userDoc.creator,
+  };
+};
+
+export const getUserEngagements = async (userId: string) => {
+  const docRef = await doc(db, 'users', userId);
+  const document = await getDoc(docRef);
+  const userDoc = (await document.data()) as User;
+  return {
+    id: document.id,
+    followers: userDoc.followers ?? [],
+    following: userDoc.following ?? [],
   };
 };
 
@@ -746,7 +767,7 @@ export const uploadProfilePhoto = async (
       try {
         file = input.files![0];
         // console.log(file)
-        const url = await uploadImage(file, 'profile-photo');
+        const url = await uploadImage(input, 'profile-photo');
 
         await updateDoc(doc(db, 'users', userId), { profilePhoto: url });
         await updateProfile(auth.currentUser!, { photoURL: url });
@@ -925,6 +946,82 @@ export const getUserNotifications = async (userId: string) => {
     return [notifications, null];
   } catch (error: any) {
     return [null, error.message];
+  }
+};
+
+export const hasUserEngagedWithUser = async (
+  userEngagements: UserEngagements,
+  userTocheck: string,
+  engagementType: USER_ENGAGEMENT_TYPE
+) => {
+  // @ts-ignore
+  const engagement = userEngagements[engagementType.toLowerCase()] as Author[];
+  const user = engagement.find((u: Author) => u.id === userTocheck);
+  if (user) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const engageUser = async (
+  userId: string,
+  engagementAction: USER_ENGAGEMENT_ACTION_TYPE
+): Promise<[number | null, Author[][], string | null]> => {
+  try {
+    const [currentUser] = await getCurrentUser();
+    if (!currentUser) throw Error('Please login');
+    const user = await getUser(currentUser);
+    const otherUser = (await getProfile(userId)) as Partial<_UserProfile>;
+    const userEngagements = await getUserEngagements(user.id);
+    const otherUserEngagements = await getUserEngagements(userId);
+    if (engagementAction === 'FOLLOW') {
+      // * hasUserEngaged
+      if (
+        (await hasUserEngagedWithUser(userEngagements, userId, 'FOLLOWING')) &&
+        (await hasUserEngagedWithUser(
+          otherUserEngagements,
+          currentUser.uid,
+          'FOLLOWERS'
+        ))
+      ) {
+        // * Has to work on this
+        const updatedEngagements = userEngagements['following'].filter(
+          (en) => en.id !== userId
+        );
+        const otherUserUpdatedEngagements = otherUserEngagements[
+          'followers'
+        ].filter((en) => en.id !== currentUser.uid);
+        await updateDoc(doc(db, 'users', user.id), {
+          following: [...updatedEngagements],
+        });
+        await updateDoc(doc(db, 'users', otherUser.id!), {
+          followers: [...otherUserUpdatedEngagements],
+        });
+        const res = [updatedEngagements, otherUserUpdatedEngagements];
+        return [-1, [updatedEngagements, otherUserUpdatedEngagements], null];
+      } else {
+        delete otherUser.bio, otherUser.creator;
+        userEngagements['following'].push(otherUser as Author);
+        otherUserEngagements['followers'].push(user);
+        await updateDoc(doc(db, 'users', user.id), {
+          following: [...userEngagements['following']],
+        });
+        await updateDoc(doc(db, 'users', otherUser.id!), {
+          followers: [...otherUserEngagements['followers']],
+        });
+        return [
+          1,
+          [userEngagements['following'], otherUserEngagements['followers']],
+          null,
+        ];
+      }
+    } else {
+      // * account for blocked users
+      return [null, [], 'has not accounted for blocked users'];
+    }
+  } catch (error: any) {
+    return [null, [], error.message];
   }
 };
 

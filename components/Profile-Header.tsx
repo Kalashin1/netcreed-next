@@ -2,7 +2,9 @@
 import { FC, MutableRefObject, useContext, useRef } from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
 import { uploadProfilePhoto } from '../helper';
+import { NextRouter, useRouter } from 'next/router';
 import { ThemeContext } from '../pages/_app';
+import { Author } from '../types';
 
 type Props = {
   name: string;
@@ -14,16 +16,19 @@ type Props = {
   twitter: string;
   github: string;
   dev: string;
+  followers: Author[];
+  following: Author[];
 };
 
 const uploadPhoto = async (
   id: string,
-  fileInput: MutableRefObject<HTMLInputElement | null>
+  fileInput: MutableRefObject<HTMLInputElement | null>,
+  router: NextRouter
 ) => {
   const [res, _err] = await uploadProfilePhoto(id, fileInput.current!);
-  if (_err) {
+  if (!_err) {
     alert(res);
-    window.location.reload();
+    router.reload();
   } else {
     console.log(_err);
   }
@@ -39,10 +44,14 @@ const ProfileHeader: FC<Props> = ({
   twitter,
   github,
   dev,
+  followers,
+  following,
 }) => {
   const profilePhotoForm: MutableRefObject<null | HTMLFormElement> =
     useRef(null);
   const fileInput: MutableRefObject<null | HTMLInputElement> = useRef(null);
+
+  const router = useRouter();
 
   let theme: string = useContext(ThemeContext).theme;
   return (
@@ -86,7 +95,7 @@ const ProfileHeader: FC<Props> = ({
               right: '-6rem',
               cursor: 'pointer',
             }}
-            onClick={(e) => uploadPhoto(id, fileInput)}
+            onClick={(e) => uploadPhoto(id, fileInput, router)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -168,9 +177,9 @@ const ProfileHeader: FC<Props> = ({
             className="my-4"
           >
             <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-              } bg-${theme} d-flex justify-content-between`}><p>200</p><p>followers</p></ListGroup.Item>
+              } bg-${theme} d-flex justify-content-between`}><p>{followers.length}</p><p>followers</p></ListGroup.Item>
             <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-              } bg-${theme} d-flex justify-content-between`}><p>Following</p><p>100</p></ListGroup.Item>
+              } bg-${theme} d-flex justify-content-between`}><p>{following.length}</p><p>Following</p></ListGroup.Item>
             <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
               } bg-${theme} d-flex justify-content-between`}
             ><p>200</p><p>Articles</p></ListGroup.Item>

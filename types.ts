@@ -22,9 +22,20 @@ export interface User extends DocumentData {
   updatedAt?: number;
   followers: Author[];
   following: Author[];
+  blocked: Author[];
   articles: Array<Article>;
   savedArticles: Array<Article>;
 }
+
+export type USER_ENGAGEMENT_ACTION_TYPE = 'FOLLOW' | 'BLOCK';
+
+export type USER_ENGAGEMENT_TYPE = 'FOLLOWERS' | 'FOLLOWING';
+
+export type UserEngagements = {
+  id: string;
+  followers: Author[];
+  following: Author[];
+};
 
 export type Comment = {
   owner: UserProfile;

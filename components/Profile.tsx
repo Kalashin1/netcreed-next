@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext, FC } from 'react';
-import { User, Article } from '../types';
+import { User, Article, Author } from '../types';
 import { Tab, Tabs, Card, Row, Col, Container, Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import PersonalDetailsComponent from './Personal-Details-Component';
@@ -8,7 +8,7 @@ import { ThemeContext } from '../pages/_app';
 import Bio from './Bio';
 import ProfileHeader from './Profile-Header';
 import ProfileForm from './Profile-Form';
-import { getUserWithoutID } from '../helper';
+import { getUserWithoutID, getUserEngagements } from '../helper';
 
 // import Image from 'next/image';
 
@@ -28,22 +28,31 @@ const UserProfile: FC = () => {
   const [articles, setArticles] = useState(_article);
   const [key, setKey] = useState('home');
 
+  const [followers, setFollowers] = useState<Author[]>([]);
+  const [following, setFollowing] = useState<Author[]>([]);
+
+  const fetchUserEngagements = async (id: string) => {
+    const { followers, following } = await getUserEngagements(id);
+    setFollowers(followers);
+    setFollowing(following);
+  };
+
   useEffect(() => {
-    const getUser = async () => {
+    const setUp = async () => {
       const [payload, err] = await getUserWithoutID();
 
       if (!err) {
         setArticles(payload?.articles!);
         setUser(payload?.user!);
-      } else {
+        fetchUserEngagements(payload?.user?.id!);
+      } else if (err && err === 'Please login') {
+        window.location.replace('/login');
+      } else if (err && err !== 'Please login') {
         console.log(err);
-        if (err === 'Please login') {
-          router.push('/login');
-        }
       }
     };
 
-    getUser();
+    setUp();
   }, []);
 
   return (
@@ -62,6 +71,8 @@ const UserProfile: FC = () => {
                 headline={user.headline!}
                 id={user.id!}
                 dev={user.dev ? user.dev : ''}
+                followers={followers ?? []}
+                following={following && following}
               />
             )}
             {user && (

@@ -1,13 +1,13 @@
-import { FC } from 'react';
+/* eslint-disable @next/next/no-img-element */
+import { FC, useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, ListGroup } from 'react-bootstrap';
 import PersonalDetailsComponent from './Personal-Details-Component';
 import Image from 'next/image';
-import { Article, User as IUser } from '../types';
+import { Article, User as IUser, Author } from '../types';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import Categories from './Categories';
 import { useContext } from 'react';
 import { ThemeContext } from '../pages/_app';
+import { getUserEngagements, engageUser } from '../helper';
 import { Plus } from './svg/plus';
 const marked = require('marked');
 
@@ -19,11 +19,36 @@ type UserPropsType = {
 const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
   let theme: string = useContext(ThemeContext).theme;
 
+  const [followers, setFollowers] = useState<Author[]>([]);
+  const [following, setFollowing] = useState<Author[]>([]);
+
   const router = useRouter();
 
-  function navigate(route: string) {
+  const navigate = (route: string) => {
     router.push(route);
-  }
+  };
+
+  const _engageUser = async () => {
+    const [type, [, otherUserEngagement], err] = await engageUser(
+      user.id!,
+      'FOLLOW'
+    );
+    if (type) {
+      setFollowers(otherUserEngagement);
+    } else if (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchUserEngagements = async (id: string) => {
+    const { followers, following } = await getUserEngagements(id);
+    setFollowers(followers);
+    setFollowing(following);
+  };
+
+  useEffect(() => {
+    fetchUserEngagements(user.id!);
+  }, [user.id]);
 
   return (
     <div className="section">
@@ -124,17 +149,17 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                     </svg>
                   </a>
                   <div className="w-100 d-sm-none"></div>
-                  {/* <Button variant={`${theme === "dark" ? "light" : "dark"}`} className="mt-4 d-flex justify-content-between" style={{ width: '100%' }}>
+                  {/* <Button onClick={e => _engageUser()} variant={`${theme === "dark" ? "light" : "dark"}`} className="mt-4 d-flex justify-content-between" style={{ width: '100%' }}>
                     <div className="mx-1">Follow</div> {<Plus />}
-                  </Button>
-                  <ListGroup
+                  </Button> */}
+                  {/* <ListGroup
                     variant="flush"
                     className="my-4"
                     >
                     <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-                      } bg-${theme} d-flex justify-content-between`}><p>200</p><p>followers</p></ListGroup.Item>
+                      } bg-${theme} d-flex justify-content-between`}><p>{ followers.length }</p><p>followers</p></ListGroup.Item>
                     <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-                      } bg-${theme} d-flex justify-content-between`}><p>Following</p><p>100</p></ListGroup.Item>
+                      } bg-${theme} d-flex justify-content-between`}><p>{ following.length }</p><p>Following</p></ListGroup.Item>
                     <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
                       } bg-${theme} d-flex justify-content-between`}
                     ><p>200</p><p>Articles</p></ListGroup.Item>

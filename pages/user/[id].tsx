@@ -19,6 +19,7 @@ import {
 const UserProfile: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
+  console.log(id);
 
   let _user: Partial<User> = {};
   let _articles: Article[] = [];

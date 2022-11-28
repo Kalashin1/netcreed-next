@@ -80,29 +80,42 @@ const Post: NextPage = ({ article, articles }) => {
       <div className={AppCss.body}>
         {article && <PostHeader article={article} />}
         {article && <PostContent article={article} />}
-        {/* <div className="my-4">
-          <h3 className={`text-left ml-4 mb-4 text-${theme === "dark" ? "light" : "dark"}`}>Add Comment</h3>
-          <AddComment
-            articleId={article?.id}
-            userId={userId ? userId : ''}
-            coverPhoto={userPhoto ? userPhoto : ''}
-          />
+        <div className="my-4">
+          <h3
+            className={`text-left ml-4 mb-4 text-${
+              theme === 'dark' ? 'light' : 'dark'
+            }`}
+          >
+            Add Comment
+          </h3>
+          <AddComment articleId={article?.id} userId={userId ? userId : ''} />
         </div>
-        <div className='my-6'>
-          <h3 className={`text-left ml-4 mb-4 text-${theme === "dark" ? "light" : "dark"}`}>Comments</h3>
-          { article && article.comments && article.comments.length > 0 && article.comments.filter((c: Comment) => typeof c.parentComment === "undefined").map((comment: Comment) => (
-            <Comments
-              key={comment.id}
-              parentCommentId={comment.parentComment}
-              commentId={comment.id}
-              articleId={article?.id}
-              body={comment?.body}
-              createdAt={comment.createdAt}
-              owner={comment?.owner}
-              likes={comment.likes.length ? comment.likes.length: 0}
-            />
-          ))}
-        </div> */}
+        <div className="my-6">
+          <h3
+            className={`text-left ml-4 mb-4 text-${
+              theme === 'dark' ? 'light' : 'dark'
+            }`}
+          >
+            Comments
+          </h3>
+          {article &&
+            article.comments &&
+            article.comments.length > 0 &&
+            article.comments
+              .filter((c: Comment) => typeof c.parentComment === 'undefined')
+              .map((comment: Comment) => (
+                <Comments
+                  key={comment.id}
+                  parentCommentId={comment.parentComment}
+                  commentId={comment.id}
+                  articleId={article?.id}
+                  body={comment?.body}
+                  createdAt={comment.createdAt}
+                  owner={comment?.owner}
+                  likes={comment.likes.length ? comment.likes.length : 0}
+                />
+              ))}
+        </div>
         <div className="my-4">
           <AlikePost articles={articles.slice(1, articles.length)} />
         </div>

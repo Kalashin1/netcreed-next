@@ -8,15 +8,9 @@ import { useRouter } from 'next/router';
 type Props = {
   articleId: string;
   userId: string;
-  coverPhoto: string;
   parentCommentId?: string;
 };
-const AddComment: FC<Props> = ({
-  articleId,
-  userId,
-  coverPhoto,
-  parentCommentId,
-}) => {
+const AddComment: FC<Props> = ({ articleId, userId, parentCommentId }) => {
   const router = useRouter();
   const theme = useContext(ThemeContext).theme;
   const [body, setBody] = useState('');
@@ -45,20 +39,7 @@ const AddComment: FC<Props> = ({
   return (
     <Container>
       <Row>
-        <Col lg={1}>
-          {coverPhoto && (
-            <Image
-              style={{ objectFit: 'contain' }}
-              width={40}
-              height={30}
-              fluid
-              roundedCircle
-              src={coverPhoto}
-              alt="Title"
-            />
-          )}
-        </Col>
-        <Col xs={12} lg={11}>
+        <Col xs={12} lg={8}>
           <Form onSubmit={addComment}>
             <Form.Group
               className="mb-3"

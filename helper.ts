@@ -78,11 +78,15 @@ export const tags = [
   { label: 'JavaScript', value: 'js' },
   { label: 'HTML', value: 'html' },
   { label: 'C#', value: 'c#' },
+  { label: 'C++', value: 'c++' },
+  { label: 'C', value: 'c' },
+  { label: 'Rust', value: 'rust' },
   { label: 'Java', value: 'java' },
   { label: 'CSS', value: 'css' },
   { label: 'NodeJS', value: 'node' },
   { label: 'TypeScript', value: 'ts' },
   { label: 'Python', value: 'python' },
+  { label: 'Django', value: 'django' },
   { label: 'React', value: 'react' },
   { label: 'React Native', value: 'react-native' },
   { label: 'Firebase', value: 'firebase' },
@@ -96,6 +100,7 @@ export const tags = [
   { label: 'GCP', value: 'gcp' },
   { label: 'MongoDB', value: 'mongodb' },
   { label: 'SQL', value: 'sql' },
+  { label: 'NoSQL', value: 'nosql' },
   { label: 'Dart', value: 'dart' },
   { label: 'Flutter', value: 'flutter' },
 ];
@@ -116,7 +121,7 @@ interface EditArticlePayload {
 
 export const updateArticle = async (
   e: FormEvent<HTMLFormElement>,
-  staus: ARTICLE_STATUS,
+  status: ARTICLE_STATUS,
   setShowSpinner: Dispatch<SetStateAction<boolean>>,
   coverPhoto: MutableRefObject<null | HTMLInputElement>,
   article: Article,
@@ -150,7 +155,7 @@ export const updateArticle = async (
       coverPhoto: imageUrl,
       tags: selectedTags,
       category: selectedCategory,
-      status: staus!,
+      status: status!,
       url: `post/${article.id}`,
       slug: `post/${slug}`,
     };
@@ -286,7 +291,7 @@ export const editCourseFormHandler = async (
 export const createArticleHandler = async (
   e: FormEvent<HTMLFormElement>,
   form: HTMLFormElement,
-  staus: ARTICLE_STATUS,
+  status: ARTICLE_STATUS,
   setShowSpinner: Dispatch<SetStateAction<boolean>>,
   selectedTags: typeof tags,
   selectedCategory: string,
@@ -299,11 +304,15 @@ export const createArticleHandler = async (
     let author: Author;
 
     const currentUser = auth.currentUser;
+    let user: User;
 
     if (!currentUser) {
-      throw Error('You are not loggged in yet');
+      throw Error('You are not logged in yet');
     } else {
       author = await getUser(currentUser);
+      const docRef = await doc(db, 'users', currentUser.uid);
+      const document = await getDoc(docRef);
+      user = (await document.data()) as User;
     }
     const { articleName, coverPhoto, body } = form;
 
@@ -312,7 +321,7 @@ export const createArticleHandler = async (
       'articles'
     );
 
-    console.log(imageUrl);
+    const userArticles = user.articles ?? [];
 
     const article: Partial<Article> = {
       title: articleName.value,
@@ -326,7 +335,7 @@ export const createArticleHandler = async (
       saves: [],
       tags: selectedTags,
       category: selectedCategory,
-      status: staus!,
+      status: status!,
       views: [],
     };
     const articleDoc = await addDoc(collection(db, 'articles'), article);
@@ -337,6 +346,17 @@ export const createArticleHandler = async (
       url: `post/${articleDoc.id}`,
       slug: `post/${slug}`,
       updatedAt: new Date().getTime(),
+    });
+    userArticles.push({
+      coverPhoto: imageUrl,
+      url: `post/${articleDoc.id}`,
+      id: articleDoc.id,
+      slug: `post/${slug}`,
+      description: article.description!,
+      title: articleName.value,
+    });
+    await updateDoc(doc(db, 'users', user.id), {
+      articles: [...userArticles],
     });
     setShowSpinner(true);
     alert('Article created');
@@ -554,11 +574,12 @@ export const getArticleRef = async (id: string) => {
     url: article.url,
     coverPhoto: article.coverPhoto,
     title: article.title,
+    description: article.description,
   };
   return { articleRef, article };
 };
 
-export const getUserArticles = async (user: UserProfile) => {
+export const getUserArticles = async (user: Partial<_UserProfile>) => {
   delete user.bio, user.creator;
   const q = query(
     collection(db, 'articles'),
@@ -570,6 +591,19 @@ export const getUserArticles = async (user: UserProfile) => {
     (docRes) => ({ ...docRes.data(), id: docRes.id } as Article)
   );
   return articles;
+};
+
+export const getAllUserArticles = async (user: Partial<_UserProfile>) => {
+  delete user.bio, delete user.creator;
+  const q = query(collection(db, 'articles'), where('author', '==', user));
+  console.log(user);
+  const docs = await getDocs(q);
+  const articles = docs.docs.map(
+    (docRes) => ({ ...docRes.data(), id: docRes.id } as Article)
+  );
+  const total = docs.docs.length;
+  console.log(total);
+  return { articles, total };
 };
 
 export const convertToSlug = (text: string) => {

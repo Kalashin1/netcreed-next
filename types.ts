@@ -23,8 +23,8 @@ export interface User extends DocumentData {
   followers: Author[];
   following: Author[];
   blocked: Author[];
-  articles: Array<Article>;
-  savedArticles: Array<Article>;
+  articles: Array<ArticleRef>;
+  savedArticles: Array<ArticleRef>;
 }
 
 export type USER_ENGAGEMENT_ACTION_TYPE = 'FOLLOW' | 'BLOCK';
@@ -93,7 +93,7 @@ export type CreateCommentPayload = {
 
 export type ArticleRef = Pick<
   Article,
-  'id' | 'url' | 'slug' | 'coverPhoto' | 'title'
+  'id' | 'url' | 'slug' | 'coverPhoto' | 'title' | 'description'
 >;
 
 export type engagement = {

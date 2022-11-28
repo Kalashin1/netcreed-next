@@ -8,7 +8,12 @@ import { ThemeContext } from '../pages/_app';
 import Bio from './Bio';
 import ProfileHeader from './Profile-Header';
 import ProfileForm from './Profile-Form';
-import { getUserWithoutID, getUserEngagements } from '../helper';
+import {
+  getUserWithoutID,
+  getUserEngagements,
+  getAllUserArticles,
+  getProfile,
+} from '../helper';
 
 // import Image from 'next/image';
 
@@ -30,11 +35,15 @@ const UserProfile: FC = () => {
 
   const [followers, setFollowers] = useState<Author[]>([]);
   const [following, setFollowing] = useState<Author[]>([]);
+  const [userArticlesLength, setUserArticlesLength] = useState(0);
 
   const fetchUserEngagements = async (id: string) => {
     const { followers, following } = await getUserEngagements(id);
+    const user = await getProfile(id);
     setFollowers(followers);
     setFollowing(following);
+    const { total } = await getAllUserArticles(user);
+    setUserArticlesLength(total);
   };
 
   useEffect(() => {
@@ -73,6 +82,7 @@ const UserProfile: FC = () => {
                 dev={user.dev ? user.dev : ''}
                 followers={followers ?? []}
                 following={following && following}
+                articlesLength={userArticlesLength}
               />
             )}
             {user && (

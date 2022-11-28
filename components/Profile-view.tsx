@@ -7,7 +7,12 @@ import { Article, User as IUser, Author } from '../types';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { ThemeContext } from '../pages/_app';
-import { getUserEngagements, engageUser } from '../helper';
+import {
+  getUserEngagements,
+  engageUser,
+  getAllUserArticles,
+  getProfile,
+} from '../helper';
 import { Plus } from './svg/plus';
 const marked = require('marked');
 
@@ -21,6 +26,7 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
 
   const [followers, setFollowers] = useState<Author[]>([]);
   const [following, setFollowing] = useState<Author[]>([]);
+  const [userArticlesLength, setUserArticlesLength] = useState(0);
 
   const router = useRouter();
 
@@ -42,8 +48,11 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
 
   const fetchUserEngagements = async (id: string) => {
     const { followers, following } = await getUserEngagements(id);
+    const user = await getProfile(id);
     setFollowers(followers);
     setFollowing(following);
+    const { total } = await getAllUserArticles(user);
+    setUserArticlesLength(total);
   };
 
   useEffect(() => {
@@ -151,8 +160,8 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                   <div className="w-100 d-sm-none"></div>
                   {/* <Button onClick={e => _engageUser()} variant={`${theme === "dark" ? "light" : "dark"}`} className="mt-4 d-flex justify-content-between" style={{ width: '100%' }}>
                     <div className="mx-1">Follow</div> {<Plus />}
-                  </Button> */}
-                  {/* <ListGroup
+                  </Button>
+                  <ListGroup
                     variant="flush"
                     className="my-4"
                     >
@@ -162,7 +171,7 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                       } bg-${theme} d-flex justify-content-between`}><p>{ following.length }</p><p>Following</p></ListGroup.Item>
                     <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
                       } bg-${theme} d-flex justify-content-between`}
-                    ><p>200</p><p>Articles</p></ListGroup.Item>
+                    ><p>{userArticlesLength}</p><p>Articles</p></ListGroup.Item>
                   </ListGroup> */}
                 </div>
               </Card.Body>

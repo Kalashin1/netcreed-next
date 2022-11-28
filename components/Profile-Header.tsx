@@ -18,6 +18,7 @@ type Props = {
   dev: string;
   followers: Author[];
   following: Author[];
+  articlesLength: number;
 };
 
 const uploadPhoto = async (
@@ -46,6 +47,7 @@ const ProfileHeader: FC<Props> = ({
   dev,
   followers,
   following,
+  articlesLength,
 }) => {
   const profilePhotoForm: MutableRefObject<null | HTMLFormElement> =
     useRef(null);
@@ -182,7 +184,7 @@ const ProfileHeader: FC<Props> = ({
               } bg-${theme} d-flex justify-content-between`}><p>{following.length}</p><p>Following</p></ListGroup.Item>
             <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
               } bg-${theme} d-flex justify-content-between`}
-            ><p>200</p><p>Articles</p></ListGroup.Item>
+            ><p>{articlesLength}</p><p>Articles</p></ListGroup.Item>
           </ListGroup> */}
         </div>
       </Card.Body>

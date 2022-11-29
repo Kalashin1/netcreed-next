@@ -174,18 +174,35 @@ const ProfileHeader: FC<Props> = ({
             </svg>
           </a>
           <div className="w-100 d-sm-none"></div>
-          {/* <ListGroup
-            variant="flush"
-            className="my-4"
-          >
-            <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-              } bg-${theme} d-flex justify-content-between`}><p>{followers.length}</p><p>followers</p></ListGroup.Item>
-            <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-              } bg-${theme} d-flex justify-content-between`}><p>{following.length}</p><p>Following</p></ListGroup.Item>
-            <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
+          <ListGroup variant="flush" className="my-4">
+            <ListGroup.Item
+              onClick={(e) => router.push(`/user/followers/${id}`)}
+              className={`text-${
+                theme === 'dark' ? 'light' : 'dark'
               } bg-${theme} d-flex justify-content-between`}
-            ><p>{articlesLength}</p><p>Articles</p></ListGroup.Item>
-          </ListGroup> */}
+            >
+              <p>{followers.length}</p>
+              <p>followers</p>
+            </ListGroup.Item>
+            <ListGroup.Item
+              onClick={(e) => router.push(`/user/following/${id}`)}
+              className={`text-${
+                theme === 'dark' ? 'light' : 'dark'
+              } bg-${theme} d-flex justify-content-between`}
+            >
+              <p>{following.length}</p>
+              <p>Following</p>
+            </ListGroup.Item>
+            <ListGroup.Item
+              onClick={(e) => router.push(`/user/articles/${id}`)}
+              className={`text-${
+                theme === 'dark' ? 'light' : 'dark'
+              } bg-${theme} d-flex justify-content-between`}
+            >
+              <p>{articlesLength}</p>
+              <p>Articles</p>
+            </ListGroup.Item>
+          </ListGroup>
         </div>
       </Card.Body>
     </Card>

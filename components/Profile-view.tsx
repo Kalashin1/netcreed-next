@@ -158,20 +158,42 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                     </svg>
                   </a>
                   <div className="w-100 d-sm-none"></div>
-                  {/* <Button onClick={e => _engageUser()} variant={`${theme === "dark" ? "light" : "dark"}`} className="mt-4 d-flex justify-content-between" style={{ width: '100%' }}>
+                  {/* <Button
+                    onClick={(e) => _engageUser()}
+                    variant={`${theme === 'dark' ? 'light' : 'dark'}`}
+                    className="mt-4 d-flex justify-content-between"
+                    style={{ width: '100%' }}
+                  >
                     <div className="mx-1">Follow</div> {<Plus />}
                   </Button>
-                  <ListGroup
-                    variant="flush"
-                    className="my-4"
-                    >
-                    <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-                      } bg-${theme} d-flex justify-content-between`}><p>{ followers.length }</p><p>followers</p></ListGroup.Item>
-                    <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
-                      } bg-${theme} d-flex justify-content-between`}><p>{ following.length }</p><p>Following</p></ListGroup.Item>
-                    <ListGroup.Item className={`text-${theme === 'dark' ? 'light' : 'dark'
+                  <ListGroup variant="flush" className="my-4">
+                    <ListGroup.Item
+                      onClick={(e) => router.push(`/user/followers/${user.id}`)}
+                      className={`text-${
+                        theme === 'dark' ? 'light' : 'dark'
                       } bg-${theme} d-flex justify-content-between`}
-                    ><p>{userArticlesLength}</p><p>Articles</p></ListGroup.Item>
+                    >
+                      <p>{followers.length}</p>
+                      <p>followers</p>
+                    </ListGroup.Item>
+                    <ListGroup.Item
+                      onClick={(e) => router.push(`/user/following/${user.id}`)}
+                      className={`text-${
+                        theme === 'dark' ? 'light' : 'dark'
+                      } bg-${theme} d-flex justify-content-between`}
+                    >
+                      <p>{following.length}</p>
+                      <p>Following</p>
+                    </ListGroup.Item>
+                    <ListGroup.Item
+                      onClick={(e) => router.push(`/user/articles/${user.id}`)}
+                      className={`text-${
+                        theme === 'dark' ? 'light' : 'dark'
+                      } bg-${theme} d-flex justify-content-between`}
+                    >
+                      <p>{userArticlesLength}</p>
+                      <p>Articles</p>
+                    </ListGroup.Item>
                   </ListGroup> */}
                 </div>
               </Card.Body>

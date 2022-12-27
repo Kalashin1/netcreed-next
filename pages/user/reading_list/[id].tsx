@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Layout from '../../Layout';
 import RecentPosts from '../../../components/Recent-Posts';
-import { getAllUserArticles, getProfile } from '../../../helper';
+import { getSavedArticles } from '../../../helper';
 import { useContext } from 'react';
 import { ThemeContext } from '../../_app';
 
@@ -11,8 +11,8 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const { id } = context.query;
-  const user = await getProfile(id as string);
-  const { articles } = await getAllUserArticles(user);
+  const [_, articleProm] = await getSavedArticles(id as string);
+  const articles = await articleProm;
   return {
     props: { articles },
   };
@@ -31,7 +31,7 @@ const UserArticles: NextPage = ({ articles }) => {
             theme === 'dark' ? 'light' : 'dark'
           }`}
         >
-          User Articles
+          Reading Lists
         </h3>
         {articles && <RecentPosts posts={articles} />}
       </>

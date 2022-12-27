@@ -119,7 +119,13 @@ const ProfileHeader: FC<Props> = ({
             <p>{bio?.slice(0, 20)}...</p>
           </div>
           <div className="mb-2 mt-3">
-            <div className="text-small font-weight-bold">Follow {name} On</div>
+            <div
+              onClick={() => router.push(`/user/reading_list/${id}`)}
+              style={{ cursor: 'pointer' }}
+              className="text-small font-weight-bold"
+            >
+              Reading List
+            </div>
           </div>
           <a
             href={`https://linkedin.com/in/${linkedin}`}

@@ -435,6 +435,7 @@ export const createAccount = async (
       name: userPayload.name,
       email: userPayload.email,
       articles: [],
+      savedArticles: [],
       createdAt: new Date().getTime(),
       creator: creator,
     });
@@ -859,20 +860,20 @@ export const hasUserEngaged = async (
   const userRef = await getDoc(doc(db, 'users', userId));
   if (userRef.exists()) {
     const user = { ...userRef.data(), id: userRef.id } as User;
-    const articleRef = await getDoc(doc(db, 'users', articleId));
+    const articleRef = await getDoc(doc(db, 'articles', articleId));
     if (articleRef.exists()) {
       const article = { ...articleRef.data(), id: articleRef.id } as Article;
       const engagements = article[type];
-      if (engagements.find((u) => u.id === user.id)) {
+      if (engagements.find((u) => u.id === userId)) {
         return true;
       } else {
         return false;
       }
     } else {
-      return false;
+      throw Error('No article with that ID');
     }
   } else {
-    return false;
+    throw Error('User does not exists');
   }
 };
 
@@ -893,13 +894,41 @@ export const toogleEngagement = async (
       const engagements = article[type];
       let updateObj: Record<string, any> = {};
       if (engagements.find((u) => u.id === user.id)) {
+        if (type === 'views') {
+          return;
+        }
         const updatedEngagements = engagements.filter((u) => u.id !== user.id);
         updateObj[type] = updatedEngagements;
         await updateDoc(doc(db, 'articles', article.id), { ...updateObj });
         updateEngagement(false);
         updateEngagementList(updatedEngagements.length);
+        if (type === 'saves') {
+          const savedArticles = user.savedArticles;
+          const filteredUserSavedArticles = savedArticles.filter(
+            (articleRef) => articleRef.id !== article.id
+          );
+          await updateDoc(doc(db, 'users', user.id), {
+            savedArticles: filteredUserSavedArticles,
+          });
+        }
         console.log(updatedEngagements);
       } else {
+        if (type === 'saves') {
+          const savedArticles = user.savedArticles ?? [];
+          console.log(savedArticles);
+          const _article: ArticleRef = {
+            id: article.id,
+            coverPhoto: article.coverPhoto,
+            slug: article.slug,
+            url: article.url,
+            title: article.title,
+            description: article.description,
+          };
+
+          await updateDoc(doc(db, 'users', userId), {
+            savedArticles: [...savedArticles],
+          });
+        }
         const updatedEngagements = [
           ...engagements,
           {
@@ -920,6 +949,25 @@ export const toogleEngagement = async (
         console.log(updatedEngagements);
       }
     }
+  }
+};
+
+export const getSavedArticles = async (userId: string) => {
+  const userDocRef = doc(db, 'users', userId!);
+  // console.log(userId)
+  let userDoc = await getDoc(userDocRef);
+  if (userDoc.exists()) {
+    const user = userDoc.data() as User;
+    const savedArticles = user.savedArticles ?? [];
+    const articles = await Promise.all(
+      savedArticles.map(async (a) => {
+        const docRef = await getDoc(doc(db, 'articles', a.id));
+        return { ...docRef.data(), id: docRef.id };
+      })
+    );
+    return [savedArticles, articles];
+  } else {
+    throw Error('User does not exist or is not logged in');
   }
 };
 

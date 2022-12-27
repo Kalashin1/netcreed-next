@@ -27,7 +27,6 @@ const Post: NextPage = ({ article, articles }) => {
   const [userPhoto, setUserPhoto] = useState('');
 
   useEffect(() => {
-    console.log(article.comments);
     const setUp = async () => {
       const [currentUser, err] = await getCurrentUser();
       if (currentUser) {

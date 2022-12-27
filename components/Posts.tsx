@@ -1,8 +1,9 @@
 // import { MultiSelect } from "react-multi-select-component";
-import { useState, FC } from 'react';
+import { useState, FC, SetStateAction, Dispatch, FormEvent } from 'react';
 import { Article } from '../types';
 import { Pagination, Card, Table } from 'react-bootstrap';
 import { useRouter } from 'next/router';
+import { Search, Reload } from './svg/icons';
 
 const options = [
   { label: 'Grapes 🍇', value: 'grapes' },
@@ -13,16 +14,29 @@ const options = [
 type PostPayload = {
   posts: Article[];
   theme: string;
+  setPosts: Dispatch<SetStateAction<Article[]>>;
 };
 
-const PostTable: FC<PostPayload> = ({ posts, theme }) => {
+const PostTable: FC<PostPayload> = ({ posts, theme, setPosts }) => {
   const router = useRouter();
+  const [initialPosts, setInitialPosts] = useState(posts);
 
   function navigate(route: string) {
     router.push(route);
   }
 
   const [selected, setSelected] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const search = (e: FormEvent, title: string) => {
+    e.preventDefault();
+    const filteredPosts = posts.filter((post) => post.title.includes(title));
+    setPosts(filteredPosts);
+  };
+
+  const reload = () => {
+    setPosts(initialPosts);
+  };
 
   let active = 1;
   let items = [];
@@ -51,16 +65,35 @@ const PostTable: FC<PostPayload> = ({ posts, theme }) => {
             labelledBy="Select"
           />
         </div> */}
-        {/* <div>
-          <form style={{ width: '50vw' }}>
+        <div className="d-flex flex-row justify-content-between">
+          <form
+            style={{ width: '50vw' }}
+            onSubmit={(e) => search(e, searchTerm)}
+          >
             <div className="input-group">
-              <input type="text" className="form-control" placeholder="Search" />
+              <input
+                onChange={(e) => setSearchTerm(e.target.value)}
+                defaultValue={searchTerm}
+                type="text"
+                className="form-control"
+                placeholder="Search"
+              />
               <div className="input-group-append">
-                <button className="btn btn-primary"><i className="fas fa-search"></i></button>
+                <button type="submit" className="btn btn-primary">
+                  {' '}
+                  <Search />
+                </button>
               </div>
             </div>
           </form>
-        </div> */}
+          <button
+            onClick={reload}
+            title="reload list of posts"
+            className="btn btn-primary"
+          >
+            <Reload />
+          </button>
+        </div>
         <div className="clearfix mb-3"></div>
         <div className="table-responsive">
           <Table className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>

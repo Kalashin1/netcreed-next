@@ -36,7 +36,9 @@ const PostDashboard: NextPage = () => {
 
   return (
     //@ts-ignore
-    <Layout>{posts && <Posts posts={posts} theme={theme} />}</Layout>
+    <Layout>
+      {posts && <Posts posts={posts} theme={theme} setPosts={setPosts} />}
+    </Layout>
   );
 };
 

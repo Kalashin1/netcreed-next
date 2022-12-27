@@ -206,7 +206,7 @@ const UserProfile: FC = () => {
                     className="my-4"
                     type="submit"
                     style={{ width: '100%' }}
-                    onClick={(e: any) => navigate(`/post-dashboard`)}
+                    onClick={(e: any) => navigate(`/user/posts`)}
                   >
                     More Posts
                   </Button>

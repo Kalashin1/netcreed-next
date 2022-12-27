@@ -40,19 +40,25 @@ const PostContent: FC<_Article> = ({ article }) => {
   const [hasSaved, toggleHasSaved] = useState(false);
   const [hasViewed, toggleHasViewed] = useState(false);
 
-  // useEffect(() => {
-  //   const setUp = async () => {
-  //     let userId: string;
-  //     if (typeof window !== 'undefined') {
-  //       userId = localStorage.getItem('userId')!
-  //     }
-  //     toggleHasLiked(await hasUserEngaged(userId!, article.id, "likes"))
-  //     toggleHasSaved(await hasUserEngaged(userId!, article.id, "saves"))
-  //     toggleHasViewed(await hasUserEngaged(userId!, article.id, "views"))
-  //   }
+  useEffect(() => {
+    const setUp = async () => {
+      let userId: string;
+      if (typeof window !== 'undefined') {
+        userId = localStorage.getItem('userId')!;
+        toggleHasLiked(await hasUserEngaged(userId!, article.id, 'likes'));
+        toggleHasSaved(await hasUserEngaged(userId!, article.id, 'saves'));
+        toogleEngagement(
+          localStorage.getItem('userId')!,
+          article.id,
+          'views',
+          toggleHasViewed,
+          toggleView
+        );
+      }
+    };
 
-  //   setUp();
-  // }, [article.id])
+    setUp();
+  }, [article.id]);
 
   return (
     <Container className="pt-4 pb-4">
@@ -62,7 +68,9 @@ const PostContent: FC<_Article> = ({ article }) => {
             <div className="text-muted">Share this</div>
             <div className="share d-inline-block">
               <div className="a2a_kit a2a_kit_size_32 a2a_default_style">
-                <a className="a2a_dd" href="https://www.addtoany.com/share"></a>
+                <a className="a2a_dd" href="https://www.addtoany.com/share">
+                  &nbsp;
+                </a>
                 <a className="a2a_button_facebook"></a>
                 <a className="a2a_button_twitter"></a>
               </div>
@@ -80,8 +88,17 @@ const PostContent: FC<_Article> = ({ article }) => {
             }`}
             dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}
           ></article>
-          {/* <div className="fixed-bottom bg-light mx-auto my-4 px-2" style={{ width: 'fit-content', display: 'flex', justifyContent: 'between', flexDirection: 'row', borderRadius: '.9rem' }}>
-            <span 
+          <div
+            className="fixed-bottom bg-light mx-auto my-4 px-2"
+            style={{
+              width: 'fit-content',
+              display: 'flex',
+              justifyContent: 'between',
+              flexDirection: 'row',
+              borderRadius: '.9rem',
+            }}
+          >
+            {/* <span 
               onClick={e => toogleEngagement(localStorage.getItem('userId')!, article.id, "views", toggleHasViewed, toggleView)} 
               style={{ cursor: 'pointer', display: 'flex', margin: '0 1rem' }}
             >
@@ -90,28 +107,48 @@ const PostContent: FC<_Article> = ({ article }) => {
                 (<SeenOutline />)
               }
               <p className="mx-2 lead" style={{ position: 'relative', top: '.4rem' }}>{views}</p>
-            </span>
-            <span 
-              onClick={e => toogleEngagement(localStorage.getItem('userId')!, article.id, "likes", toggleHasLiked, toggleLike)} 
+            </span> */}
+            <span
+              onClick={(e) =>
+                toogleEngagement(
+                  localStorage.getItem('userId')!,
+                  article.id,
+                  'likes',
+                  toggleHasLiked,
+                  toggleLike
+                )
+              }
               style={{ cursor: 'pointer', display: 'flex', margin: '0 1rem' }}
             >
-              { hasLiked ? 
-                (<FavoriteFilled />):
-                (<FavoriteOutlined />)
-              }
-              <p className="mx-2 lead" style={{ position: 'relative', top: '.4rem' }}>{likes}</p>
+              {hasLiked ? <FavoriteFilled /> : <FavoriteOutlined />}
+              <p
+                className="mx-2 lead"
+                style={{ position: 'relative', top: '.4rem' }}
+              >
+                {likes}
+              </p>
             </span>
-            <span 
-              onClick={e => toogleEngagement(localStorage.getItem('userId')!, article.id, "saves", toggleHasSaved, toggleSave)} 
+            <span
+              onClick={(e) =>
+                toogleEngagement(
+                  localStorage.getItem('userId')!,
+                  article.id,
+                  'saves',
+                  toggleHasSaved,
+                  toggleSave
+                )
+              }
               style={{ cursor: 'pointer', display: 'flex', margin: '0 1rem' }}
             >
-              { hasSaved ? 
-                (<SaveFilled />):
-                (<SaveOutlined />)
-              }
-              <p className="mx-2 lead" style={{ position: 'relative', top: '.4rem' }}>{saves}</p>
+              {hasSaved ? <SaveFilled /> : <SaveOutlined />}
+              <p
+                className="mx-2 lead"
+                style={{ position: 'relative', top: '.4rem' }}
+              >
+                {saves}
+              </p>
             </span>
-          </div> */}
+          </div>
         </Col>
       </Row>
     </Container>

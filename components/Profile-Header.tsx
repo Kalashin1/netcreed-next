@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, MutableRefObject, useContext, useRef } from 'react';
-import { Card, ListGroup } from 'react-bootstrap';
+import { Card, ListGroup, Button } from 'react-bootstrap';
 import { uploadProfilePhoto } from '../helper';
 import { NextRouter, useRouter } from 'next/router';
 import { ThemeContext } from '../pages/_app';
@@ -119,13 +119,13 @@ const ProfileHeader: FC<Props> = ({
             <p>{bio?.slice(0, 20)}...</p>
           </div>
           <div className="mb-2 mt-3">
-            <div
+            <Button
               onClick={() => router.push(`/user/reading_list/${id}`)}
               style={{ cursor: 'pointer' }}
-              className="text-small font-weight-bold"
+              className="w-100 btn-primary text-small font-weight-bold"
             >
               Reading List
-            </div>
+            </Button>
           </div>
           <a
             href={`https://linkedin.com/in/${linkedin}`}

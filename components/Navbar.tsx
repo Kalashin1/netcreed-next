@@ -102,14 +102,9 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
               )
             }
 
-            {
-              user && user.twitter === "kinanee_samson" &&
-              (
-                <Nav.Item style={{ margin: '.5rem 1rem' }}>
-                  <Link href="/courses">Courses</Link>
-                </Nav.Item>
-              )
-            }
+            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+              <Link href="/courses">Courses</Link>
+            </Nav.Item>
 
             {user && user.creator && (
               <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>

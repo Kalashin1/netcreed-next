@@ -13,6 +13,7 @@ import SeenFilled from './seen-filled';
 import SeenOutline from './seen-outline';
 import Search from './search';
 import Reload from './reload';
+import Menu from './menu';
 
 export {
   DevIcon,
@@ -30,4 +31,5 @@ export {
   SeenOutline,
   Search,
   Reload,
+  Menu,
 };

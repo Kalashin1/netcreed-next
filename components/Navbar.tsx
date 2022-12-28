@@ -9,6 +9,7 @@ import { db } from '../Firebase-settings';
 import { getDoc, doc } from '@firebase/firestore';
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { User } from '../types';
+import { Menu } from './svg/icons';
 
 const links = [
   {
@@ -63,9 +64,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
           aria-controls="basic-navbar-nav"
           children={
             <span>
-              <i
-                className={`fas fa-bars ${theme === 'dark' ? 'light' : 'dark'}`}
-              />
+              <Menu />
             </span>
           }
         />

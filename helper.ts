@@ -8,26 +8,11 @@ import {
   orderBy,
   deleteDoc,
 } from '@firebase/firestore';
-import {
-  db,
-  auth } from './Firebase-settings';
-import {
-  User as AuthUser
-} from '@firebase/auth';
-import {
-  storage
-} from './Firebase-settings';
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from '@firebase/storage';
-import {
-  Dispatch,
-  FormEvent,
-  MutableRefObject,
-  SetStateAction
-} from 'react';
+import { db, auth } from './Firebase-settings';
+import { User as AuthUser } from '@firebase/auth';
+import { storage } from './Firebase-settings';
+import { ref, uploadBytes, getDownloadURL } from '@firebase/storage';
+import { Dispatch, FormEvent, MutableRefObject, SetStateAction } from 'react';
 import {
   Article,
   ARTICLE_STATUS,
@@ -885,7 +870,7 @@ export const hasUserEngaged = async (
         return false;
       }
     } else {
-      throw Error('No article with that ID')
+      throw Error('No article with that ID');
     }
   } else {
     throw Error('User does not exists');
@@ -919,12 +904,16 @@ export const toogleEngagement = async (
         updateEngagementList(updatedEngagements.length);
         if (type === 'saves') {
           const savedArticles = user.savedArticles;
-          const filteredUserSavedArticles = savedArticles.filter((articleRef) => articleRef.id !== article.id)
-          await updateDoc(doc(db, "users", user.id), { savedArticles: filteredUserSavedArticles })
+          const filteredUserSavedArticles = savedArticles.filter(
+            (articleRef) => articleRef.id !== article.id
+          );
+          await updateDoc(doc(db, 'users', user.id), {
+            savedArticles: filteredUserSavedArticles,
+          });
         }
         console.log(updatedEngagements);
       } else {
-        if(type === 'saves') {
+        if (type === 'saves') {
           const savedArticles = user.savedArticles ?? [];
           console.log(savedArticles);
           const _article: ArticleRef = {
@@ -933,10 +922,12 @@ export const toogleEngagement = async (
             slug: article.slug,
             url: article.url,
             title: article.title,
-            description: article.description
-          }
-          
-          await updateDoc(doc(db, "users", userId), { savedArticles: [...savedArticles] })
+            description: article.description,
+          };
+
+          await updateDoc(doc(db, 'users', userId), {
+            savedArticles: [...savedArticles],
+          });
         }
         const updatedEngagements = [
           ...engagements,
@@ -968,15 +959,17 @@ export const getSavedArticles = async (userId: string) => {
   if (userDoc.exists()) {
     const user = userDoc.data() as User;
     const savedArticles = user.savedArticles ?? [];
-    const articles = await Promise.all(savedArticles.map( async(a) => {
-      const docRef = await getDoc(doc(db, 'articles', a.id))
-      return { ...docRef.data(), id: docRef.id }
-    }));
+    const articles = await Promise.all(
+      savedArticles.map(async (a) => {
+        const docRef = await getDoc(doc(db, 'articles', a.id));
+        return { ...docRef.data(), id: docRef.id };
+      })
+    );
     return [savedArticles, articles];
-  } else { 
-    throw Error('User does not exist or is not logged in')
+  } else {
+    throw Error('User does not exist or is not logged in');
   }
-}
+};
 
 export const createNotification = async (
   userId: string,

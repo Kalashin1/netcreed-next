@@ -89,7 +89,9 @@ const PostContent: FC<_Article> = ({ article }) => {
             dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}
           ></article>
           <div
-            className={`fixed-bottom bg-${theme === "dark" ? 'white': 'dark'} mx-auto my-4 px-2`}
+            className={`fixed-bottom bg-${
+              theme === 'dark' ? 'white' : 'dark'
+            } mx-auto my-4 px-2`}
             style={{
               width: 'fit-content',
               display: 'flex',
@@ -121,7 +123,8 @@ const PostContent: FC<_Article> = ({ article }) => {
               style={{ cursor: 'pointer', display: 'flex', margin: '0 1rem' }}
             >
               {hasLiked ? <FavoriteFilled /> : <FavoriteOutlined />}
-              <p className={`mx-2 lead text-${
+              <p
+                className={`mx-2 lead text-${
                   theme === 'light' ? 'light' : 'dark'
                 }`}
                 style={{ position: 'relative', top: '.4rem' }}

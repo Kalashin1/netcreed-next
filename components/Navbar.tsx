@@ -9,7 +9,7 @@ import { db } from '../Firebase-settings';
 import { getDoc, doc } from '@firebase/firestore';
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { User } from '../types';
-import { Menu } from './svg/icons';
+import { Menu, DarkModeIcon, LightModeIcon } from './svg/icons';
 
 const links = [
   {
@@ -37,7 +37,7 @@ type Props = {
 
 const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
   const [user, setUser] = useState({} as User);
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     async function getUser() {
@@ -56,7 +56,12 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
   }, []);
 
   return (
-    <Navbar bg={theme} expanded={expanded} expand="lg" fixed="top" collapseOnSelect={true}
+    <Navbar
+      bg={theme}
+      expanded={expanded}
+      expand="lg"
+      fixed="top"
+      collapseOnSelect={true}
       onToggle={() => setExpanded(!expanded)}
     >
       <Container>
@@ -73,21 +78,33 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
         />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item
+              onClick={() => setExpanded(!expanded)}
+              style={{ margin: '.5rem 1rem' }}
+            >
               <Link href="/">Home</Link>
             </Nav.Item>
-            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item
+              onClick={() => setExpanded(!expanded)}
+              style={{ margin: '.5rem 1rem' }}
+            >
               <Link href="/about">About</Link>
             </Nav.Item>
 
-            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item
+              onClick={() => setExpanded(!expanded)}
+              style={{ margin: '.5rem 1rem' }}
+            >
               <Link href="/user/profile">Profile</Link>
             </Nav.Item>
 
             {
               //@ts-ignore
               !user && user.creator && (
-                <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
+                <Nav.Item
+                  onClick={() => setExpanded(!expanded)}
+                  style={{ margin: '.5rem 1rem' }}
+                >
                   <Link href="/signup">Create Account</Link>
                 </Nav.Item>
               )
@@ -96,7 +113,10 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
             {
               //@ts-ignore
               !user && user.creator && (
-                <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
+                <Nav.Item
+                  onClick={() => setExpanded(!expanded)}
+                  style={{ margin: '.5rem 1rem' }}
+                >
                   <Link href="/login">Login</Link>
                 </Nav.Item>
               )
@@ -107,26 +127,35 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
             </Nav.Item>
 
             {user && user.creator && (
-              <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
+              <Nav.Item
+                onClick={() => setExpanded(!expanded)}
+                style={{ margin: '.5rem 1rem' }}
+              >
                 <Link href="/login">Logout</Link>
               </Nav.Item>
             )}
-            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item
+              onClick={() => setExpanded(!expanded)}
+              style={{ margin: '.5rem 1rem' }}
+            >
               <span
                 onClick={(e) => changeTheme('dark')}
                 className="text-dark"
                 style={{ cursor: 'pointer', fontWeight: 'bold' }}
               >
-                Dark Mode
+                <DarkModeIcon />
               </span>
             </Nav.Item>
-            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item
+              onClick={() => setExpanded(!expanded)}
+              style={{ margin: '.5rem 1rem' }}
+            >
               <span
                 onClick={(e) => changeTheme('light')}
                 className="text-light"
                 style={{ cursor: 'pointer', fontWeight: 'bold' }}
               >
-                Light Mode
+                <LightModeIcon />
               </span>
             </Nav.Item>
           </Nav>

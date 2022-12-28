@@ -14,6 +14,8 @@ import SeenOutline from './seen-outline';
 import Search from './search';
 import Reload from './reload';
 import Menu from './menu';
+import DarkModeIcon from './moon';
+import LightModeIcon from './sun';
 
 export {
   DevIcon,
@@ -32,4 +34,6 @@ export {
   Search,
   Reload,
   Menu,
+  LightModeIcon,
+  DarkModeIcon,
 };

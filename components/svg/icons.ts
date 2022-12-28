@@ -16,6 +16,10 @@ import Reload from './reload';
 import Menu from './menu';
 import DarkModeIcon from './moon';
 import LightModeIcon from './sun';
+import DeleteIcon from './delete';
+import EditIcon from './edit';
+import LikeCommentIconFilled from './like-comment-filled';
+import LikeCommentIconOutline from './like-comment-outline';
 
 export {
   DevIcon,
@@ -36,4 +40,8 @@ export {
   Menu,
   LightModeIcon,
   DarkModeIcon,
+  EditIcon,
+  DeleteIcon,
+  LikeCommentIconFilled,
+  LikeCommentIconOutline,
 };

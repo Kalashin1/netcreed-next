@@ -18,13 +18,11 @@ import {
   updateComment,
   deleteComment,
   engageComment,
+  hasUserLikeComment
 } from '../helper';
-import FavoriteOutlined from './svg/favorite-outline';
-import FavoriteFilled from './svg/favorite-filled';
-import CommentIcon from './svg/comment';
+import { CommentIcon, LikeCommentIconFilled, LikeCommentIconOutline, EditIcon, DeleteIcon } from './svg/icons';
 const marked = require('marked');
 
-import EclipseVeritical from './svg/eclipse';
 
 type Props = {
   commentId: string;
@@ -63,6 +61,8 @@ const Comment: FC<Props> = ({
         (c) => c.parentComment === commentId
       );
       setChildComments(comments);
+      const bool = await hasUserLikeComment(articleId, commentId);
+      toggleHasLiked(bool)
     };
 
     getChildComments();
@@ -147,31 +147,7 @@ const Comment: FC<Props> = ({
                     {new Date(createdAt).toDateString()}
                   </span>
                 </h5>
-                <Dropdown drop="start">
-                  <Dropdown.Toggle
-                    variant={theme === 'dark' ? 'light' : 'dark'}
-                    id="dropdown-basic"
-                  >
-                    Actions
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    {id && id === owner.id && (
-                      <Dropdown.Item
-                        onClick={(e) => updateEditButton(!showEditButton)}
-                      >
-                        Edit
-                      </Dropdown.Item>
-                    )}
-                    {id && id === owner.id && (
-                      <Dropdown.Item
-                        onClick={(e) => handleDeleteComment(commentId)}
-                      >
-                        Delete
-                      </Dropdown.Item>
-                    )}
-                  </Dropdown.Menu>
-                </Dropdown>
+                
               </div>
               {!showEditButton ? (
                 <p
@@ -201,7 +177,7 @@ const Comment: FC<Props> = ({
                   </Form.Group>
                   {id && id === owner.id && (
                     <Button type="submit" className="mx-3">
-                      Edit Comment
+                      Update
                     </Button>
                   )}
                 </Form>
@@ -222,12 +198,13 @@ const Comment: FC<Props> = ({
               ''
             )}
           </Card>
-          <div className="ml-2 p-2 d-flex">
+          <div className="ml-2 justify-items-between p-2 d-flex">
             <div
               className="d-flex align-items-center mr-4"
+              style={{ cursor: 'pointer'}}
               onClick={toggleCommentLikes}
             >
-              {hasLiked ? <FavoriteFilled /> : <FavoriteOutlined />}
+              {hasLiked ? <LikeCommentIconFilled /> : <LikeCommentIconOutline />}
               <span
                 className={`ml-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
               >
@@ -236,10 +213,25 @@ const Comment: FC<Props> = ({
             </div>
             <div
               className="d-flex align-items-center ml-2"
+              style={{ cursor: 'pointer'}}
               onClick={(e) => updateShowCommentForm(!showCommentForm)}
             >
               <CommentIcon />
             </div>
+            {id && id === owner.id &&(<div
+              className="d-flex align-items-center ml-4"
+              style={{ cursor: 'pointer'}}
+              onClick={(e) => updateEditButton(!showEditButton)}
+            >
+              <EditIcon />
+            </div>)}
+            {id && id === owner.id && (<div
+              className="d-flex align-items-center ml-4"
+              style={{ cursor: 'pointer'}}
+              onClick={(e) => handleDeleteComment(commentId)}
+            >
+              <DeleteIcon />
+            </div>)}
           </div>
           <div className="ml-4 my-4 border-left">
             {childComments &&

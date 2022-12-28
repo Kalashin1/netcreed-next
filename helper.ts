@@ -1252,3 +1252,23 @@ export const engageComment = async (
     return [null, null, error.message];
   }
 };
+
+
+export const hasUserLikeComment = async (
+  articleId: string,
+  commentId: string
+) => {
+  const { article } = await getArticleRef(articleId);
+    const [user, err] = await getCurrentUser();
+    if (err) throw Error(err);
+    const userProfile = await getUser(user!);
+    const comment = await article.comments?.find((c) => c.id === commentId);
+    if (!comment) throw Error('no comment with that id');
+    const engagements = comment.likes;
+    const userEngagement = engagements.find((e) => e.id === userProfile.id);
+    if (userEngagement) {
+      return true;
+    } else {
+      return false;
+    }
+}

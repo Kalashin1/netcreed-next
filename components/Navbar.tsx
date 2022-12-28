@@ -37,6 +37,7 @@ type Props = {
 
 const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
   const [user, setUser] = useState({} as User);
+  const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
     async function getUser() {
@@ -55,7 +56,9 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
   }, []);
 
   return (
-    <Navbar bg={theme} expand="lg" fixed="top">
+    <Navbar bg={theme} expanded={expanded} expand="lg" fixed="top" collapseOnSelect={true}
+      onToggle={() => setExpanded(!expanded)}
+    >
       <Container>
         <Navbar.Brand href="/">
           <Image src="/logo.png" width={50} height={60} alt="Netcreed" />
@@ -70,21 +73,21 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
         />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
               <Link href="/">Home</Link>
             </Nav.Item>
-            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
               <Link href="/about">About</Link>
             </Nav.Item>
 
-            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
               <Link href="/user/profile">Profile</Link>
             </Nav.Item>
 
             {
               //@ts-ignore
               !user && user.creator && (
-                <Nav.Item style={{ margin: '.5rem 1rem' }}>
+                <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
                   <Link href="/signup">Create Account</Link>
                 </Nav.Item>
               )
@@ -93,27 +96,27 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
             {
               //@ts-ignore
               !user && user.creator && (
-                <Nav.Item style={{ margin: '.5rem 1rem' }}>
+                <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
                   <Link href="/login">Login</Link>
                 </Nav.Item>
               )
             }
 
-            {/* {
+            {
               user && user.twitter === "kinanee_samson" &&
               (
                 <Nav.Item style={{ margin: '.5rem 1rem' }}>
                   <Link href="/courses">Courses</Link>
                 </Nav.Item>
               )
-            } */}
+            }
 
             {user && user.creator && (
-              <Nav.Item style={{ margin: '.5rem 1rem' }}>
+              <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
                 <Link href="/login">Logout</Link>
               </Nav.Item>
             )}
-            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
               <span
                 onClick={(e) => changeTheme('dark')}
                 className="text-dark"
@@ -122,7 +125,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
                 Dark Mode
               </span>
             </Nav.Item>
-            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+            <Nav.Item onClick={() => setExpanded(!expanded)} style={{ margin: '.5rem 1rem' }}>
               <span
                 onClick={(e) => changeTheme('light')}
                 className="text-light"

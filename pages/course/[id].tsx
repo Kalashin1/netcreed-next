@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import React from 'react';
 import Layout from '../Layout';
 import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';

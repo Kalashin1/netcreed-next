@@ -7,7 +7,12 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useContext } from 'react';
 import { ThemeContext } from '../pages/_app';
 
-const LessonHeader: FC = () => {
+type Props = {
+  title: string;
+  description: string;
+}
+
+const LessonHeader: FC<Props> = ({ title, description }) => {
   let theme: string = useContext(ThemeContext).theme;
 
   const router = useRouter();
@@ -34,12 +39,10 @@ const LessonHeader: FC = () => {
                 </p>
               }
               <h1 className="display-4 secondfont mb-3 font-weight-bold">
-                Lesson 1
+                {title}
               </h1>
               <p className="mb-3">
-                Lorem ipsum dolor sit amet consectetur adipiscing elit,
-                tristique sem placerat urna et ut morbi, suscipit accumsan justo
-                parturient volutpat massa
+                {description}
               </p>
             </Col>
           </Row>

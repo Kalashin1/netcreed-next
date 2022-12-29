@@ -65,7 +65,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
       onToggle={() => setExpanded(!expanded)}
     >
       <Container>
-        <Navbar.Brand href="/">
+        <Navbar.Brand href="/" className={`bg-${theme === "light" ? "light": "transparent"}`}>
           <Image src="/logo.png" width={50} height={60} alt="Netcreed" />
         </Navbar.Brand>
         <Navbar.Toggle
@@ -123,7 +123,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
             }
 
             <Nav.Item style={{ margin: '.5rem 1rem' }}>
-              <Link href="/courses">Courses</Link>
+              <Link href="/course">Courses</Link>
             </Nav.Item>
 
             {user && user.creator && (

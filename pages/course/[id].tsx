@@ -6,6 +6,7 @@ import { ThemeContext } from '../_app';
 import { useContext } from 'react';
 import { getCourse, getLessonsByCourseId } from '../../helper';
 import { LessonSchema } from '../../types';
+import { useRouter } from 'next/router';
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
@@ -28,8 +29,8 @@ export const getServerSideProps = async (context: any) => {
 
 // @ts-ignore
 const Course: NextPage = ({ course, lessons }) => {
-  let theme: string = useContext(ThemeContext).theme;
-  console.log(lessons);
+  let theme = useContext(ThemeContext).theme;
+  const router = useRouter();
   return (
     <Layout>
       <Container className="my-4">
@@ -64,7 +65,7 @@ const Course: NextPage = ({ course, lessons }) => {
                     </ListGroup.Item>
                   ))}
               </ListGroup>
-              <Button style={{ width: '100%' }}>Start Course</Button>
+              <Button onClick={() => {router.push(`/lessons/${lessons[0].id}`)}} style={{ width: '100%' }}>Start Course</Button>
             </Container>
           </Col>
           <Col md={7}>
@@ -77,7 +78,7 @@ const Course: NextPage = ({ course, lessons }) => {
                   />
                 </div>
               ))}
-            <Button style={{ width: '100%' }}>Start Course</Button>
+            <Button onClick={() => { router.push(`/lessons/${lessons[0].id}`)}} style={{ width: '100%' }}>Start Course</Button>
           </Col>
         </Row>
       </Container>

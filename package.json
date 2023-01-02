@@ -1,0 +1,37 @@
+{
+  "name": "netcreed-next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "deploy": "firebase deploy --only hosting:netcreed",
+    "prettier": "prettier --config .prettierrc ./pages/** --write && prettier --config .prettierrc ./components/** --write && prettier --config .prettierrc ./helper.ts --write && prettier --config .prettierrc ./types.ts --write"
+  },
+  "dependencies": {
+    "@types/highlight.js": "^10.1.0",
+    "bootstrap": "^5.2.0",
+    "firebase": "^9.9.3",
+    "highlight.js": "^11.6.0",
+    "markdown": "^0.5.0",
+    "marked": "^4.1.0",
+    "next": "12.2.5",
+    "react": "18.2.0",
+    "react-bootstrap": "^2.5.0",
+    "react-dom": "18.2.0",
+    "react-multi-select-component": "^4.3.3",
+    "slugify": "^1.6.5"
+  },
+  "devDependencies": {
+    "@types/marked": "^4.0.6",
+    "@types/node": "18.7.8",
+    "@types/react": "18.0.17",
+    "@types/react-dom": "18.0.6",
+    "eslint": "8.22.0",
+    "eslint-config-next": "12.2.5",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  }
+}

@@ -100,7 +100,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
 
             {
               //@ts-ignore
-              !user && user.creator && (
+              !user && (
                 <Nav.Item
                   onClick={() => setExpanded(!expanded)}
                   style={{ margin: '.5rem 1rem' }}
@@ -118,17 +118,6 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
                   style={{ margin: '.5rem 1rem' }}
                 >
                   <Link href="/login">Login</Link>
-                </Nav.Item>
-              )
-            }
-            
-            {
-              !user && (
-                <Nav.Item
-                  onClick={() => setExpanded(!expanded)}
-                  atyle={{ margin: '.5rem 1rem' }}
-                >
-                  <Link href="/register">Register</Link>
                 </Nav.Item>
               )
             }

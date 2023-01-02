@@ -9,7 +9,7 @@ import Router from 'next/router';
 let _theme: string;
 
 if (typeof window !== 'undefined') {
-  _theme = localStorage.getItem('theme')!;
+  _theme = localStorage.getItem('theme')! ?? 'light';
 }
 
 export const ThemeContext = React.createContext<{

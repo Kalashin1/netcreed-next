@@ -15,7 +15,7 @@ const LoginPage: NextPage = () => {
           Login To your account
         </h3>
       </div>
-      <Container className="my-4">
+      <Container className={`my-4 bg-${theme}`}>
         <Row className="justify-content-center">
           <Col md={6}>
             <Container>

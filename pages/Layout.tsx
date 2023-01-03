@@ -24,8 +24,8 @@ const Layout: FC<Props> = function ({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
           name="viewport"
+          content="width=device-width, initial-scale=1.0"
         />
         <link
           rel="stylesheet"
@@ -52,8 +52,8 @@ const Layout: FC<Props> = function ({ children }) {
           }
         `}</style>
       </Head>
-      <div className={`bg-${_theme}`}>
-        <Navbar theme={_theme} changeTheme={setTheme} />
+      <div className={`bg-${_theme =='dark' ? 'dark': 'light'}`}>
+        <Navbar />
         <div style={{ padding: '4rem .5rem', minHeight: '72vh' }}>
           {children}
         </div>

@@ -175,13 +175,13 @@ export const getUser = async (user: AuthUser): Promise<Author> => {
   const document = await getDoc(docRef);
   const userDoc = (await document.data()) as User;
   return {
-    username: userDoc.username,
-    phone: userDoc.phone,
-    name: userDoc.name,
-    twitter: userDoc.twitter,
-    github: userDoc.github,
-    coverPhoto: userDoc.profilePhoto,
-    email: userDoc.email,
+    username: userDoc.username || '',
+    phone: userDoc.phone ?? '',
+    name: userDoc.name ?? '',
+    twitter: userDoc.twitter ?? '',
+    github: userDoc.github ?? '',
+    coverPhoto: userDoc.profilePhoto ?? '',
+    email: userDoc.email ?? '',
     id: document.id,
   };
 };
@@ -191,16 +191,16 @@ export const getProfile = async (userId: string): Promise<_UserProfile> => {
   const document = await getDoc(docRef);
   const userDoc = (await document.data()) as User;
   return {
-    username: userDoc.username,
-    phone: userDoc.phone,
-    name: userDoc.name,
-    twitter: userDoc.twitter,
-    github: userDoc.github,
-    coverPhoto: userDoc.profilePhoto,
-    email: userDoc.email,
-    id: document.id,
-    bio: userDoc.bio,
-    creator: userDoc.creator,
+    username: userDoc.username ?? '',
+    phone: userDoc.phone ?? '',
+    name: userDoc.name ?? '',
+    twitter: userDoc.twitter ?? '',
+    github: userDoc.github ?? '',
+    coverPhoto: userDoc.profilePhoto ?? '',
+    email: userDoc.email ?? '',
+    id: document.id ?? '',
+    bio: userDoc.bio ?? '',
+    creator: userDoc.creator ?? false,
   };
 };
 
@@ -882,73 +882,80 @@ export const toogleEngagement = async (
   articleId: string,
   type: ARTICLE_ENGAGEMENT,
   updateEngagement: Dispatch<SetStateAction<boolean>>,
-  updateEngagementList: Dispatch<SetStateAction<number>>
+  updateEngagementList: Dispatch<SetStateAction<number>>,
+  router: NextRouter
 ) => {
   // get a user Ref
-  const userRef = await getDoc(doc(db, 'users', userId));
-  if (userRef.exists()) {
-    const user = { ...userRef.data(), id: userRef.id } as User;
-    const articleRef = await getDoc(doc(db, 'articles', articleId));
-    if (articleRef.data()) {
-      const article = { ...articleRef.data(), id: articleRef.id } as Article;
-      const engagements = article[type];
-      let updateObj: Record<string, any> = {};
-      if (engagements.find((u) => u.id === user.id)) {
-        if (type === 'views') {
-          return;
+  try {
+    const userRef = await getDoc(doc(db, 'users', userId));
+    if (userRef.exists()) {
+      const user = { ...userRef.data(), id: userRef.id } as User;
+      const articleRef = await getDoc(doc(db, 'articles', articleId));
+      if (articleRef.data()) {
+        const article = { ...articleRef.data(), id: articleRef.id } as Article;
+        const engagements = article[type];
+        let updateObj: Record<string, any> = {};
+        if (engagements.find((u) => u.id === user.id)) {
+          if (type === 'views') {
+            return;
+          }
+          const updatedEngagements = engagements.filter((u) => u.id !== user.id);
+          updateObj[type] = updatedEngagements;
+          await updateDoc(doc(db, 'articles', article.id), { ...updateObj });
+          updateEngagement(false);
+          updateEngagementList(updatedEngagements.length);
+          if (type === 'saves') {
+            const savedArticles = user.savedArticles;
+            const filteredUserSavedArticles = savedArticles.filter(
+              (articleRef) => articleRef.id !== article.id
+            );
+            await updateDoc(doc(db, 'users', user.id), {
+              savedArticles: filteredUserSavedArticles,
+            });
+          }
+          console.log(updatedEngagements);
+        } else {
+          if (type === 'saves') {
+            const savedArticles = user.savedArticles ?? [];
+            console.log(savedArticles);
+            const _article: ArticleRef = {
+              id: article.id,
+              coverPhoto: article.coverPhoto,
+              slug: article.slug,
+              url: article.url,
+              title: article.title,
+              description: article.description,
+            };
+  
+            await updateDoc(doc(db, 'users', userId), {
+              savedArticles: [...savedArticles],
+            });
+          }
+          const updatedEngagements = [
+            ...engagements,
+            {
+              username: user.username,
+              phone: user.phone,
+              name: user.name,
+              twitter: user.twitter,
+              github: user.github,
+              coverPhoto: user.profilePhoto,
+              email: user.email,
+              id: user.id,
+            },
+          ];
+          updateObj[type] = updatedEngagements;
+          await updateDoc(doc(db, 'articles', article.id), { ...updateObj });
+          updateEngagement(true);
+          updateEngagementList(updatedEngagements.length);
+          console.log(updatedEngagements);
         }
-        const updatedEngagements = engagements.filter((u) => u.id !== user.id);
-        updateObj[type] = updatedEngagements;
-        await updateDoc(doc(db, 'articles', article.id), { ...updateObj });
-        updateEngagement(false);
-        updateEngagementList(updatedEngagements.length);
-        if (type === 'saves') {
-          const savedArticles = user.savedArticles;
-          const filteredUserSavedArticles = savedArticles.filter(
-            (articleRef) => articleRef.id !== article.id
-          );
-          await updateDoc(doc(db, 'users', user.id), {
-            savedArticles: filteredUserSavedArticles,
-          });
-        }
-        console.log(updatedEngagements);
-      } else {
-        if (type === 'saves') {
-          const savedArticles = user.savedArticles ?? [];
-          console.log(savedArticles);
-          const _article: ArticleRef = {
-            id: article.id,
-            coverPhoto: article.coverPhoto,
-            slug: article.slug,
-            url: article.url,
-            title: article.title,
-            description: article.description,
-          };
-
-          await updateDoc(doc(db, 'users', userId), {
-            savedArticles: [...savedArticles],
-          });
-        }
-        const updatedEngagements = [
-          ...engagements,
-          {
-            username: user.username,
-            phone: user.phone,
-            name: user.name,
-            twitter: user.twitter,
-            github: user.github,
-            coverPhoto: user.profilePhoto,
-            email: user.email,
-            id: user.id,
-          },
-        ];
-        updateObj[type] = updatedEngagements;
-        await updateDoc(doc(db, 'articles', article.id), { ...updateObj });
-        updateEngagement(true);
-        updateEngagementList(updatedEngagements.length);
-        console.log(updatedEngagements);
       }
     }
+  } catch (err) {
+    if (type !== 'views') {
+      router.push('/login')
+    };
   }
 };
 

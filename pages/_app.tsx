@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import Script from 'next/script';
 import Router from 'next/router';
@@ -9,7 +9,7 @@ import Router from 'next/router';
 let _theme: string;
 
 if (typeof window !== 'undefined') {
-  _theme = localStorage.getItem('theme')! ?? 'light';
+  _theme = localStorage.getItem('theme') ?? 'light';
 }
 
 export const ThemeContext = React.createContext<{
@@ -24,6 +24,12 @@ export const ThemeContext = React.createContext<{
 
 function CustomApp({ Component, pageProps, router }: AppProps) {
   const [theme, setTheme] = useState(_theme);
+
+  useEffect(() => {
+    if (_theme) {
+      updateTheme(localStorage.getItem('theme')!);
+    }
+  })
 
   const updateTheme = (theme: string) => {
     setTheme(theme);

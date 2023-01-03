@@ -9,6 +9,7 @@ import SaveOutlined from './svg/save-outline';
 import SaveFilled from './svg/save-filled';
 import { Container, Row, Col } from 'react-bootstrap';
 import { ThemeContext } from '../pages/_app';
+import { useRouter } from 'next/router';
 
 import 'highlight.js/styles/github-dark.css';
 const marked = require('marked');
@@ -39,26 +40,30 @@ const PostContent: FC<_Article> = ({ article }) => {
   const [hasLiked, toggleHasLiked] = useState(false);
   const [hasSaved, toggleHasSaved] = useState(false);
   const [hasViewed, toggleHasViewed] = useState(false);
+  let [userId, setUserId] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     const setUp = async () => {
-      let userId: string;
       if (typeof window !== 'undefined') {
-        userId = localStorage.getItem('userId')!;
-        toggleHasLiked(await hasUserEngaged(userId!, article.id, 'likes'));
-        toggleHasSaved(await hasUserEngaged(userId!, article.id, 'saves'));
-        toogleEngagement(
-          localStorage.getItem('userId')!,
-          article.id,
-          'views',
-          toggleHasViewed,
-          toggleView
-        );
+        let _userId = localStorage.getItem('userId')!;
+        setUserId(_userId)
+        if (_userId) {
+          toggleHasLiked(await hasUserEngaged(userId!, article.id, 'likes'));
+          toggleHasSaved(await hasUserEngaged(userId!, article.id, 'saves'));
+          toogleEngagement(
+            _userId,
+            article.id,
+            'views',
+            toggleHasViewed,
+            toggleView
+          );
+        }
       }
     };
 
     setUp();
-  }, [article.id]);
+  }, [article.id, userId]);
 
   return (
     <Container className="pt-4 pb-4">
@@ -83,15 +88,13 @@ const PostContent: FC<_Article> = ({ article }) => {
         </Col>
         <Col md={12} lg={8}>
           <article
-            className={`article-post text-${
-              theme === 'light' ? 'dark' : 'light'
-            }`}
+            className={`article-post text-${theme === 'light' ? 'dark' : 'light'
+              }`}
             dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}
           ></article>
           <div
-            className={`fixed-bottom bg-${
-              theme === 'dark' ? 'white' : 'dark'
-            } mx-auto my-4 px-2`}
+            className={`fixed-bottom bg-${theme === 'dark' ? 'white' : 'dark'
+              } mx-auto my-4 px-2`}
             style={{
               width: 'fit-content',
               display: 'flex',
@@ -111,44 +114,44 @@ const PostContent: FC<_Article> = ({ article }) => {
               <p className="mx-2 lead" style={{ position: 'relative', top: '.4rem' }}>{views}</p>
             </span> */}
             <span
-              onClick={(e) =>
+              onClick={(e) => 
                 toogleEngagement(
-                  localStorage.getItem('userId')!,
+                  userId,
                   article.id,
                   'likes',
                   toggleHasLiked,
-                  toggleLike
+                  toggleLike,
+                  router
                 )
               }
               style={{ cursor: 'pointer', display: 'flex', margin: '0 1rem' }}
             >
               {hasLiked ? <FavoriteFilled /> : <FavoriteOutlined />}
               <p
-                className={`mx-2 lead text-${
-                  theme === 'light' ? 'light' : 'dark'
-                }`}
+                className={`mx-2 lead text-${theme === 'light' ? 'light' : 'dark'
+                  }`}
                 style={{ position: 'relative', top: '.4rem' }}
               >
                 {likes}
               </p>
             </span>
             <span
-              onClick={(e) =>
+              onClick={(e) => 
                 toogleEngagement(
-                  localStorage.getItem('userId')!,
+                  userId,
                   article.id,
                   'saves',
                   toggleHasSaved,
-                  toggleSave
+                  toggleSave,
+                  router
                 )
               }
               style={{ cursor: 'pointer', display: 'flex', margin: '0 1rem' }}
             >
               {hasSaved ? <SaveFilled /> : <SaveOutlined />}
               <p
-                className={`mx-2 lead text-${
-                  theme === 'light' ? 'light' : 'dark'
-                }`}
+                className={`mx-2 lead text-${theme === 'light' ? 'light' : 'dark'
+                  }`}
                 style={{ position: 'relative', top: '.4rem' }}
               >
                 {saves}

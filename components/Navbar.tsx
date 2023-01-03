@@ -4,12 +4,14 @@ import Image from 'next/image';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { db } from '../Firebase-settings';
+import { auth, db } from '../Firebase-settings';
 import { getDoc, doc } from '@firebase/firestore';
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { signOut } from '@firebase/auth';
+import { FC, useEffect, useContext, useState } from 'react';
 import { User } from '../types';
 import { Menu, DarkModeIcon, LightModeIcon } from './svg/icons';
+import { ThemeContext } from '../pages/_app';
+import { useRouter } from 'next/router';
 
 const links = [
   {
@@ -30,34 +32,49 @@ const links = [
   },
 ] as const;
 
-type Props = {
-  changeTheme: (theme: string) => void;
-  theme: string;
-};
 
-const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
-  const [user, setUser] = useState({} as User);
+const NavbarComponent: FC = () => {
+  const router = useRouter();
+  const { theme, updateTheme } = useContext(ThemeContext)
+  const [user, setUser] = useState<User | boolean>(false);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     async function getUser() {
-      const userId = localStorage.getItem('userId');
-      if (userId) {
-        const docRef = await getDoc(doc(db, 'users', userId!));
-        const user = docRef.data() as User;
-        // console.log(user)
-        setUser(user);
+      const currentUser = auth.currentUser;
+      if (currentUser !== null) {
+        const docRef = await getDoc(doc(db, 'users', currentUser.uid));
+        const _user = docRef.data() as User;
+        setUser(_user);
       } else {
-        setUser({} as User);
+        const userId = localStorage.getItem('userId')
+        if (userId) {
+          const docRef = await getDoc(doc(db, 'users', userId));
+          const _user = docRef.data() as User;
+          setUser(_user);
+        } else {
+          setUser(false)
+        }
       }
     }
 
     getUser();
   }, []);
 
+  const logout = async (expanded:boolean) => {
+    setExpanded(!expanded)
+    try {
+      await signOut(auth);
+      localStorage.removeItem('userId')
+      router.push('/login')
+    } catch(err: any){
+      console.log(err)
+    }
+  } 
+
   return (
     <Navbar
-      bg={theme}
+      bg={theme === 'dark'? 'dark': 'light'}
       expanded={expanded}
       expand="lg"
       fixed="top"
@@ -91,12 +108,12 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
               <Link href="/about">About</Link>
             </Nav.Item>
 
-            <Nav.Item
+            {user &&  (<Nav.Item
               onClick={() => setExpanded(!expanded)}
               style={{ margin: '.5rem 1rem' }}
             >
               <Link href="/user/profile">Profile</Link>
-            </Nav.Item>
+            </Nav.Item>)}
 
             {
               //@ts-ignore
@@ -105,7 +122,7 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
                   onClick={() => setExpanded(!expanded)}
                   style={{ margin: '.5rem 1rem' }}
                 >
-                  <Link href="/signup">Create Account</Link>
+                  <Link href="/register">Create Account</Link>
                 </Nav.Item>
               )
             }
@@ -123,15 +140,15 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
             }
 
             <Nav.Item style={{ margin: '.5rem 1rem' }}>
-              <Link href="/courses">Courses</Link>
+              <Link href="/course">Courses</Link>
             </Nav.Item>
 
             {user && (
               <Nav.Item
-                onClick={() => setExpanded(!expanded)}
-                style={{ margin: '.5rem 1rem' }}
+                onClick={() => {logout(expanded)}}
+                style={{ margin: '.5rem 1rem', color: '#03a87c', cursor: 'pointer' }}
               >
-                <Link href="/login">Logout</Link>
+                <span>Logout</span>
               </Nav.Item>
             )}
             <Nav.Item
@@ -139,7 +156,8 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
               style={{ margin: '.5rem 1rem' }}
             >
               <span
-                onClick={(e) => changeTheme('dark')}
+                // @ts-ignore
+                onClick={(e) => updateTheme('dark')}
                 className="text-dark"
                 style={{ cursor: 'pointer', fontWeight: 'bold' }}
               >
@@ -151,7 +169,8 @@ const NavbarComponent: FC<Props> = ({ changeTheme, theme }) => {
               style={{ margin: '.5rem 1rem' }}
             >
               <span
-                onClick={(e) => changeTheme('light')}
+                // @ts-ignore
+                onClick={(e) => updateTheme('light')}
                 className="text-light"
                 style={{ cursor: 'pointer', fontWeight: 'bold' }}
               >

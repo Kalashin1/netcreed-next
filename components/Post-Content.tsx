@@ -56,7 +56,8 @@ const PostContent: FC<_Article> = ({ article }) => {
             article.id,
             'views',
             toggleHasViewed,
-            toggleView
+            toggleView,
+            router
           );
         }
       }

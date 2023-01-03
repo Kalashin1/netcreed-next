@@ -25,12 +25,6 @@ export const ThemeContext = React.createContext<{
 function CustomApp({ Component, pageProps, router }: AppProps) {
   const [theme, setTheme] = useState(_theme);
 
-  useEffect(() => {
-    if (_theme) {
-      updateTheme(localStorage.getItem('theme')!);
-    }
-  })
-
   const updateTheme = (theme: string) => {
     setTheme(theme);
     localStorage.setItem('theme', theme);

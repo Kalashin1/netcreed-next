@@ -57,7 +57,6 @@ const PostContent: FC<_Article> = ({ article }) => {
             'views',
             toggleHasViewed,
             toggleView,
-            router
           );
         }
       }
@@ -94,7 +93,7 @@ const PostContent: FC<_Article> = ({ article }) => {
             dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}
           ></article>
           <div
-            className={`fixed-bottom bg-${theme === 'dark' ? 'white' : 'dark'
+            className={`fixed-bottom bg-${theme === 'dark' ? 'black' : 'white'
               } mx-auto my-4 px-2`}
             style={{
               width: 'fit-content',
@@ -129,7 +128,7 @@ const PostContent: FC<_Article> = ({ article }) => {
             >
               {hasLiked ? <FavoriteFilled /> : <FavoriteOutlined />}
               <p
-                className={`mx-2 lead text-${theme === 'light' ? 'light' : 'dark'
+                className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
                   }`}
                 style={{ position: 'relative', top: '.4rem' }}
               >
@@ -151,7 +150,7 @@ const PostContent: FC<_Article> = ({ article }) => {
             >
               {hasSaved ? <SaveFilled /> : <SaveOutlined />}
               <p
-                className={`mx-2 lead text-${theme === 'light' ? 'light' : 'dark'
+                className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'white'
                   }`}
                 style={{ position: 'relative', top: '.4rem' }}
               >

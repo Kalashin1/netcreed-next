@@ -3,7 +3,7 @@ import { Col, Container, Card, Row } from 'react-bootstrap';
 import { Article } from '../types';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../pages/_app';
-
+import { FavoriteOutlined, SaveOutlined } from './svg/icons'
 type Posts = {
   posts: Article[];
 };
@@ -19,9 +19,8 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
     <div className="container pt-4 pb-4">
       <Row>
         <h5
-          className={`font-weight-bold spanborder text-${
-            theme === 'dark' ? 'light' : 'dark'
-          }`}
+          className={`font-weight-bold spanborder text-${theme === 'dark' ? 'light' : 'dark'
+            }`}
         >
           <span>All Stories</span>
         </h5>
@@ -67,6 +66,20 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
                       {new Date(post.createdAt).toDateString()} &middot;{' '}
                       {Math.floor(post.readingTimeInMins)} mins
                     </Card.Text>
+                    <div className="d-flex justify-content-between w-50">
+                      <span className="mr-4 d-flex align-items-center"><FavoriteOutlined /><span
+                        className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                          }`}
+                      >
+                        {post.likes.length}
+                      </span></span>
+                      <span className="mr-4 d-flex align-items-center"><SaveOutlined /><span
+                        className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                          }`}
+                      >
+                        {post.saves.length}
+                      </span></span>
+                    </div>
                   </Card.Body>
                 </Card>
               </Container>

@@ -6,7 +6,7 @@ import { Article, User as IUser, Author } from '../types';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { ThemeContext } from '../pages/_app';
-import { GithubIcon, LinkedinIcon, TwitterIcon, DevIcon } from './svg/icons';
+import { GithubIcon, LinkedinIcon, TwitterIcon, DevIcon, FavoriteOutlined, SaveOutlined } from './svg/icons';
 import {
   getUserEngagements,
   engageUser,
@@ -237,6 +237,20 @@ const ViewUserProfile: FC<UserPropsType> = ({ user, articles }) => {
                         {new Date(article.createdAt).toDateString()} ·{' '}
                         {article.readingTimeInMins} min read
                       </small>
+                      <div className="d-flex justify-content-between w-50">
+                      <span className="mr-4 d-flex align-items-center"><FavoriteOutlined /><span
+                        className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                          }`}
+                      >
+                        {article.likes.length}
+                      </span></span>
+                      <span className="mr-4 d-flex align-items-center"><SaveOutlined /><span
+                        className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                          }`}
+                      >
+                        {article.saves.length}
+                      </span></span>
+                    </div>
                     </Card>
                   </div>
                 ))}

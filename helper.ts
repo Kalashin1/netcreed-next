@@ -883,7 +883,7 @@ export const toogleEngagement = async (
   type: ARTICLE_ENGAGEMENT,
   updateEngagement: Dispatch<SetStateAction<boolean>>,
   updateEngagementList: Dispatch<SetStateAction<number>>,
-  router: NextRouter
+  router?: NextRouter
 ) => {
   // get a user Ref
   try {
@@ -953,7 +953,7 @@ export const toogleEngagement = async (
       }
     }
   } catch (err) {
-    if (type !== 'views') {
+    if (type !== 'views' && (typeof router !== 'undefined')) {
       router.push('/login')
     };
   }

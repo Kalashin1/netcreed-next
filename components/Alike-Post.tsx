@@ -45,13 +45,13 @@ const AlikePost: FC<Articles> = ({ articles }) => {
                   backgroundRepeat: 'no-repeat',
                   cursor: 'pointer',
                 }}
-                onClick={(e: any) => navigate(`/posts/${article?.id}`)}
+                onClick={(e: any) => navigate(`/post/${article?.id}`)}
               ></div>
               <Card.Body className="d-flex flex-column align-items-start">
                 <h2
                   className={`h4 font-weight-bold`}
                   style={{ cursor: 'pointer' }}
-                  onClick={(e: any) => navigate(`/posts/${article?.id}`)}
+                  onClick={(e: any) => navigate(`/post/${article?.id}`)}
                 >
                   {article?.title}
                 </h2>

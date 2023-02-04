@@ -132,15 +132,15 @@ export const getProfile = async (userId: string): Promise<UserProfile> => {
   const document = await getDoc(docRef);
   const userDoc = (await document.data()) as User;
   return {
-    username: userDoc.username,
-    phone: userDoc.phone,
-    name: userDoc.name,
-    twitter: userDoc.twitter,
-    github: userDoc.github,
-    coverPhoto: userDoc.profilePhoto,
-    email: userDoc.email,
-    id: document.id,
-    bio: userDoc.bio,
-    creator: userDoc.creator,
+    username: userDoc.username ?? '',
+    phone: userDoc.phone ?? '',
+    name: userDoc.name ?? '' ,
+    twitter: userDoc.twitter ?? '',
+    github: userDoc.github ?? '',
+    coverPhoto: userDoc.profilePhoto ?? '',
+    email: userDoc.email ?? '',
+    id: document.id ?? '',
+    bio: userDoc.bio ?? '',
+    creator: userDoc.creator ?? '',
   };
 };

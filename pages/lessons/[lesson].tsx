@@ -19,7 +19,7 @@ export const getServerSideProps = async (context: any) => {
 
 
   const [lessons, lessonErr] = await getLessonsByCourseId(_lesson?.courseId!);
-  console.log(lessons);
+
 
   if (lessonErr) {
     console.log(lessonErr);

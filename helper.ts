@@ -256,10 +256,10 @@ export const createCourseFormHandler = async (
     });
     setShowSpinner(true);
     alert('Course created');
-    router.push('/courses');
-  } catch (error) {
-    setShowSpinner(true);
-    console.log(error);
+    router.push('/course');
+  } catch (error: any) {
+    setShowSpinner(false);
+    alert(error.message);
   }
 };
 
@@ -355,15 +355,17 @@ export const createArticleHandler = async (
       description: article.description!,
       title: articleName.value,
     });
-    await updateDoc(doc(db, 'users', user.id), {
+    console.log(author)
+    await updateDoc(doc(db, 'users', author.id), {
       articles: [...userArticles],
     });
-    setShowSpinner(true);
+    console.log(userArticles);
+    setShowSpinner(false);
     alert('Article created');
     router.push('/user/posts');
-  } catch (error) {
-    setShowSpinner(true);
-    console.log(error);
+  } catch (error: any) {
+    setShowSpinner(false);
+    alert(error.message);
   }
 };
 

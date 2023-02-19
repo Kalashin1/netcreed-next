@@ -21,6 +21,7 @@ const CheckoutButton: FC<ComponentProps> = (props) => {
     return (
       // @ts-ignore
       <PaystackButton
+        //@ts-ignore
         className={PaystackButtonStyle.paystackButton}
         {...props}
       />

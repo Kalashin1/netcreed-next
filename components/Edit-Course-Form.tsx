@@ -26,6 +26,7 @@ const CreateCourseForm: FC<Props> = ({ courseId }) => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0)
   const [course, setCourse] = useState<CourseSchema>({} as CourseSchema);
 
   const editCourseForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
@@ -47,16 +48,17 @@ const CreateCourseForm: FC<Props> = ({ courseId }) => {
     e.preventDefault();
     setShowSpinner(true);
     const [res, err] = await editCourseFormHandler(
-      { title, description },
+      { title, description, price },
       courseId
     );
     if (res) {
       console.log(res);
       setShowSpinner(false);
+      alert('course edited!')
       router.push(`/course/${courseId}`);
     } else if (err) {
       setShowSpinner(false);
-      console.log(err);
+      alert(err);
     }
   };
 
@@ -78,6 +80,24 @@ const CreateCourseForm: FC<Props> = ({ courseId }) => {
             className="form-control"
             id="exampleFormControlInput1"
             placeholder="name@example.com"
+          />
+        </Form.Group>
+        
+        <Form.Group>
+          <Form.Label
+            className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
+            htmlFor="price"
+          >
+            Price
+          </Form.Label>
+          <Form.Control
+            onChange={(e) => setPrice(parseInt(e.target.value))}
+            type="number"
+            defaultValue={course?.price!}
+            name="price"
+            className="form-control"
+            id="price"
+            placeholder="3000"
           />
         </Form.Group>
 

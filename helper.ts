@@ -225,14 +225,12 @@ export const createCourseFormHandler = async (
   try {
     e.preventDefault();
 
-    const { title, coverPhoto, description } = form;
+    const { title, coverPhoto, description, price } = form;
 
     const imageUrl = await uploadImage(
       coverPhoto as HTMLInputElement,
       'courses'
     );
-
-    console.log(imageUrl);
 
     const course: CourseSchema = {
       lessons: [],
@@ -242,6 +240,8 @@ export const createCourseFormHandler = async (
       status: 'SAVED',
       // @ts-ignore
       title: title.value,
+      price: price.value,
+      isPaid: price.value > 0 ? true: false,
     };
 
     const slug = slugify(course.title!, {
@@ -264,7 +264,7 @@ export const createCourseFormHandler = async (
 };
 
 export const editCourseFormHandler = async (
-  { title, description }: any,
+  { title, description, price }: any,
   courseId: string
 ) => {
   try {
@@ -274,10 +274,11 @@ export const editCourseFormHandler = async (
 
     const course: Partial<CourseSchema> = {
       updatedAt: new Date().getTime(),
-      description: description,
+      description,
       title,
       url: `course/${courseId}`,
       slug: `course/${slug}`,
+      price,
     };
 
     await updateDoc(doc(db, 'courses', courseId), course);
@@ -1306,6 +1307,6 @@ export const hasUserPaidForCourse = async (courseId: string) => {
   const [payload, error] = await getUserWithoutID();
   if (error) return [null, error];
   const userCourses = payload?.user?.registeredCourses ?? [];
-  if (userCourses.find((course) => course.id === courseId)) return true;
-  return false;
+  if (userCourses.find((course) => course.id === courseId)) return [true, null];
+  return [false, null];
 };

@@ -37,9 +37,14 @@ const Course: NextPage = ({ course, lessons }) => {
 
   const openCourse = async () => {
     if (course.isPaid) {
-      if (await hasUserPaidForCourse(course.id!)) {
+      const [bool, err] = await hasUserPaidForCourse(course.id!)
+      if (err && err.includes('Please login')){
+        alert(err);
+        router.push('/login');
+      }
+      if (!err && bool) {
         router.push(`/lessons/${lessons[0].id}`);
-      } else {
+      } else if(!err && !bool) {
         router.push(`checkout/${course.id}`);
       }
     } else router.push(`/lessons/${lessons[0].id}`);
@@ -81,7 +86,7 @@ const Course: NextPage = ({ course, lessons }) => {
                     </ListGroup.Item>
                   ))}
               </ListGroup>
-              <Button onClick={openCourse} style={{ width: '100%' }}>
+              <Button onClick={() => {openCourse()}} style={{ width: '100%' }}>
                 Start Course
               </Button>
             </Container>
@@ -96,7 +101,7 @@ const Course: NextPage = ({ course, lessons }) => {
                   />
                 </div>
               ))}
-            <Button onClick={openCourse} style={{ width: '100%' }}>
+            <Button onClick={() => {openCourse()}} style={{ width: '100%' }}>
               Start Course
             </Button>
           </Col>

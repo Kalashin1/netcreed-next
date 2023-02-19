@@ -48,6 +48,21 @@ const CreateCourseForm: NextPage = () => {
         <Form.Group>
           <Form.Label
             className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
+            htmlFor="price"
+          >
+            Price
+          </Form.Label>
+          <Form.Control
+            type="number"
+            name="price"
+            className="form-control"
+            id="price"
+            placeholder="300"
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label
+            className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
             htmlFor="exampleFormControlFile1"
           >
             Select Cover Photo

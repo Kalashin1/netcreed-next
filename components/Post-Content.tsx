@@ -47,7 +47,7 @@ const PostContent: FC<_Article> = ({ article }) => {
     const setUp = async () => {
       if (typeof window !== 'undefined') {
         let _userId = localStorage.getItem('userId')!;
-        setUserId(_userId)
+        setUserId(_userId);
         if (_userId) {
           toggleHasLiked(await hasUserEngaged(userId!, article.id, 'likes'));
           toggleHasSaved(await hasUserEngaged(userId!, article.id, 'saves'));
@@ -56,7 +56,7 @@ const PostContent: FC<_Article> = ({ article }) => {
             article.id,
             'views',
             toggleHasViewed,
-            toggleView,
+            toggleView
           );
         }
       }
@@ -88,13 +88,15 @@ const PostContent: FC<_Article> = ({ article }) => {
         </Col>
         <Col md={12} lg={8}>
           <article
-            className={`article-post text-${theme === 'light' ? 'dark' : 'light'
-              }`}
+            className={`article-post text-${
+              theme === 'light' ? 'dark' : 'light'
+            }`}
             dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}
           ></article>
           <div
-            className={`fixed-bottom bg-${theme === 'dark' ? 'black' : 'white'
-              } mx-auto my-4 px-2`}
+            className={`fixed-bottom bg-${
+              theme === 'dark' ? 'black' : 'white'
+            } mx-auto my-4 px-2`}
             style={{
               width: 'fit-content',
               display: 'flex',
@@ -114,7 +116,7 @@ const PostContent: FC<_Article> = ({ article }) => {
               <p className="mx-2 lead" style={{ position: 'relative', top: '.4rem' }}>{views}</p>
             </span> */}
             <span
-              onClick={(e) => 
+              onClick={(e) =>
                 toogleEngagement(
                   userId,
                   article.id,
@@ -128,15 +130,16 @@ const PostContent: FC<_Article> = ({ article }) => {
             >
               {hasLiked ? <FavoriteFilled /> : <FavoriteOutlined />}
               <p
-                className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
-                  }`}
+                className={`mx-2 lead text-${
+                  theme === 'light' ? 'dark' : 'light'
+                }`}
                 style={{ position: 'relative', top: '.4rem' }}
               >
                 {likes}
               </p>
             </span>
             <span
-              onClick={(e) => 
+              onClick={(e) =>
                 toogleEngagement(
                   userId,
                   article.id,
@@ -150,8 +153,9 @@ const PostContent: FC<_Article> = ({ article }) => {
             >
               {hasSaved ? <SaveFilled /> : <SaveOutlined />}
               <p
-                className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'white'
-                  }`}
+                className={`mx-2 lead text-${
+                  theme === 'light' ? 'dark' : 'white'
+                }`}
                 style={{ position: 'relative', top: '.4rem' }}
               >
                 {saves}

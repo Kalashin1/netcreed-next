@@ -19,8 +19,8 @@ marked.setOptions({
 });
 
 type Prop = {
-  content: string
-}
+  content: string;
+};
 const LessonContent: FC<Prop> = ({ content }) => {
   let theme: string = useContext(ThemeContext).theme;
   return (
@@ -32,9 +32,7 @@ const LessonContent: FC<Prop> = ({ content }) => {
               theme === 'dark' ? 'light' : 'dark'
             }`}
           >
-            <p dangerouslySetInnerHTML={{ __html: marked.marked(content) }}>
-             
-            </p>
+            <p dangerouslySetInnerHTML={{ __html: marked.marked(content) }}></p>
           </article>
         </Col>
       </Row>

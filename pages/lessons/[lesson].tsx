@@ -17,17 +17,15 @@ export const getServerSideProps = async (context: any) => {
     console.log(err);
   }
 
-
   const [lessons, lessonErr] = await getLessonsByCourseId(_lesson?.courseId!);
-
 
   if (lessonErr) {
     console.log(lessonErr);
   }
 
-  const [course, courseErr] = await getCourse(_lesson?.courseId!)
+  const [course, courseErr] = await getCourse(_lesson?.courseId!);
 
-  if(courseErr) console.log(courseErr)
+  if (courseErr) console.log(courseErr);
   return {
     props: { lesson: _lesson, lessons, course },
   };
@@ -46,28 +44,32 @@ const Lesson: NextPage = ({ lesson, lessons, course }) => {
         <Row className="justify-content-between">
           <Col md={12}>
             <div className="my-4">
-              <LessonHeader { ...lesson } />
+              <LessonHeader {...lesson} />
             </div>
           </Col>
         </Row>
         <Row className="justify-content-between">
-        <Col md={2}>
+          <Col md={2}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
               <p>{course?.description}</p>
               <ListGroup
                 variant="flush"
-                className={`text-${theme === 'dark' ? 'light' : 'dark'
-                  } bg-${theme}`}
+                className={`text-${
+                  theme === 'dark' ? 'light' : 'dark'
+                } bg-${theme}`}
               >
                 {lessons &&
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
-                      onClick={() => { router.push(`/lessons/${l.id}`) }}
-                      className={`text-${theme === 'dark' ? 'light' : 'dark'
-                        } bg-${theme}`}
+                      onClick={() => {
+                        router.push(`/lessons/${l.id}`);
+                      }}
+                      className={`text-${
+                        theme === 'dark' ? 'light' : 'dark'
+                      } bg-${theme}`}
                     >
                       {l.title}
                     </ListGroup.Item>

@@ -3,8 +3,12 @@ import Layout from '../Layout';
 import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
 import { ThemeContext } from '../_app';
-import { useContext } from 'react';
-import { getCourse, getLessonsByCourseId } from '../../helper';
+import { useContext, useEffect } from 'react';
+import {
+  getCourse,
+  getLessonsByCourseId,
+  hasUserPaidForCourse,
+} from '../../helper';
 import { LessonSchema } from '../../types';
 import { useRouter } from 'next/router';
 
@@ -17,7 +21,6 @@ export const getServerSideProps = async (context: any) => {
   }
 
   const [lessons, lessonErr] = await getLessonsByCourseId(id);
-  console.log(lessons);
 
   if (lessonErr) {
     console.log(lessonErr);
@@ -29,9 +32,18 @@ export const getServerSideProps = async (context: any) => {
 
 // @ts-ignore
 const Course: NextPage = ({ course, lessons }) => {
-  const router = useRouter()
+  const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
-  console.log(lessons);
+
+  const openCourse = async () => {
+    if (course.isPaid) {
+      if (await hasUserPaidForCourse(course.id!)) {
+        router.push(`/lessons/${lessons[0].id}`);
+      } else {
+        router.push(`checkout/${course.id}`);
+      }
+    } else router.push(`/lessons/${lessons[0].id}`);
+  };
   return (
     <Layout>
       <Container className="my-4">
@@ -58,7 +70,9 @@ const Course: NextPage = ({ course, lessons }) => {
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
-                      onClick={() => {router.push(`/lessons/${l.id}`)}}
+                      onClick={() => {
+                        router.push(`/lessons/${l.id}`);
+                      }}
                       className={`text-${
                         theme === 'dark' ? 'light' : 'dark'
                       } bg-${theme}`}
@@ -67,7 +81,9 @@ const Course: NextPage = ({ course, lessons }) => {
                     </ListGroup.Item>
                   ))}
               </ListGroup>
-              <Button onClick={() => {router.push( `/lessons/${lessons[0].id}`)}} style={{ width: '100%' }}>Start Course</Button>
+              <Button onClick={openCourse} style={{ width: '100%' }}>
+                Start Course
+              </Button>
             </Container>
           </Col>
           <Col md={7}>
@@ -80,7 +96,9 @@ const Course: NextPage = ({ course, lessons }) => {
                   />
                 </div>
               ))}
-            <Button onClick={() => {router.push( `/lessons/${lessons[0].id}`)}} style={{ width: '100%' }}>Start Course</Button>
+            <Button onClick={openCourse} style={{ width: '100%' }}>
+              Start Course
+            </Button>
           </Col>
         </Row>
       </Container>

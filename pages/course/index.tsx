@@ -25,7 +25,11 @@ const Courses: NextPage = ({ courses }) => {
   const arr = [1, 2, 3, 4];
   return (
     <Layout>
-      <Container className={`my-4 bg-${theme} text-${theme === 'dark' ? 'light' : 'dark'}`}>
+      <Container
+        className={`my-4 bg-${theme} text-${
+          theme === 'dark' ? 'light' : 'dark'
+        }`}
+      >
         <h3 className={`display-4 text-${theme === 'dark' ? 'light' : 'dark'}`}>
           Courses
         </h3>

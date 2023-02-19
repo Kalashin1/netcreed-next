@@ -25,6 +25,7 @@ export interface User extends DocumentData {
   blocked: Author[];
   articles: Array<ArticleRef>;
   savedArticles: Array<ArticleRef>;
+  registeredCourses?: CourseRef[];
 }
 
 export type USER_ENGAGEMENT_ACTION_TYPE = 'FOLLOW' | 'BLOCK';
@@ -112,6 +113,8 @@ export interface CourseSchema extends DocumentData {
   status: 'APPROVED' | 'SAVED' | 'REJECTED';
   lessons: LessonRef | [];
   createdAt: number;
+  isPaid?: boolean;
+  price?: number;
   updatedAt?: number;
 }
 

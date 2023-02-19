@@ -8,7 +8,7 @@ import { ThemeContext } from '../pages/_app';
 import Bio from './Bio';
 import ProfileHeader from './Profile-Header';
 import ProfileForm from './Profile-Form';
-import { FavoriteOutlined, SaveOutlined } from './svg/icons'
+import { FavoriteOutlined, SaveOutlined } from './svg/icons';
 import {
   getUserWithoutID,
   getUserEngagements,
@@ -197,19 +197,27 @@ const UserProfile: FC = () => {
                         {article.readingTimeInMins} min read
                       </small>
                       <div className="d-flex justify-content-between w-50">
-                      <span className="mr-4 d-flex align-items-center"><FavoriteOutlined /><span
-                        className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
-                          }`}
-                      >
-                        {article.likes.length}
-                      </span></span>
-                      <span className="mr-4 d-flex align-items-center"><SaveOutlined /><span
-                        className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
-                          }`}
-                      >
-                        {article.saves.length}
-                      </span></span>
-                    </div>
+                        <span className="mr-4 d-flex align-items-center">
+                          <FavoriteOutlined />
+                          <span
+                            className={`mx-2 lead text-${
+                              theme === 'light' ? 'dark' : 'light'
+                            }`}
+                          >
+                            {article.likes.length}
+                          </span>
+                        </span>
+                        <span className="mr-4 d-flex align-items-center">
+                          <SaveOutlined />
+                          <span
+                            className={`mx-2 lead text-${
+                              theme === 'light' ? 'dark' : 'light'
+                            }`}
+                          >
+                            {article.saves.length}
+                          </span>
+                        </span>
+                      </div>
                     </Card>
                   </div>
                 ))}

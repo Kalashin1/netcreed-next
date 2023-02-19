@@ -1,10 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import { AppProps } from 'next/app';
-import Head from 'next/head';
 import React, { useState, useEffect } from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import Script from 'next/script';
-import Router from 'next/router';
 
 let _theme: string;
 

@@ -18,11 +18,16 @@ import {
   updateComment,
   deleteComment,
   engageComment,
-  hasUserLikeComment
+  hasUserLikeComment,
 } from '../helper';
-import { CommentIcon, LikeCommentIconFilled, LikeCommentIconOutline, EditIcon, DeleteIcon } from './svg/icons';
+import {
+  CommentIcon,
+  LikeCommentIconFilled,
+  LikeCommentIconOutline,
+  EditIcon,
+  DeleteIcon,
+} from './svg/icons';
 const marked = require('marked');
-
 
 type Props = {
   commentId: string;
@@ -62,7 +67,7 @@ const Comment: FC<Props> = ({
       );
       setChildComments(comments);
       const bool = await hasUserLikeComment(articleId, commentId);
-      toggleHasLiked(bool)
+      toggleHasLiked(bool);
     };
 
     getChildComments();
@@ -147,7 +152,6 @@ const Comment: FC<Props> = ({
                     {new Date(createdAt).toDateString()}
                   </span>
                 </h5>
-                
               </div>
               {!showEditButton ? (
                 <p
@@ -201,10 +205,14 @@ const Comment: FC<Props> = ({
           <div className="ml-2 justify-items-between p-2 d-flex">
             <div
               className="d-flex align-items-center mr-4"
-              style={{ cursor: 'pointer'}}
+              style={{ cursor: 'pointer' }}
               onClick={toggleCommentLikes}
             >
-              {hasLiked ? <LikeCommentIconFilled /> : <LikeCommentIconOutline />}
+              {hasLiked ? (
+                <LikeCommentIconFilled />
+              ) : (
+                <LikeCommentIconOutline />
+              )}
               <span
                 className={`ml-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
               >
@@ -213,25 +221,29 @@ const Comment: FC<Props> = ({
             </div>
             <div
               className="d-flex align-items-center ml-2"
-              style={{ cursor: 'pointer'}}
+              style={{ cursor: 'pointer' }}
               onClick={(e) => updateShowCommentForm(!showCommentForm)}
             >
               <CommentIcon />
             </div>
-            {id && id === owner.id &&(<div
-              className="d-flex align-items-center ml-4"
-              style={{ cursor: 'pointer'}}
-              onClick={(e) => updateEditButton(!showEditButton)}
-            >
-              <EditIcon />
-            </div>)}
-            {id && id === owner.id && (<div
-              className="d-flex align-items-center ml-4"
-              style={{ cursor: 'pointer'}}
-              onClick={(e) => handleDeleteComment(commentId)}
-            >
-              <DeleteIcon />
-            </div>)}
+            {id && id === owner.id && (
+              <div
+                className="d-flex align-items-center ml-4"
+                style={{ cursor: 'pointer' }}
+                onClick={(e) => updateEditButton(!showEditButton)}
+              >
+                <EditIcon />
+              </div>
+            )}
+            {id && id === owner.id && (
+              <div
+                className="d-flex align-items-center ml-4"
+                style={{ cursor: 'pointer' }}
+                onClick={(e) => handleDeleteComment(commentId)}
+              >
+                <DeleteIcon />
+              </div>
+            )}
           </div>
           <div className="ml-4 my-4 border-left">
             {childComments &&

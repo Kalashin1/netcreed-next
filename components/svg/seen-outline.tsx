@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../pages/_app';
 
-
-export default function SeenOutline<Prop>({ }) {
+export default function SeenOutline<Prop>({}) {
   const theme = useContext(ThemeContext).theme;
   return (
     <svg

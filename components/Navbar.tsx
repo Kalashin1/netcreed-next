@@ -32,10 +32,9 @@ const links = [
   },
 ] as const;
 
-
 const NavbarComponent: FC = () => {
   const router = useRouter();
-  const { theme, updateTheme } = useContext(ThemeContext)
+  const { theme, updateTheme } = useContext(ThemeContext);
   const [user, setUser] = useState<User | boolean>(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -47,13 +46,13 @@ const NavbarComponent: FC = () => {
         const _user = docRef.data() as User;
         setUser(_user);
       } else {
-        const userId = localStorage.getItem('userId')
+        const userId = localStorage.getItem('userId');
         if (userId) {
           const docRef = await getDoc(doc(db, 'users', userId));
           const _user = docRef.data() as User;
           setUser(_user);
         } else {
-          setUser(false)
+          setUser(false);
         }
       }
     }
@@ -61,20 +60,20 @@ const NavbarComponent: FC = () => {
     getUser();
   }, []);
 
-  const logout = async (expanded:boolean) => {
-    setExpanded(!expanded)
+  const logout = async (expanded: boolean) => {
+    setExpanded(!expanded);
     try {
       await signOut(auth);
-      localStorage.removeItem('userId')
-      router.push('/login')
-    } catch(err: any){
-      console.log(err)
+      localStorage.removeItem('userId');
+      router.push('/login');
+    } catch (err: any) {
+      console.log(err);
     }
-  } 
+  };
 
   return (
     <Navbar
-      bg={theme === 'dark'? 'dark': 'light'}
+      bg={theme === 'dark' ? 'dark' : 'light'}
       expanded={expanded}
       expand="lg"
       fixed="top"
@@ -108,12 +107,14 @@ const NavbarComponent: FC = () => {
               <Link href="/about">About</Link>
             </Nav.Item>
 
-            {user &&  (<Nav.Item
-              onClick={() => setExpanded(!expanded)}
-              style={{ margin: '.5rem 1rem' }}
-            >
-              <Link href="/user/profile">Profile</Link>
-            </Nav.Item>)}
+            {user && (
+              <Nav.Item
+                onClick={() => setExpanded(!expanded)}
+                style={{ margin: '.5rem 1rem' }}
+              >
+                <Link href="/user/profile">Profile</Link>
+              </Nav.Item>
+            )}
 
             {
               //@ts-ignore
@@ -145,8 +146,14 @@ const NavbarComponent: FC = () => {
 
             {user && (
               <Nav.Item
-                onClick={() => {logout(expanded)}}
-                style={{ margin: '.5rem 1rem', color: '#03a87c', cursor: 'pointer' }}
+                onClick={() => {
+                  logout(expanded);
+                }}
+                style={{
+                  margin: '.5rem 1rem',
+                  color: '#03a87c',
+                  cursor: 'pointer',
+                }}
               >
                 <span>Logout</span>
               </Nav.Item>

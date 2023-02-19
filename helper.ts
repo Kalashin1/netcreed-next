@@ -355,7 +355,7 @@ export const createArticleHandler = async (
       description: article.description!,
       title: articleName.value,
     });
-    console.log(author)
+    console.log(author);
     await updateDoc(doc(db, 'users', author.id), {
       articles: [...userArticles],
     });
@@ -497,7 +497,6 @@ export const getLessonsByCourseId = async (
       ...doc.data(),
       id: doc.id,
     })) as LessonSchema[];
-    console.log(lessons);
     return [lessons, null];
   } catch (error: any) {
     return [null, error.message];
@@ -901,7 +900,9 @@ export const toogleEngagement = async (
           if (type === 'views') {
             return;
           }
-          const updatedEngagements = engagements.filter((u) => u.id !== user.id);
+          const updatedEngagements = engagements.filter(
+            (u) => u.id !== user.id
+          );
           updateObj[type] = updatedEngagements;
           await updateDoc(doc(db, 'articles', article.id), { ...updateObj });
           updateEngagement(false);
@@ -928,7 +929,7 @@ export const toogleEngagement = async (
               title: article.title,
               description: article.description,
             };
-  
+
             await updateDoc(doc(db, 'users', userId), {
               savedArticles: [...savedArticles],
             });
@@ -955,9 +956,9 @@ export const toogleEngagement = async (
       }
     }
   } catch (err) {
-    if (type !== 'views' && (typeof router !== 'undefined')) {
-      router.push('/login')
-    };
+    if (type !== 'views' && typeof router !== 'undefined') {
+      router.push('/login');
+    }
   }
 };
 
@@ -1262,22 +1263,49 @@ export const engageComment = async (
   }
 };
 
-
 export const hasUserLikeComment = async (
   articleId: string,
   commentId: string
 ) => {
   const { article } = await getArticleRef(articleId);
-    const [user, err] = await getCurrentUser();
-    if (err) throw Error(err);
-    const userProfile = await getUser(user!);
-    const comment = await article.comments?.find((c) => c.id === commentId);
-    if (!comment) throw Error('no comment with that id');
-    const engagements = comment.likes;
-    const userEngagement = engagements.find((e) => e.id === userProfile.id);
-    if (userEngagement) {
-      return true;
-    } else {
-      return false;
-    }
-}
+  const [user, err] = await getCurrentUser();
+  if (err) throw Error(err);
+  const userProfile = await getUser(user!);
+  const comment = await article.comments?.find((c) => c.id === commentId);
+  if (!comment) throw Error('no comment with that id');
+  const engagements = comment.likes;
+  const userEngagement = engagements.find((e) => e.id === userProfile.id);
+  if (userEngagement) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const registerCourse = async (courseId: string) => {
+  const [course, err] = await getCourse(courseId);
+  if (err) return [null, err];
+  const [payload, error] = await getUserWithoutID();
+  if (error) return [null, error];
+  const userCourses = payload?.user?.registeredCourses ?? [];
+  const courseRef: CourseRef = {
+    id: course?.id,
+    slug: course?.slug,
+    url: course?.url,
+  };
+  userCourses.push(courseRef);
+  await updateDoc(doc(db, 'users', payload?.user.id!), {
+    registeredCourses: userCourses,
+  });
+  return courseRef;
+};
+
+export const hasUserPaidForCourse = async (courseId: string) => {
+  const [course, err] = await getCourse(courseId);
+  if (err) return [null, err];
+  const [payload, error] = await getUserWithoutID();
+  if (error) return [null, error];
+  const userCourses = payload?.user?.registeredCourses ?? [];
+  if (userCourses.find((course) => course.id === courseId)) return true;
+  return false;
+};

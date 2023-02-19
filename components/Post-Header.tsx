@@ -38,7 +38,7 @@ const PostHeader: FC<_Article> = ({ article }) => {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={article.coverPhoto}
-                style={{ width: '100%', height: 'auto'}}
+                style={{ width: '100%', height: 'auto' }}
                 className="img-fluid"
                 alt={article.title}
               />

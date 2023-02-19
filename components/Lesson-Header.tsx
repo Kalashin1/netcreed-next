@@ -9,8 +9,8 @@ import { ThemeContext } from '../pages/_app';
 
 type Prop = {
   title: string;
-  description: string
-}
+  description: string;
+};
 const LessonHeader: FC<Prop> = ({ title, description }) => {
   let theme: string = useContext(ThemeContext).theme;
 
@@ -38,11 +38,9 @@ const LessonHeader: FC<Prop> = ({ title, description }) => {
                 </p>
               }
               <h1 className="display-4 secondfont mb-3 font-weight-bold">
-                { title }
+                {title}
               </h1>
-              <p className="mb-3">
-                { description }
-              </p>
+              <p className="mb-3">{description}</p>
             </Col>
           </Row>
         </div>

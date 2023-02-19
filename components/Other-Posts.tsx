@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import { Container, Row } from 'react-bootstrap';
 const marked = require('marked');
 import { ThemeContext } from '../pages/_app';
-import { FavoriteOutlined, SaveOutlined } from './svg/icons'
+import { FavoriteOutlined, SaveOutlined } from './svg/icons';
 
 type Posts = {
   allPosts: Article[];
@@ -27,8 +27,9 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
       <Row className="justify-content-center">
         <Col xs lg="6">
           <h5
-            className={`font-weight-bold spanborder text-${theme === 'dark' ? 'light' : 'dark'
-              }`}
+            className={`font-weight-bold spanborder text-${
+              theme === 'dark' ? 'light' : 'dark'
+            }`}
           >
             <span>Latest Stories</span>
           </h5>
@@ -66,18 +67,26 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                     {Math.floor(post.readingTimeInMins)} mins
                   </Card.Text>
                   <div className="d-flex justify-content-between w-50">
-                    <span className="mr-4 d-flex align-items-center"><FavoriteOutlined /><span
-                      className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                    <span className="mr-4 d-flex align-items-center">
+                      <FavoriteOutlined />
+                      <span
+                        className={`mx-2 lead text-${
+                          theme === 'light' ? 'dark' : 'light'
                         }`}
-                    >
-                      {post.likes.length}
-                    </span></span>
-                    <span className="mr-4 d-flex align-items-center"><SaveOutlined /><span
-                      className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                      >
+                        {post.likes.length}
+                      </span>
+                    </span>
+                    <span className="mr-4 d-flex align-items-center">
+                      <SaveOutlined />
+                      <span
+                        className={`mx-2 lead text-${
+                          theme === 'light' ? 'dark' : 'light'
                         }`}
-                    >
-                      {post.saves.length}
-                    </span></span>
+                      >
+                        {post.saves.length}
+                      </span>
+                    </span>
                   </div>
                 </Card.Body>
               </Card>
@@ -86,8 +95,9 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
         </Col>
         <Col md={6} className="pl-4">
           <h5
-            className={`font-weight-bold spanborder text-${theme === 'dark' ? 'light' : 'dark'
-              }`}
+            className={`font-weight-bold spanborder text-${
+              theme === 'dark' ? 'light' : 'dark'
+            }`}
           >
             <span>Other Stories</span>
           </h5>
@@ -96,8 +106,9 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
               featuredPosts.map((article, index) => (
                 <Card
                   bg={theme}
-                  className={`text-${theme === 'light' ? 'dark' : 'light'
-                    } p-4 my-4`}
+                  className={`text-${
+                    theme === 'light' ? 'dark' : 'light'
+                  } p-4 my-4`}
                   key={index}
                 >
                   <Card.Title className="mb-1 h4 font-weight-bold">
@@ -132,18 +143,26 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                     {Math.floor(article.readingTimeInMins)} min read
                   </small>
                   <div className="d-flex justify-content-between w-50">
-                    <span className="mr-4 d-flex align-items-center"><FavoriteOutlined /><span
-                      className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                    <span className="mr-4 d-flex align-items-center">
+                      <FavoriteOutlined />
+                      <span
+                        className={`mx-2 lead text-${
+                          theme === 'light' ? 'dark' : 'light'
                         }`}
-                    >
-                      {article.likes.length}
-                    </span></span>
-                    <span className="mr-4 d-flex align-items-center"><SaveOutlined /><span
-                      className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                      >
+                        {article.likes.length}
+                      </span>
+                    </span>
+                    <span className="mr-4 d-flex align-items-center">
+                      <SaveOutlined />
+                      <span
+                        className={`mx-2 lead text-${
+                          theme === 'light' ? 'dark' : 'light'
                         }`}
-                    >
-                      {article.saves.length}
-                    </span></span>
+                      >
+                        {article.saves.length}
+                      </span>
+                    </span>
                   </div>
                 </Card>
               ))}

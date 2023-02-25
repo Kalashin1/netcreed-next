@@ -9,7 +9,7 @@ import AppStyle from './app.module.css';
 import { ThemeContext } from './_app';
 
 type Props = {
-  children: JSX.Element;
+  children: React.ReactNode;
 };
 //@ts-ignore
 const Layout: FC<Props> = function ({ children }) {

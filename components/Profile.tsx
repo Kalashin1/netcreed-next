@@ -136,7 +136,7 @@ const UserProfile: FC = () => {
               {user.creator && (
                 <Button
                   variant="primary"
-                  className="my-4"
+                  className="mb-2 mt-4"
                   type="submit"
                   style={{ width: '100%' }}
                   onClick={(e: any) => navigate(`/post/create`)}
@@ -144,8 +144,17 @@ const UserProfile: FC = () => {
                   Create Post
                 </Button>
               )}
+              <Button
+                variant="secondary"
+                className="my-2"
+                type="submit"
+                style={{ width: '100%' }}
+                onClick={(e: any) => navigate(`/course/create`)}
+              >
+                Create Course
+              </Button>
               {user.creator && (
-                <h5 className="font-weight-bold spanborder my-4">
+                <h5 className="font-weight-bold span border my-4">
                   <span>Posts From {user.name}</span>
                 </h5>
               )}

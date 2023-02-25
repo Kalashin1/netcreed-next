@@ -22,10 +22,11 @@ export interface User extends DocumentData {
   updatedAt?: number;
   followers: Author[];
   following: Author[];
-  blocked: Author[];
-  articles: Array<ArticleRef>;
-  savedArticles: Array<ArticleRef>;
+  blocked?: Author[];
+  articles?: Array<ArticleRef>;
+  savedArticles?: Array<ArticleRef>;
   registeredCourses?: CourseRef[];
+  createdCourses?: CourseRef[];
 }
 
 export type USER_ENGAGEMENT_ACTION_TYPE = 'FOLLOW' | 'BLOCK';
@@ -101,7 +102,7 @@ export type engagement = {
   user: Author;
 };
 
-export type LessonRef = Pick<LessonSchema, 'id' | 'url' | 'slug'>[];
+export type LessonRef = Pick<LessonSchema, 'id' | 'url' | 'slug'>;
 
 export interface CourseSchema extends DocumentData {
   description: string;
@@ -111,14 +112,21 @@ export interface CourseSchema extends DocumentData {
   title: string;
   photoUrl: string;
   status: 'APPROVED' | 'SAVED' | 'REJECTED';
-  lessons: LessonRef | [];
+  lessons: LessonRef[] | [];
+  creator?: Author;
   createdAt: number;
   isPaid?: boolean;
   price?: number;
   updatedAt?: number;
+  questions?: QuestionSchema[];
+  isCertified?: boolean;
 }
 
 export type CourseRef = Pick<CourseSchema, 'id' | 'slug' | 'url'>;
+export type StudentCourseRef = Partial<
+  CourseRef & { currentLesson?: LessonRef }
+>;
+export type ADD_QUESTION_TYPE = 'LESSON' | 'COURSE';
 
 export interface LessonSchema extends DocumentData {
   id?: string;
@@ -132,9 +140,19 @@ export interface LessonSchema extends DocumentData {
   updatedAt?: number;
   courseContent: string;
   url?: string;
+  video?: string;
+  questions?: QuestionSchema[];
 }
 
 export type NOTIFICATION_TYPE = 'FOLLOW' | 'COMMENT' | 'LIKE';
+
+export type QuestionSchema = {
+  id: string;
+  question: string;
+  options: string[];
+  answer?: string;
+  correctAnswer: string;
+};
 
 export interface NotificiationSchema extends DocumentData {
   id?: string;

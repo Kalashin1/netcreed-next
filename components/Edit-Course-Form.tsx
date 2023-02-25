@@ -26,7 +26,7 @@ const CreateCourseForm: FC<Props> = ({ courseId }) => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState(0);
   const [course, setCourse] = useState<CourseSchema>({} as CourseSchema);
 
   const editCourseForm: MutableRefObject<null | HTMLFormElement> = useRef(null);
@@ -54,7 +54,7 @@ const CreateCourseForm: FC<Props> = ({ courseId }) => {
     if (res) {
       console.log(res);
       setShowSpinner(false);
-      alert('course edited!')
+      alert('course edited!');
       router.push(`/course/${courseId}`);
     } else if (err) {
       setShowSpinner(false);
@@ -82,7 +82,7 @@ const CreateCourseForm: FC<Props> = ({ courseId }) => {
             placeholder="name@example.com"
           />
         </Form.Group>
-        
+
         <Form.Group>
           <Form.Label
             className={`text-${theme === 'dark' ? 'light' : 'dark'}`}

@@ -4,10 +4,11 @@ import LessonHeader from '../../components/Lesson-Header';
 import LessonContent from '../../components/Lesson-Content';
 import Layout from '../Layout';
 import { ThemeContext } from '../_app';
+import Head from 'next/head';
 import { getLesson, getLessonsByCourseId, getCourse } from '../../helper';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { LessonSchema } from '../../types';
+import { CourseSchema, LessonSchema } from '../../types';
 
 export const getServerSideProps = async (context: any) => {
   const { lesson } = context.query;
@@ -32,11 +33,54 @@ export const getServerSideProps = async (context: any) => {
 };
 
 // @ts-ignore
-const Lesson: NextPage = ({ lesson, lessons, course }) => {
+const Lesson: NextPage<{
+  lesson: LessonSchema;
+  lessons: LessonSchema[];
+  course: CourseSchema;
+}> = ({ lesson, lessons, course }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
   return (
     <Layout>
+      <Head>
+        <meta name="title" content="Netcreed, Software Development" />
+        <meta
+          name="description"
+          content="Software development platform for FullStack Development, JavaScript Development and Mobile Development"
+        />
+        <meta
+          name="keywords"
+          content={lesson.title
+            .split(' ')
+            .map((t: any) => t.value)
+            .join(', ')}
+        />
+        <meta name="robots" content="index, follow" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="3 days" />
+        <meta name="author" content={course.author.name} />
+        {/* TWITTER CARD  */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={lesson.title} />
+        <meta name="twitter:site" content="@netcreed" />
+        <meta name="twitter:creator" content="@netcreed" />
+        <meta name="twitter:description" content={lesson.description} />
+        <meta name="twitter:image" content={course.photoUrl} />
+        {/* Open Graph  */}
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://blog.thenetcreed.com/lessons/${lesson.id}`}
+        />
+        <meta property="og:title" content={lesson.title} />
+        <meta property="og:description" content={lesson.description} />
+        <meta
+          property="og:image"
+          itemProp="image"
+          content={`${course.photoUrl}`}
+        />
+      </Head>
       <Container className="my-4">
         <h3 className={`display-4 text-${theme === 'dark' ? 'light' : 'dark'}`}>
           {course?.title}

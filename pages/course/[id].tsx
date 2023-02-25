@@ -3,7 +3,8 @@ import Layout from '../Layout';
 import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
 import { ThemeContext } from '../_app';
-import { useContext, useEffect } from 'react';
+import Head from 'next/head';
+import { useContext } from 'react';
 import {
   getCourse,
   getLessonsByCourseId,
@@ -31,26 +32,68 @@ export const getServerSideProps = async (context: any) => {
 };
 
 // @ts-ignore
-const Course: NextPage = ({ course, lessons }) => {
+const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
+  course,
+  lessons,
+}) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
 
   const openCourse = async () => {
     if (course.isPaid) {
-      const [bool, err] = await hasUserPaidForCourse(course.id!)
-      if (err && err.includes('Please login')){
+      const [bool, err] = await hasUserPaidForCourse(course.id!);
+      if (err && err.includes('Please login')) {
         alert(err);
         router.push('/login');
       }
       if (!err && bool) {
         router.push(`/lessons/${lessons[0].id}`);
-      } else if(!err && !bool) {
+      } else if (!err && !bool) {
         router.push(`checkout/${course.id}`);
       }
     } else router.push(`/lessons/${lessons[0].id}`);
   };
   return (
     <Layout>
+      <Head>
+        <meta name="title" content="Netcreed, Software Development" />
+        <meta
+          name="description"
+          content="Software development platform for FullStack Development, JavaScript Development and Mobile Development"
+        />
+        <meta
+          name="keywords"
+          content={course.title
+            .split(' ')
+            .map((t: any) => t.value)
+            .join(', ')}
+        />
+        <meta name="robots" content="index, follow" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="3 days" />
+        <meta name="author" content={course.author.name} />
+        {/* TWITTER CARD  */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={course.title} />
+        <meta name="twitter:site" content="@netcreed" />
+        <meta name="twitter:creator" content="@netcreed" />
+        <meta name="twitter:description" content={course.description} />
+        <meta name="twitter:image" content={course.coverPhoto} />
+        {/* Open Graph  */}
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://blog.thenetcreed.com/course/${course.id}`}
+        />
+        <meta property="og:title" content={course.title} />
+        <meta property="og:description" content={course.description} />
+        <meta
+          property="og:image"
+          itemProp="image"
+          content={`${course.photoUrl}`}
+        />
+      </Head>
       <Container className="my-4">
         <h3
           className={`my-4 display-6 text-${
@@ -86,7 +129,12 @@ const Course: NextPage = ({ course, lessons }) => {
                     </ListGroup.Item>
                   ))}
               </ListGroup>
-              <Button onClick={() => {openCourse()}} style={{ width: '100%' }}>
+              <Button
+                onClick={() => {
+                  openCourse();
+                }}
+                style={{ width: '100%' }}
+              >
                 Start Course
               </Button>
             </Container>
@@ -101,7 +149,12 @@ const Course: NextPage = ({ course, lessons }) => {
                   />
                 </div>
               ))}
-            <Button onClick={() => {openCourse()}} style={{ width: '100%' }}>
+            <Button
+              onClick={() => {
+                openCourse();
+              }}
+              style={{ width: '100%' }}
+            >
               Start Course
             </Button>
           </Col>

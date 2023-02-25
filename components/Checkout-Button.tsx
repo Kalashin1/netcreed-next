@@ -1,4 +1,4 @@
-import { FC, Dispatch, SetStateAction } from 'react';
+import { FC } from 'react';
 import { PaystackButton } from 'react-paystack';
 import * as PaystackButtonStyle from '../styles/Paystack.module.css';
 

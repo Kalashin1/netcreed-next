@@ -29,6 +29,8 @@ import {
   CreateCommentPayload,
   USER_ENGAGEMENT_TYPE,
   USER_ENGAGEMENT_ACTION_TYPE,
+  StudentCourseRef,
+  ADD_QUESTION_TYPE,
 } from './types';
 import { NextRouter } from 'next/router';
 import { getDoc, getDocs, limit, query, setDoc } from 'firebase/firestore';
@@ -41,7 +43,13 @@ import {
   UserProfile,
 } from 'firebase/auth';
 import slugify from 'slugify';
-import { Comment, UserEngagements, engagement } from './types';
+import {
+  Comment,
+  UserEngagements,
+  engagement,
+  QuestionSchema,
+  LessonRef,
+} from './types';
 
 export const uploadImage = async (file: HTMLInputElement, folder: string) => {
   console.log(file);
@@ -169,9 +177,10 @@ export const updateArticle = async (
   }
 };
 
-export const getUser = async (user: AuthUser): Promise<Author> => {
+export const getUser = async (user: Partial<AuthUser>): Promise<Author> => {
+  if (!user) throw Error('no user');
   const uid = user.uid;
-  const docRef = doc(db, 'users', uid);
+  const docRef = doc(db, 'users', uid!);
   const document = await getDoc(docRef);
   const userDoc = (await document.data()) as User;
   return {
@@ -226,7 +235,9 @@ export const createCourseFormHandler = async (
     e.preventDefault();
 
     const { title, coverPhoto, description, price } = form;
-
+    const [authUser, err] = await getCurrentUser();
+    if (err) router.push('/login');
+    const author: Author = await getUser(authUser!);
     const imageUrl = await uploadImage(
       coverPhoto as HTMLInputElement,
       'courses'
@@ -241,7 +252,8 @@ export const createCourseFormHandler = async (
       // @ts-ignore
       title: title.value,
       price: price.value,
-      isPaid: price.value > 0 ? true: false,
+      isPaid: price.value > 0 ? true : false,
+      author,
     };
 
     const slug = slugify(course.title!, {
@@ -398,9 +410,9 @@ export const signinWithGoogle = async (
     });
     alert('Your account has been created successfully');
     router.push('/profile');
-  } catch (error) {
+  } catch (error: any) {
     setShowSpinner2(false);
-    console.log(error);
+    alert(error.message);
   }
 };
 
@@ -909,7 +921,7 @@ export const toogleEngagement = async (
           updateEngagement(false);
           updateEngagementList(updatedEngagements.length);
           if (type === 'saves') {
-            const savedArticles = user.savedArticles;
+            const savedArticles = user.savedArticles ?? [];
             const filteredUserSavedArticles = savedArticles.filter(
               (articleRef) => articleRef.id !== article.id
             );
@@ -1289,16 +1301,27 @@ export const registerCourse = async (courseId: string) => {
   const [payload, error] = await getUserWithoutID();
   if (error) return [null, error];
   const userCourses = payload?.user?.registeredCourses ?? [];
-  const courseRef: CourseRef = {
-    id: course?.id,
-    slug: course?.slug,
-    url: course?.url,
-  };
-  userCourses.push(courseRef);
-  await updateDoc(doc(db, 'users', payload?.user.id!), {
-    registeredCourses: userCourses,
-  });
-  return courseRef;
+  const [lessons, lessonsError] = await getLessonsByCourseId(courseId);
+  let courseRef: StudentCourseRef;
+  if (error) return [null, lessonsError];
+  if (lessons) {
+    courseRef = {
+      id: course?.id,
+      slug: course?.slug,
+      url: course?.url,
+      currentLesson: {
+        id: lessons[0].id,
+        slug: lessons[0].slug,
+        url: lessons[0].url,
+      },
+    };
+
+    userCourses.push(courseRef);
+    await updateDoc(doc(db, 'users', payload?.user.id!), {
+      registeredCourses: userCourses,
+    });
+    return courseRef;
+  }
 };
 
 export const hasUserPaidForCourse = async (courseId: string) => {
@@ -1309,4 +1332,126 @@ export const hasUserPaidForCourse = async (courseId: string) => {
   const userCourses = payload?.user?.registeredCourses ?? [];
   if (userCourses.find((course) => course.id === courseId)) return [true, null];
   return [false, null];
+};
+
+export const getUserCourses = async (user: string, router?: NextRouter) => {
+  try {
+    const author = await getUser({ uid: user });
+    const _q = query(
+      collection(db, 'courses'),
+      orderBy('createdAt', 'desc'),
+      where('author', '==', author)
+    );
+    const _docRes = await getDocs(_q);
+    const courses = _docRes.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as CourseSchema[];
+    return [courses, null];
+  } catch (error: any) {
+    if (error.message.includes('no user')) router?.push('/login');
+    return [null, error];
+  }
+};
+
+export const addQuestions = async (
+  questions: QuestionSchema[],
+  _collection: ADD_QUESTION_TYPE,
+  id: string
+) => {
+  let existingQuestions: QuestionSchema[];
+  switch (_collection) {
+    case 'COURSE':
+      const [course, courseErr] = await getCourse(id);
+      if (courseErr) return [null, courseErr];
+      existingQuestions = course?.questions ?? [];
+      existingQuestions = [...existingQuestions, ...questions];
+      await updateDoc(doc(db, 'courses', id), { questions: existingQuestions });
+      return [{ ...course, questions: existingQuestions }, null];
+    case 'LESSON':
+      const [lesson, lessonErr] = await getLesson(id);
+      if (lessonErr) return [null, lessonErr];
+      existingQuestions = lesson?.questions ?? [];
+      existingQuestions = [...existingQuestions, ...questions];
+      await updateDoc(doc(db, 'lessons', id), { questions: existingQuestions });
+      return { ...lesson, questions: existingQuestions };
+    default:
+      return [null, null];
+  }
+};
+
+export const updateQuestions = async (
+  questions: QuestionSchema[],
+  _collection: ADD_QUESTION_TYPE,
+  id: string
+) => {
+  let existingQuestions: QuestionSchema[] = [];
+  let filteredQuestions: QuestionSchema[] = [];
+
+  switch (_collection) {
+    case 'COURSE':
+      const [course, courseErr] = await getCourse(id);
+      if (courseErr) return [null, courseErr];
+      existingQuestions = course?.questions!;
+      questions.forEach((question) => {
+        let _question = existingQuestions.find((q) => q.id == question.id);
+        _question = question;
+        filteredQuestions.push(
+          ...existingQuestions?.filter((q) => q.id !== question.id)
+        );
+      });
+      await updateDoc(doc(db, 'courses', id), { questions: filteredQuestions });
+      return [{ ...course, questions: filteredQuestions }, null];
+    case 'LESSON':
+      const [lesson, lessonErr] = await getLesson(id);
+      if (lessonErr) return [null, lessonErr];
+      existingQuestions = lesson?.questions!;
+      questions.forEach((question) => {
+        let _question = existingQuestions.find((q) => q.id == question.id);
+        _question = question;
+        filteredQuestions.push(
+          ...existingQuestions?.filter((q) => q.id !== question.id)
+        );
+      });
+      await updateDoc(doc(db, 'lessons', id), { questions: filteredQuestions });
+      return [{ ...lesson, questions: filteredQuestions }, null];
+    default:
+      return [null, null];
+  }
+};
+
+export const removeQuestions = async (
+  questions: string[],
+  _collection: ADD_QUESTION_TYPE,
+  id: string
+) => {
+  let existingQuestions: QuestionSchema[] = [];
+  let filteredQuestions: QuestionSchema[] = [];
+
+  switch (_collection) {
+    case 'COURSE':
+      const [course, courseErr] = await getCourse(id);
+      if (courseErr) return [null, courseErr];
+      existingQuestions = course?.questions!;
+      questions.forEach((question) => {
+        filteredQuestions.push(
+          ...existingQuestions?.filter((q) => q.id !== question)
+        );
+      });
+      await updateDoc(doc(db, 'courses', id), { questions: filteredQuestions });
+      return [{ ...course, questions: filteredQuestions }, null];
+    case 'LESSON':
+      const [lesson, lessonErr] = await getLesson(id);
+      if (lessonErr) return [null, lessonErr];
+      existingQuestions = lesson?.questions!;
+      questions.forEach((question) => {
+        filteredQuestions.push(
+          ...existingQuestions?.filter((q) => q.id !== question)
+        );
+      });
+      await updateDoc(doc(db, 'lessons', id), { questions: filteredQuestions });
+      return [{ ...lesson, questions: filteredQuestions }, null];
+    default:
+      return [null, null];
+  }
 };

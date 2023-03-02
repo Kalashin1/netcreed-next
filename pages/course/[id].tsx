@@ -72,7 +72,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="3 days" />
-        <meta name="author" content={course.author.name} />
+        <meta name="author" content={course?.author?.name} />
         {/* TWITTER CARD  */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={course.title} />

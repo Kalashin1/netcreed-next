@@ -120,6 +120,13 @@ const ProfileHeader: FC<Props> = ({
           </div>
           <div className="mb-2 mt-3">
             <Button
+              onClick={() => router.push(`/user/courses/${id}`)}
+              style={{ cursor: 'pointer' }}
+              className="w-100 btn-warning my-4 text-small font-weight-bold"
+            >
+              Your Courses
+            </Button>
+            <Button
               onClick={() => router.push(`/user/reading_list/${id}`)}
               style={{ cursor: 'pointer' }}
               className="w-100 btn-primary text-small font-weight-bold"

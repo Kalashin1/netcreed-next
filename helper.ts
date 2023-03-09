@@ -1235,7 +1235,6 @@ export const engageComment = async (
   articleId: string,
   commentId: string
 ): Promise<[number | null, number | null, string | null]> => {
-  console.log(commentId);
   try {
     const { article } = await getArticleRef(articleId);
     const [user, err] = await getCurrentUser();
@@ -1301,6 +1300,7 @@ export const registerCourse = async (courseId: string) => {
   const [payload, error] = await getUserWithoutID();
   if (error) return [null, error];
   const userCourses = payload?.user?.registeredCourses ?? [];
+  const registeredUsers = course?.registeredUsers ?? [];
   const [lessons, lessonsError] = await getLessonsByCourseId(courseId);
   let courseRef: StudentCourseRef;
   if (error) return [null, lessonsError];
@@ -1319,6 +1319,9 @@ export const registerCourse = async (courseId: string) => {
     userCourses.push(courseRef);
     await updateDoc(doc(db, 'users', payload?.user.id!), {
       registeredCourses: userCourses,
+    });
+    await updateDoc(doc(db, 'courses', course?.id!), {
+      registeredUsers: [...registeredUsers, payload?.user.id!],
     });
     return courseRef;
   }
@@ -1455,3 +1458,8 @@ export const removeQuestions = async (
       return [null, null];
   }
 };
+
+export const MoneyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});

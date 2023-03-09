@@ -43,6 +43,7 @@ const Courses: NextPage = ({ courses }) => {
                     id={course.id!}
                     img={course.photoUrl}
                     title={course.title}
+                    registeredUsers={course?.registeredUsers ?? []}
                   />
                 </div>
               </Col>

@@ -120,6 +120,7 @@ export interface CourseSchema extends DocumentData {
   updatedAt?: number;
   questions?: QuestionSchema[];
   isCertified?: boolean;
+  registeredUsers?: string[];
 }
 
 export type CourseRef = Pick<CourseSchema, 'id' | 'slug' | 'url'>;

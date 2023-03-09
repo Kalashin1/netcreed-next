@@ -12,6 +12,7 @@ import {
 } from '../../helper';
 import { LessonSchema } from '../../types';
 import { useRouter } from 'next/router';
+import { MoneyFormatter } from '../../helper';
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
@@ -108,6 +109,8 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
               <p>{course.description}</p>
+              <p>Price - {MoneyFormatter.format(course.price ?? 0)}</p>
+              <p>{course?.registeredUsers?.length ?? 0} Registered Users.</p>
               <ListGroup
                 variant="flush"
                 className={`text-${

@@ -44,6 +44,8 @@ const UserCourses = ({ courses }: { courses: CourseSchema[] }) => {
                     id={course.id!}
                     img={course.photoUrl}
                     title={course.title}
+                    price={course.price ?? 300}
+                    registeredUsers={course?.registeredUsers!}
                   />
                 </div>
               </Col>

@@ -6,10 +6,22 @@ import { useRouter } from 'next/router';
 type Props = {
   title: string;
   description: string;
+  price?: number;
   img: string;
   id: string;
+  showDetails?: boolean;
+  registeredUsers: string[];
 };
-const CourseComponent: FC<Props> = ({ title, description, img, id }) => {
+
+const CourseComponent: FC<Props> = ({
+  title,
+  description,
+  img,
+  id,
+  price,
+  showDetails = false,
+  registeredUsers,
+}) => {
   let theme: string = useContext(ThemeContext).theme;
   const router = useRouter();
 
@@ -29,7 +41,10 @@ const CourseComponent: FC<Props> = ({ title, description, img, id }) => {
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        <p className="my-4">{description}</p>
+        {price && <p className="my-2">Price - ${price}</p>}
+        <p className="my-2">{registeredUsers.length} Registered Users</p>
+        {showDetails && <p className="my-2">You have earned $30,000</p>}
+        <p className="my-2">{description.slice(0, 100)}...</p>
         <div className="my-2" onClick={(e) => router.push(`/course/${id}`)}>
           <Button onClick={(e) => router.push(`/course/${id}`)}>
             View Course

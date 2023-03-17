@@ -153,11 +153,9 @@ const UserProfile: FC = () => {
               >
                 Create Course
               </Button>
-              {user.creator && (
-                <h5 className="font-weight-bold span border my-4">
-                  <span>Posts From {user.name}</span>
-                </h5>
-              )}
+              <h5 className="font-weight-bold span border my-4">
+                <span>Posts From {user?.name}</span>
+              </h5>
               {articles &&
                 articles.map((article, index) => (
                   <div
@@ -203,7 +201,7 @@ const UserProfile: FC = () => {
                       </div>
                       <small className="text-muted">
                         {new Date(article.createdAt).toDateString()} ·{' '}
-                        {article.readingTimeInMins} min read
+                        {Math.floor(article.readingTimeInMins)} min read
                       </small>
                       <div className="d-flex justify-content-between w-50">
                         <span className="mr-4 d-flex align-items-center">
@@ -232,17 +230,15 @@ const UserProfile: FC = () => {
                 ))}
 
               <div>
-                {user.creator && (
-                  <Button
-                    variant="primary"
-                    className="my-4"
-                    type="submit"
-                    style={{ width: '100%' }}
-                    onClick={(e: any) => navigate(`/user/posts`)}
-                  >
-                    More Posts
-                  </Button>
-                )}
+                <Button
+                  variant="primary"
+                  className="my-4"
+                  type="submit"
+                  style={{ width: '100%' }}
+                  onClick={(e: any) => navigate(`/user/posts`)}
+                >
+                  More Posts
+                </Button>
               </div>
             </div>
           </Col>

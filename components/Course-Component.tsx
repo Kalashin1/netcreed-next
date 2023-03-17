@@ -1,7 +1,9 @@
 import { Card, Button } from 'react-bootstrap';
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../pages/_app';
 import { useRouter } from 'next/router';
+import { DeleteIcon } from './svg/icons';
+import { deleteCourse } from '../helper';
 
 type Props = {
   title: string;
@@ -11,6 +13,7 @@ type Props = {
   id: string;
   showDetails?: boolean;
   registeredUsers: string[];
+  ownerId?: string;
 };
 
 const CourseComponent: FC<Props> = ({
@@ -21,10 +24,27 @@ const CourseComponent: FC<Props> = ({
   price,
   showDetails = false,
   registeredUsers,
+  ownerId,
 }) => {
   let theme: string = useContext(ThemeContext).theme;
   const router = useRouter();
 
+  const _deleteCourse = async () => {
+    const bool = confirm('are you sure you want to delete this course');
+    if (bool) {
+      const [res, err] = await deleteCourse(id);
+      if (err) alert(err);
+      alert('course deleted successfully!');
+      router.reload();
+    }
+  };
+
+  useEffect(() => {
+    let userId = localStorage.getItem('userId');
+    if (ownerId === userId) updateShowDeleteIcon(true);
+  }, [ownerId]);
+
+  const [showDeleteIcon, updateShowDeleteIcon] = useState(false);
   return (
     <Card bg={theme} className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
       <Card.Img
@@ -42,13 +62,21 @@ const CourseComponent: FC<Props> = ({
       </Card.Header>
       <Card.Body>
         {price && <p className="my-2">Price - ${price}</p>}
-        <p className="my-2">{registeredUsers.length} Registered Users</p>
-        {showDetails && <p className="my-2">You have earned $30,000</p>}
+        <p className="my-2">{registeredUsers?.length} Registered Users</p>
+        {/* {showDetails && <p className="my-2">You have earned $30,000</p>} */}
         <p className="my-2">{description.slice(0, 100)}...</p>
-        <div className="my-2" onClick={(e) => router.push(`/course/${id}`)}>
+        <div
+          className="my-2 mt-4 d-flex justify-items-center justify-content-between"
+          onClick={(e) => router.push(`/course/${id}`)}
+        >
           <Button onClick={(e) => router.push(`/course/${id}`)}>
             View Course
           </Button>
+          {showDeleteIcon && (
+            <div style={{ cursor: 'pointer' }} onClick={_deleteCourse}>
+              <DeleteIcon />
+            </div>
+          )}
         </div>
       </Card.Body>
     </Card>

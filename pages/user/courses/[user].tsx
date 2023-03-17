@@ -18,11 +18,18 @@ export const getServerSideProps: GetServerSideProps = async (
   return {
     props: {
       courses,
+      user,
     },
   };
 };
 
-const UserCourses = ({ courses }: { courses: CourseSchema[] }) => {
+const UserCourses = ({
+  courses,
+  user,
+}: {
+  courses: CourseSchema[];
+  user: string;
+}) => {
   const { theme } = useContext(ThemeContext);
   return (
     <Layout>
@@ -46,6 +53,7 @@ const UserCourses = ({ courses }: { courses: CourseSchema[] }) => {
                     title={course.title}
                     price={course.price ?? 300}
                     registeredUsers={course?.registeredUsers!}
+                    ownerId={user}
                   />
                 </div>
               </Col>

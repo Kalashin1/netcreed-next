@@ -5,7 +5,12 @@ import CheckoutButton from './Checkout-Button';
 // import { Container, Form, Button } from 'react-bootstrap'
 import { BillingFormSchema } from '../helper/schemas/forms';
 import { handleSubmit } from '../helper/formHandler';
-import { getCurrentUser, getUser, registerCourse } from '../helper';
+import {
+  getCurrentUser,
+  getUser,
+  MoneyFormatter,
+  registerCourse,
+} from '../helper';
 import { z } from 'zod';
 import { useRouter } from 'next/router';
 import { Author } from '../types';
@@ -145,9 +150,9 @@ const BillingForm: FC<Props> = ({
     <>
       <h4 className={`mb-3 text-${color}`}>
         <span className={`text-${color}`}>Courses</span>
-        <span className={`badge badge-secondary badge-pill text-${color}`}>
+        {/* <span className={`badge badge-secondary badge-pill text-${color}`}>
           3
-        </span>
+        </span> */}
       </h4>
       <div className="needs-validation">
         {/* {!showPayButton &&(<div className="row">
@@ -226,7 +231,9 @@ const BillingForm: FC<Props> = ({
                 {courseDescription}...
               </small>
             </div>
-            <span className={`text-${color}`}>${price}</span>
+            <span className={`text-${color}`}>
+              {MoneyFormatter.format(price)}
+            </span>
           </li>
         </ul>
         <hr className="mb-4" />
@@ -245,7 +252,7 @@ const BillingForm: FC<Props> = ({
             metadata={{ name: user?.name!, phone: user?.phone! }}
             text="Pay Now"
             showPayButton={showPayButton}
-            publicKey="pk_test_16cd6b42be34091ff4fb964827bb5184395fe204"
+            publicKey={'pk_live_14948b934d2e2e5243170514e9d5e1e72ac29fb1'}
           />
         )}
       </div>

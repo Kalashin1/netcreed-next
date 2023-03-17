@@ -301,6 +301,17 @@ export const editCourseFormHandler = async (
   }
 };
 
+export const deleteCourse = async (
+  courseId: string
+): Promise<[null | boolean, string | null]> => {
+  const [, courseErr] = await getCourse(courseId);
+  if (courseErr) {
+    return [null, courseErr];
+  }
+  await deleteDoc(doc(db, 'courses', courseId));
+  return [true, null];
+};
+
 export const createArticleHandler = async (
   e: FormEvent<HTMLFormElement>,
   form: HTMLFormElement,

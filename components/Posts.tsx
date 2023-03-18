@@ -117,7 +117,7 @@ const PostTable: FC<PostPayload> = ({ posts, theme, setPosts }) => {
                   </div>
                 </th>
                 <th>Title</th>
-                <th>Category</th>
+                <th>Status</th>
                 <th>Created At</th>
                 <th>Views</th>
                 <th>Saves</th>

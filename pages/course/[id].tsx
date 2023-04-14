@@ -4,7 +4,7 @@ import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
 import { ThemeContext } from '../_app';
 import Head from 'next/head';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   getCourse,
   getLessonsByCourseId,
@@ -39,6 +39,12 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
 }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
+  const [userId, setUserId] = useState<string>();
+
+  useEffect(() => {
+    const id = localStorage.getItem('userId')!;
+    setUserId(id);
+  }, []);
 
   const openCourse = async () => {
     if (course.isPaid) {
@@ -132,14 +138,16 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                     </ListGroup.Item>
                   ))}
               </ListGroup>
-              <Button
-                onClick={() => {
-                  openCourse();
-                }}
-                style={{ width: '100%' }}
-              >
-                Start Course
-              </Button>
+              {userId === course?.author?.id && (
+                <Button
+                  onClick={() => {
+                    router.push('/lessons/create');
+                  }}
+                  style={{ width: '100%' }}
+                >
+                  Add Lesson
+                </Button>
+              )}
             </Container>
           </Col>
           <Col md={7}>

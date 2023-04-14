@@ -9,7 +9,7 @@ import {
   FormEvent,
 } from 'react';
 import { ThemeContext } from '../pages/_app';
-import { getCourses, createLessonFormHandler } from '../helper';
+import { getUserCourses, createLessonFormHandler } from '../helper';
 import { CourseSchema } from '../types';
 import { useRouter } from 'next/router';
 
@@ -26,7 +26,10 @@ const CreateLessonForm: NextPage = () => {
 
   useEffect(() => {
     const _getCourses = async () => {
-      const [_courses, err] = await getCourses();
+      const [_courses, err] = await getUserCourses(
+        localStorage.getItem('userId')!,
+        router
+      );
       if (!err) {
         setCourses(_courses!);
       }

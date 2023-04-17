@@ -3,13 +3,10 @@ import { useState, FC, SetStateAction, Dispatch, FormEvent } from 'react';
 import { Article } from '../types';
 import { Pagination, Card, Table } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { Search, Reload } from './svg/icons';
-
-const options = [
-  { label: 'Grapes 🍇', value: 'grapes' },
-  { label: 'Mango 🥭', value: 'mango' },
-  { label: 'Strawberry 🍓', value: 'strawberry', disabled: true },
-];
+import { Search, Reload, DeleteIcon, EditIcon } from './svg/icons';
+import { query, collection, where, getDocs } from 'firebase/firestore';
+import { db } from '../Firebase-settings';
+import {deleteArticle} from '../helper';
 
 type PostPayload = {
   posts: Article[];
@@ -34,9 +31,23 @@ const PostTable: FC<PostPayload> = ({ posts, theme, setPosts }) => {
     setPosts(filteredPosts);
   };
 
-  const reload = () => {
-    setPosts(initialPosts);
+  const reload = async () => {
+    const q = query(
+      collection(db, 'articles'),
+      where('author.id', '==', `${localStorage.getItem('userId')!}`)
+    );
+    const docRes = await getDocs(q);
+    const articles = docRes.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as Article[];
+    setPosts(articles);
   };
+
+  const deletePost = async (id: string) => {
+    await deleteArticle(id);
+    await reload();
+  }
 
   let active = 1;
   let items = [];
@@ -122,6 +133,7 @@ const PostTable: FC<PostPayload> = ({ posts, theme, setPosts }) => {
                 <th>Views</th>
                 <th>Saves</th>
                 <th>Likes</th>
+                <th>Action</th>
               </tr>
               {posts &&
                 posts.map((post, index) => (
@@ -154,6 +166,21 @@ const PostTable: FC<PostPayload> = ({ posts, theme, setPosts }) => {
                     <td>{post.views.length}</td>
                     <td>{post.saves.length}</td>
                     <td>{post.likes.length}</td>
+                    <td>
+                      <span 
+                        style={{ 'cursor': 'pointer' }}
+                        onClick={e => deletePost(post.id)}
+                      >
+                        <DeleteIcon />
+                      </span>
+                      <span 
+                        style={{ 'cursor': 'pointer' }} 
+                        className="mx-2" 
+                        onClick={e => router.push(`/post/edit-post/${post.id}`)}
+                      >
+                        <EditIcon />
+                      </span>
+                      </td>
                   </tr>
                 ))}
             </tbody>

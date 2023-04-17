@@ -605,6 +605,14 @@ export const getArticleRef = async (id: string) => {
   return { articleRef, article };
 };
 
+export const deleteArticle = async (id: string) => {
+  const removeArticle = confirm("are you sure you want to delete this article");
+  if (removeArticle) {
+    await deleteDoc(doc(db, "articles", id));
+    alert('article deleted');
+  }
+}
+
 export const getUserArticles = async (user: Partial<_UserProfile>) => {
   delete user.bio, user.creator;
   const q = query(

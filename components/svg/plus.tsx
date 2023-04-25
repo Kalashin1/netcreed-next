@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../pages/_app';
 
-export const Plus = () => {
+const Plus = () => {
   const theme = useContext(ThemeContext).theme;
 
   return (
     <svg
       width={15}
-      fill={`${theme === 'dark' ? '#000' : '#fff'}`}
+      fill={`${theme === 'dark' ? '#fff' : '#000'}`}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 448 512"
     >
@@ -15,3 +15,5 @@ export const Plus = () => {
     </svg>
   );
 };
+
+export default Plus;

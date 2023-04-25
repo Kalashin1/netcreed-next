@@ -62,8 +62,13 @@ const CourseComponent: FC<Props> = ({
       </Card.Header>
       <Card.Body>
         {price && <p className="my-2">Price - ${price}</p>}
-        <p className="my-2">{registeredUsers?.length} Registered Users</p>
-        {/* {showDetails && <p className="my-2">You have earned $30,000</p>} */}
+        <p className="my-2">{registeredUsers?.length ?? 0} Registered Users</p>
+        {showDeleteIcon && price && (
+          <p className="my-2">
+            You have earned $
+            {Math.floor((registeredUsers?.length ?? 0) * price)}
+          </p>
+        )}
         <p className="my-2">{description.slice(0, 100)}...</p>
         <div
           className="my-2 mt-4 d-flex justify-items-center justify-content-between"

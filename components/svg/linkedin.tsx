@@ -1,12 +1,16 @@
 import React, { FC, useContext } from 'react';
 import { ThemeContext } from '../../pages/_app';
 
-const LinkedinIcon: FC = () => {
+type Props = {
+  width?: number;
+};
+
+const LinkedinIcon: FC<Props> = ({ width }) => {
   const theme = useContext(ThemeContext).theme;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={15}
+      width={width ?? 15}
       fill={`${theme === 'dark' ? '#fff' : '#000'}`}
       viewBox="0 0 448 512"
     >

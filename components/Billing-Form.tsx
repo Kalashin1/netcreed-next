@@ -150,77 +150,8 @@ const BillingForm: FC<Props> = ({
     <>
       <h4 className={`mb-3 text-${color}`}>
         <span className={`text-${color}`}>Courses</span>
-        {/* <span className={`badge badge-secondary badge-pill text-${color}`}>
-          3
-        </span> */}
       </h4>
       <div className="needs-validation">
-        {/* {!showPayButton &&(<div className="row">
-          <Input
-            required={true}
-            errorMessage="Valid first name is required."
-            label="First Name"
-            placeholder="John"
-            name="firstName"
-            type="text"
-          />
-          <Input
-            required={true}
-            errorMessage="Valid last name is required."
-            label="Last Name"
-            placeholder="Doe"
-            name="lastName"
-            type="text"
-          />
-          <Input
-            required={true}
-            errorMessage="Please enter a valid email address for shipping updates."
-            label="Email"
-            placeholder="johdoe@gmail.com"
-            name="email"
-            type="email"
-          />
-          
-          <Input
-            required={true}
-            errorMessage="Please enter your shipping address."
-            label="Address"
-            placeholder="No 32 Memory Lane"
-            name="address"
-            type="text"
-          />
-          <Input
-            errorMessage="Please enter your shipping address."
-            label="Second Address"
-            placeholder="No 32 Memory Lane"
-            name="secondaryAddress"
-            type="text"
-          />
-
-          <Select
-            label="Country"
-            name="country"
-            errorMessage="Please provide a valid Country."
-            required={true}
-            data={[{ label: 'Nigeria', value: 'NGN' }]}
-          />
-          <Select
-            label="State"
-            name="state"
-            errorMessage="Please provide a valid state."
-            required={true}
-            data={[{ label: 'Rivers', value: 'RV' }]}
-          />
-
-          <Input
-            required={true}
-            errorMessage="Zip code required."
-            label="Zip"
-            placeholder="345683"
-            name="zip"
-            type="text"
-          />
-        </div>)} */}
         <ul className="list-group mb-3">
           <li
             className={`list-group-item bg-${theme} d-flex justify-content-between lh-condensed`}
@@ -252,7 +183,9 @@ const BillingForm: FC<Props> = ({
             metadata={{ name: user?.name!, phone: user?.phone! }}
             text="Pay Now"
             showPayButton={showPayButton}
-            publicKey={'pk_live_14948b934d2e2e5243170514e9d5e1e72ac29fb1'}
+            publicKey={'pk_test_16cd6b42be34091ff4fb964827bb5184395fe204'}
+            // pk_test_16cd6b42be34091ff4fb964827bb5184395fe204
+            // pk_live_14948b934d2e2e5243170514e9d5e1e72ac29fb1
           />
         )}
       </div>

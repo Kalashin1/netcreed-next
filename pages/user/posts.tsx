@@ -17,20 +17,20 @@ const PostDashboard: NextPage = () => {
     userId = localStorage.getItem('userId')!;
   }
 
+  const getDocuments = async () => {
+    const q = query(
+      collection(db, 'articles'),
+      where('author.id', '==', `${userId}`)
+    );
+    const docRes = await getDocs(q);
+    const articles = docRes.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as Article[];
+    setPosts(articles);
+  };
+
   useEffect(() => {
-    const getDocuments = async () => {
-      const q = query(
-        collection(db, 'articles'),
-        where('author.id', '==', `${userId}`)
-      );
-      const docRes = await getDocs(q);
-      const articles = docRes.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as Article[];
-      console.log(articles);
-      setPosts(articles);
-    };
     getDocuments();
   }, []);
 

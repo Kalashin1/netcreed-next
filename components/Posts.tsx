@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { Search, Reload, DeleteIcon, EditIcon } from './svg/icons';
 import { query, collection, where, getDocs } from 'firebase/firestore';
 import { db } from '../Firebase-settings';
-import {deleteArticle} from '../helper';
+import { deleteArticle } from '../helper';
 
 type PostPayload = {
   posts: Article[];
@@ -47,7 +47,7 @@ const PostTable: FC<PostPayload> = ({ posts, theme, setPosts }) => {
   const deletePost = async (id: string) => {
     await deleteArticle(id);
     await reload();
-  }
+  };
 
   let active = 1;
   let items = [];
@@ -167,20 +167,22 @@ const PostTable: FC<PostPayload> = ({ posts, theme, setPosts }) => {
                     <td>{post.saves.length}</td>
                     <td>{post.likes.length}</td>
                     <td>
-                      <span 
-                        style={{ 'cursor': 'pointer' }}
-                        onClick={e => deletePost(post.id)}
+                      <span
+                        style={{ cursor: 'pointer' }}
+                        onClick={(e) => deletePost(post.id)}
                       >
                         <DeleteIcon />
                       </span>
-                      <span 
-                        style={{ 'cursor': 'pointer' }} 
-                        className="mx-2" 
-                        onClick={e => router.push(`/post/edit-post/${post.id}`)}
+                      <span
+                        style={{ cursor: 'pointer' }}
+                        className="mx-2"
+                        onClick={(e) =>
+                          router.push(`/post/edit-post/${post.id}`)
+                        }
                       >
                         <EditIcon />
                       </span>
-                      </td>
+                    </td>
                   </tr>
                 ))}
             </tbody>
@@ -188,31 +190,6 @@ const PostTable: FC<PostPayload> = ({ posts, theme, setPosts }) => {
         </div>
         <div className="float-right">
           <Pagination>{items}</Pagination>
-          {/* <nav>
-            <ul className="pagination">
-              <li className="page-item disabled">
-                <a className="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">«</span>
-                  <span className="sr-only">Previous</span>
-                </a>
-              </li>
-              <li className="page-item active">
-                <a className="page-link" href="#">1</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">2</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">3</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">»</span>
-                  <span className="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </nav> */}
         </div>
       </Card.Body>
     </Card>

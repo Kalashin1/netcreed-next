@@ -140,9 +140,9 @@ const NavbarComponent: FC = () => {
               )
             }
 
-            <Nav.Item style={{ margin: '.5rem 1rem' }}>
+            {/* <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <Link href="/course">Courses</Link>
-            </Nav.Item>
+            </Nav.Item> */}
 
             {user && (
               <Nav.Item

@@ -52,7 +52,7 @@ const CreateLessonForm: NextPage = () => {
       } else if (data) {
         console.log(data);
       }
-      router.push(`/course/${course}`)
+      router.push(`/course/${course}`);
     } catch (error: any) {
       setShowSpinner(true);
       console.log(error);

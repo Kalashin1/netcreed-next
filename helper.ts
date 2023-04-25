@@ -606,12 +606,12 @@ export const getArticleRef = async (id: string) => {
 };
 
 export const deleteArticle = async (id: string) => {
-  const removeArticle = confirm("are you sure you want to delete this article");
+  const removeArticle = confirm('are you sure you want to delete this article');
   if (removeArticle) {
-    await deleteDoc(doc(db, "articles", id));
+    await deleteDoc(doc(db, 'articles', id));
     alert('article deleted');
   }
-}
+};
 
 export const getUserArticles = async (user: Partial<_UserProfile>) => {
   delete user.bio, user.creator;
@@ -1329,9 +1329,9 @@ export const registerCourse = async (courseId: string) => {
       slug: course?.slug,
       url: course?.url,
       currentLesson: {
-        id: lessons[0].id,
-        slug: lessons[0].slug,
-        url: lessons[0].url,
+        id: lessons[0]?.id ?? '',
+        slug: lessons[0]?.slug ?? '',
+        url: lessons[0]?.url ?? '',
       },
     };
 
@@ -1354,6 +1354,27 @@ export const hasUserPaidForCourse = async (courseId: string) => {
   const userCourses = payload?.user?.registeredCourses ?? [];
   if (userCourses.find((course) => course.id === courseId)) return [true, null];
   return [false, null];
+};
+
+export const getRegisteredCourses = async (userId: string) => {
+  const docRef = doc(db, 'users', userId);
+  const user = await getDoc(docRef);
+  const userDoc = (await user.data()) as User;
+  const regCourses = userDoc.registeredCourses;
+  if (regCourses) {
+    const registeredCourses = await Promise.all(
+      regCourses!.map(async (courseRef) => {
+        const [course, err] = await getCourse(courseRef.id!);
+        if (err) {
+          throw err;
+        }
+        return course!;
+      })
+    );
+    return registeredCourses;
+  } else {
+    return [];
+  }
 };
 
 export const getUserCourses = async (user: string, router?: NextRouter) => {

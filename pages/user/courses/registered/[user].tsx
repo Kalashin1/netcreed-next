@@ -1,12 +1,12 @@
-import Layout from '../../Layout';
+import Layout from '../../../Layout';
 import { useContext } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { ThemeContext } from '../../_app';
-import { CourseSchema } from '../../../types';
-import CourseComponent from '../../../components/Course-Component';
+import { ThemeContext } from '../../../_app';
+import { CourseSchema } from '../../../../types';
+import CourseComponent from '../../../../components/Course-Component';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { getUserCourses } from '../../../helper';
-import { Plus, GridIcon, ListIcon } from '../../../components/svg/icons';
+import { getUserCourses } from '../../../../helper';
+import { Plus, GridIcon, ListIcon } from '../../../../components/svg/icons';
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -49,34 +49,7 @@ const UserCourses = ({
               Courses
             </h3>
           </Col>
-
-          <Col md={6}>
-            <Button>
-              <Row style={{ alignItems: 'center' }}>
-                <Col md={10}>
-                  <span>Create New Course</span>
-                </Col>
-                <Col md={2}>
-                  <span>
-                    <Plus />
-                  </span>
-                </Col>
-              </Row>
-            </Button>
-            <Col md={2}>
-              <span>
-                <GridIcon />
-              </span>
-            </Col>
-            <Col md={2}>
-              <span>
-                <ListIcon />
-              </span>
-            </Col>
-          </Col>
         </Row>
-
-        <Row></Row>
 
         <Row className="justify-content-center">
           {courses &&

@@ -6,7 +6,7 @@ import CommentIcon from './comment';
 import EclipseVerticalIcon from './eclipse';
 import FavoriteFilled from './favorite-filled';
 import FavoriteOutlined from './favorite-outline';
-import { Plus } from './plus';
+import Plus from './plus';
 import SaveFilled from './save-filled';
 import SaveOutlined from './save-outline';
 import SeenFilled from './seen-filled';
@@ -20,6 +20,8 @@ import DeleteIcon from './delete';
 import EditIcon from './edit';
 import LikeCommentIconFilled from './like-comment-filled';
 import LikeCommentIconOutline from './like-comment-outline';
+import GridIcon from './grid';
+import ListIcon from './list';
 
 export {
   DevIcon,
@@ -44,4 +46,6 @@ export {
   DeleteIcon,
   LikeCommentIconFilled,
   LikeCommentIconOutline,
+  GridIcon,
+  ListIcon,
 };

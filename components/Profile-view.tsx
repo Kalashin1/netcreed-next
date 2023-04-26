@@ -20,7 +20,7 @@ import {
   getAllUserArticles,
   getProfile,
 } from '../helper';
-import { Plus } from './svg/plus';
+import Plus from './svg/plus';
 const marked = require('marked');
 
 type UserPropsType = {

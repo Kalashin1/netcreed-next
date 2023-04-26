@@ -61,8 +61,8 @@ const CourseComponent: FC<Props> = ({
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        {price && <p className="my-2">Price - ${price}</p>}
-        <p className="my-2">{registeredUsers?.length ?? 0} Registered Users</p>
+        {showDetails && price && <p className="my-2">Price - ${price}</p>}
+        {showDetails && (<p className="my-2">{registeredUsers?.length ?? 0} Registered Users</p>)}
         {showDeleteIcon && price && (
           <p className="my-2">
             You have earned $

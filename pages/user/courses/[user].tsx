@@ -85,6 +85,7 @@ const UserCourses = ({
                 <div className="my-4">
                   <CourseComponent
                     description={course.description}
+                    showDetails={true}
                     id={course.id!}
                     img={course.photoUrl}
                     title={course.title}

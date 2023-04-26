@@ -1357,24 +1357,18 @@ export const hasUserPaidForCourse = async (courseId: string) => {
 };
 
 export const getRegisteredCourses = async (userId: string) => {
-  const docRef = doc(db, 'users', userId);
-  const user = await getDoc(docRef);
-  const userDoc = (await user.data()) as User;
-  const regCourses = userDoc.registeredCourses;
-  if (regCourses) {
-    const registeredCourses = await Promise.all(
-      regCourses!.map(async (courseRef) => {
-        const [course, err] = await getCourse(courseRef.id!);
-        if (err) {
-          throw err;
-        }
-        return course!;
-      })
-    );
-    return registeredCourses;
-  } else {
-    return [];
+ try {
+    const q = query(collection(db, "courses"), where("registeredUsers", "array-contains", userId));
+    const _docRes = await getDocs(q);
+    const courses = _docRes.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as CourseSchema[];
+    return [courses, null];
+  } catch (err: any) {
+    return [null, err];
   }
+  
 };
 
 export const getUserCourses = async (user: string, router?: NextRouter) => {

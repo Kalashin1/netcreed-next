@@ -6,8 +6,14 @@ import { createAccount } from '../helper';
 
 type isCreator = {
   creator: boolean;
+  isModal?: boolean;
+  closeModal?: (...args: any[]) => void;
 };
-const SignupForm: FC<isCreator> = ({ creator }) => {
+const SignupForm: FC<isCreator> = ({ 
+  creator,
+  isModal,
+  closeModal,
+}) => {
   let theme: string = useContext(ThemeContext).theme;
 
   const router = useRouter();
@@ -40,7 +46,9 @@ const SignupForm: FC<isCreator> = ({ creator }) => {
             registrationForm.current as HTMLFormElement,
             setShowSpinner,
             creator,
-            router
+            router,
+            isModal,
+            closeModal
           )
         }
       >
@@ -89,28 +97,8 @@ const SignupForm: FC<isCreator> = ({ creator }) => {
             show password
           </Form.Text>
         </Form.Group>
-
-        <Form.Group className="mb-3" controlId="confirmPassword">
-          <Form.Label className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
-            Confirm Password
-          </Form.Label>
-          <Form.Control
-            type={inputType}
-            name="confirmPassword"
-            required
-            placeholder="Password"
-          />
-          <Form.Text
-            className="text-muted"
-            style={{ cursor: 'pointer' }}
-            onClick={toggleShowPassword}
-          >
-            show password
-          </Form.Text>
-        </Form.Group>
-
         <Form.Group className="mb-3" controlId="terms">
-          <Form.Check type="checkbox" required name="terms" label="I Accept" />
+          <Form.Check type="checkbox" checked={true} required name="terms" label="I Accept" />
         </Form.Group>
         <Button variant="primary" type="submit" style={{ width: '100%' }}>
           {showSpinner && (

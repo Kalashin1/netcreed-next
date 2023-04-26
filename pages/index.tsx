@@ -7,6 +7,7 @@ import Layout from './Layout';
 import NewsLetter from '../components/Newletter';
 import { getArticles } from '../helper';
 import { Article } from '../types';
+import { useState } from 'react';
 
 export const getServerSideProps = async () => {
   const { articles, secArticles } = await getArticles();
@@ -25,6 +26,7 @@ export type Articles = {
 
 //@ts-ignore
 const Home: NextPage = ({ articles, alikePosts }) => {
+  
   return (
     //@ts-ignore
     <Layout>
@@ -72,6 +74,7 @@ const Home: NextPage = ({ articles, alikePosts }) => {
         />
       </Head>
       {articles && <Header article={articles[0]} />}
+      
       {alikePosts && (
         <OtherPosts
           allPosts={alikePosts.slice(1, 5)}

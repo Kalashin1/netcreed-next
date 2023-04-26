@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import Script from 'next/script';
 import type { NextPage } from 'next';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { FC } from 'react';
 import AppStyle from './app.module.css';
+import SignInModal from '../components/Signin-Modal';
 import { ThemeContext } from './_app';
 
 type Props = {
@@ -14,7 +15,21 @@ type Props = {
 //@ts-ignore
 const Layout: FC<Props> = function ({ children }) {
   let _theme: string = useContext(ThemeContext).theme;
-  let setTheme = useContext(ThemeContext).updateTheme!;
+  const [show, setShow] = useState(false);
+
+  
+  useEffect(() => {
+    if (!localStorage.getItem('userId')) {
+      setTimeout(() => {
+        handleShow();
+      }, 10000)
+    }
+  }, [])
+
+
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
@@ -52,6 +67,7 @@ const Layout: FC<Props> = function ({ children }) {
       <div className={`bg-${_theme == 'dark' ? 'dark' : 'light'}`}>
         <Navbar />
         <div style={{ padding: '4rem .5rem', minHeight: '72vh' }}>
+          <SignInModal show={show} handleClose={handleClose} />
           {children}
         </div>
         <Footer />

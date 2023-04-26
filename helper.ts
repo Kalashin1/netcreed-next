@@ -432,22 +432,19 @@ export const createAccount = async (
   form: HTMLFormElement,
   setShowSpinner: Dispatch<SetStateAction<boolean>>,
   creator: boolean,
-  router: NextRouter
+  router: NextRouter,
+  isModal?:boolean,
+  closeModal?: (...args: any[]) => void
 ) => {
   e.preventDefault();
   setShowSpinner(true);
   try {
-    const { fullName, email, password, confirmPassword } = form;
+    const { fullName, email, password } = form;
     const userPayload = {
       name: fullName.value,
       email: email.value.toLowerCase(),
       password: password.value,
-      confirmPassword: confirmPassword.value,
     };
-
-    if (userPayload.password !== userPayload.confirmPassword) {
-      throw Error('Passwords does not match');
-    }
 
     const { user } = await createUserWithEmailAndPassword(
       auth,
@@ -470,7 +467,11 @@ export const createAccount = async (
     });
     setShowSpinner(false);
     alert('Your account has been created successfully');
-    router.push('/user/profile');
+    if (isModal && closeModal) {
+      closeModal();
+    } else {
+      router.push('/user/profile');
+    }
   } catch (error: any) {
     setShowSpinner(false);
     console.log(error);

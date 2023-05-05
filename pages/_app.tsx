@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { AppProps } from 'next/app';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import Script from 'next/script';
 
@@ -30,7 +30,7 @@ function CustomApp({ Component, pageProps, router }: AppProps) {
 
   const updateTheme = (theme: string) => {
     setTheme(theme);
-    const __textColor = theme === 'dark' ? 'light': 'dark';
+    const __textColor = theme === 'dark' ? 'light' : 'dark';
     setTextColor(__textColor);
     localStorage.setItem('theme', theme);
     localStorage.setItem('textColor', __textColor);

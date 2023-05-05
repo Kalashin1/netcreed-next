@@ -36,7 +36,7 @@ const CreateLessonForm: NextPage = () => {
     };
 
     _getCourses();
-  }, []);
+  }, [router]);
 
   const createLesson = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

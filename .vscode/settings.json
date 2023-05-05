@@ -8,5 +8,8 @@
     "Tocheck",
     "toogle"
   ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "dotenv.enableAutocloaking": false
 }

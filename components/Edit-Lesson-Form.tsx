@@ -48,7 +48,7 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
     };
 
     _getCourses();
-  }, []);
+  }, [lessonId]);
 
   const editLesson = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

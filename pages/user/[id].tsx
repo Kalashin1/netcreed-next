@@ -52,7 +52,7 @@ const UserProfile: NextPage = () => {
     };
 
     getUserProfile(id as string);
-  }, [id as string]);
+  }, [id]);
 
   return (
     // @ts-ignore

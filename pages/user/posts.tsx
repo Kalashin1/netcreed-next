@@ -32,7 +32,7 @@ const PostDashboard: NextPage = () => {
 
   useEffect(() => {
     getDocuments();
-  }, []);
+  }, [getDocuments]);
 
   return (
     //@ts-ignore

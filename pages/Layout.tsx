@@ -14,16 +14,24 @@ type Props = {
 //@ts-ignore
 const Layout: FC<Props> = function ({ children }) {
   let _theme: string = useContext(ThemeContext).theme;
+  // let {user, getLoggedInUser} = useContext(AuthContext)
   const [show, setShow] = useState(false);
+  let userId: string | null = '';
 
+  if (typeof window !== 'undefined') {
+    userId = localStorage.getItem('userId')!
+  }
 
   useEffect(() => {
-    if (!localStorage.getItem('userId')) {
-      setTimeout(() => {
-        handleShow();
-      }, 3000)
+    const setUp = async () => {
+      if (!userId) {
+        setTimeout(() => {
+          handleShow();
+        }, 3000)
+      }
     }
-  }, [])
+    setUp();
+  }, [userId])
 
 
 
@@ -33,11 +41,11 @@ const Layout: FC<Props> = function ({ children }) {
   return (
     <>
       <Head>
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
+
       </Head>
       <div className={`bg-${_theme == 'dark' ? 'dark' : 'light'}`}>
         <Navbar />

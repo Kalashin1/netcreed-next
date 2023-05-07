@@ -2,14 +2,19 @@
 import { AppProps } from 'next/app';
 import React, { useState } from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
+import { getCurrentUser, getUserWithoutID } from '../helper';
+import { User } from '../types'
+import { User as AuthUser } from '@firebase/auth';
 import Script from 'next/script';
 
 let _theme: string;
 let _textColor: string;
+let _user: AuthUser | User | null;
 
 if (typeof window !== 'undefined') {
   _theme = localStorage.getItem('theme') ?? 'light';
   _textColor = localStorage.getItem('textColor') ?? 'dark'
+  _user = null;
 }
 
 export const ThemeContext = React.createContext<{
@@ -24,9 +29,17 @@ export const ThemeContext = React.createContext<{
   //localStorage.getItem('theme')
 });
 
+export const AuthContext = React.createContext<{
+  user: AuthUser | User | null,
+  getLoggedInUser?: (userId?: string) => Promise<AuthUser | User | null>
+}>({
+  user: null
+})
+
 function CustomApp({ Component, pageProps, router }: AppProps) {
   const [theme, setTheme] = useState(_theme);
   const [textColor, setTextColor] = useState(_textColor);
+  const [user, setUser] = useState<typeof _user | null>(_user);
 
   const updateTheme = (theme: string) => {
     setTheme(theme);
@@ -35,6 +48,30 @@ function CustomApp({ Component, pageProps, router }: AppProps) {
     localStorage.setItem('theme', theme);
     localStorage.setItem('textColor', __textColor);
   };
+
+  const getLoggedInUser = async (userId?: string) => {
+    const [loggedInUser, err] = await getCurrentUser();
+    
+    if (loggedInUser) {
+      setUser(loggedInUser)
+      return loggedInUser
+    } 
+    
+    if (err && userId) {
+      const [existingUser, _err] = await getUserWithoutID(userId);
+
+      if (_err) {
+        setUser(null);
+        return null;
+      }
+
+      if (existingUser) {
+        setUser(existingUser.user)
+        return existingUser.user;
+      }
+    }
+    return null;
+  }
 
   return (
     <>
@@ -55,7 +92,9 @@ function CustomApp({ Component, pageProps, router }: AppProps) {
       {/** @ts-ignore **/}
       <SSRProvider>
         <ThemeContext.Provider value={{ theme, updateTheme, textColor }}>
-          <Component {...pageProps} />
+          <AuthContext.Provider value={{ user, getLoggedInUser }}>
+            <Component {...pageProps} />
+          </AuthContext.Provider>
         </ThemeContext.Provider>
       </SSRProvider>
     </>

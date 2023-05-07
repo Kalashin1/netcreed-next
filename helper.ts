@@ -433,7 +433,7 @@ export const createAccount = async (
   setShowSpinner: Dispatch<SetStateAction<boolean>>,
   creator: boolean,
   router: NextRouter,
-  isModal?:boolean,
+  isModal?: boolean,
   closeModal?: (...args: any[]) => void
 ) => {
   e.preventDefault();
@@ -765,35 +765,40 @@ type GetUserWithoutIdPayload = [
   string | null
 ];
 
-export const getUserWithoutID = async (): Promise<GetUserWithoutIdPayload> => {
-  let userId: string;
-  if (typeof window !== 'undefined') {
-    userId = localStorage.getItem('userId')!;
-  }
-  const user = auth.currentUser;
-  if (user) {
-    const userDocRef = doc(db, 'users', userId!);
-    // console.log(userId)
-    let userDoc = await getDoc(userDocRef);
-    if (userDoc.exists()) {
-      const user = userDoc.data() as User;
-      const q = query(
-        collection(db, 'articles'),
-        where('author.id', '==', userDoc.id),
-        limit(3),
-        orderBy('createdAt', 'desc')
-      );
-      const docs = await getDocs(q);
-      const articles = docs.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as Article[];
+export const getUserWithoutID = async (id?: string): Promise<GetUserWithoutIdPayload> => {
+  let userId: string = '';
 
-      user.id = userDoc.id;
-      return [{ articles, user }, null];
+  if (typeof window !== 'undefined') {
+    if (id) {
+      userId = id;
+    } else {
+      userId = localStorage.getItem('userId')!;
     }
+  } else if (id) {
+    userId = id;
   }
-  return [null, 'Please login'];
+  const userDocRef = doc(db, 'users', userId);
+  // console.log(userId)
+  let userDoc = await getDoc(userDocRef);
+  if (userDoc.exists()) {
+    const user = userDoc.data() as User;
+    const q = query(
+      collection(db, 'articles'),
+      where('author.id', '==', userDoc.id),
+      limit(3),
+      orderBy('createdAt', 'desc')
+    );
+    const docs = await getDocs(q);
+    const articles = docs.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as Article[];
+
+    user.id = userDoc.id;
+    return [{ articles, user }, null];
+  } else {
+    return [null, 'Please login'];
+  }
 };
 
 async function getFile() {
@@ -1176,26 +1181,26 @@ export const createComment = async ({
     console.log(parentCommentId);
     const comment: Comment = parentCommentId
       ? {
-          article: articleRef,
-          articleId,
-          body,
-          likes: [],
-          createdAt: new Date().getTime(),
-          owner,
-          ownerId: owner.id,
-          id: randomBytes(4).toString('hex'),
-          parentComment: parentCommentId,
-        }
+        article: articleRef,
+        articleId,
+        body,
+        likes: [],
+        createdAt: new Date().getTime(),
+        owner,
+        ownerId: owner.id,
+        id: randomBytes(4).toString('hex'),
+        parentComment: parentCommentId,
+      }
       : {
-          article: articleRef,
-          articleId,
-          body,
-          likes: [],
-          createdAt: new Date().getTime(),
-          owner,
-          ownerId: owner.id,
-          id: randomBytes(4).toString('hex'),
-        };
+        article: articleRef,
+        articleId,
+        body,
+        likes: [],
+        createdAt: new Date().getTime(),
+        owner,
+        ownerId: owner.id,
+        id: randomBytes(4).toString('hex'),
+      };
     comments.push(comment);
     await updateDoc(doc(db, 'articles', articleId), {
       comments: [...comments],
@@ -1358,7 +1363,7 @@ export const hasUserPaidForCourse = async (courseId: string) => {
 };
 
 export const getRegisteredCourses = async (userId: string) => {
- try {
+  try {
     const q = query(collection(db, "courses"), where("registeredUsers", "array-contains", userId));
     const _docRes = await getDocs(q);
     const courses = _docRes.docs.map((doc) => ({
@@ -1369,7 +1374,7 @@ export const getRegisteredCourses = async (userId: string) => {
   } catch (err: any) {
     return [null, err];
   }
-  
+
 };
 
 export const getUserCourses = async (user: string, router?: NextRouter) => {

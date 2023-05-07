@@ -6,12 +6,13 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { auth, db } from '../Firebase-settings';
 import { getDoc, doc } from '@firebase/firestore';
-import { signOut } from '@firebase/auth';
+import { signOut, User as AuthUser } from '@firebase/auth';
 import { FC, useEffect, useContext, useState } from 'react';
 import { User } from '../types';
 import { Menu, DarkModeIcon, LightModeIcon } from './svg/icons';
-import { ThemeContext } from '../pages/_app';
+import { ThemeContext, AuthContext } from '../pages/_app';
 import { useRouter } from 'next/router';
+import { getCurrentUser } from '../helper';
 
 const links = [
   {
@@ -35,24 +36,16 @@ const links = [
 const NavbarComponent: FC = () => {
   const router = useRouter();
   const { theme, updateTheme } = useContext(ThemeContext);
-  const [user, setUser] = useState<User | boolean>(false);
+  const [user, setUser] = useState<User | AuthUser | boolean>(false);
+  const {getLoggedInUser} = useContext(AuthContext);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     async function getUser() {
-      const currentUser = auth.currentUser;
-      if (currentUser !== null) {
-        const docRef = await getDoc(doc(db, 'users', currentUser.uid));
-        const _user = docRef.data() as User;
-        setUser(_user);
-      } else {
-        const userId = localStorage.getItem('userId');
-        if (userId) {
-          const docRef = await getDoc(doc(db, 'users', userId));
-          const _user = docRef.data() as User;
+      if (getLoggedInUser) {
+        const _user = await getLoggedInUser()
+        if (_user){
           setUser(_user);
-        } else {
-          setUser(false);
         }
       }
     }

@@ -657,7 +657,7 @@ export const getArticles = async () => {
   })) as Article[];
   const sQ = query(
     collection(db, 'articles'),
-    where('tags', 'array-contains-any', articles[0].tags),
+    where('tags', 'array-contains-any', articles[0].tags ?? articles[1].tags ?? articles[2].tags),
     orderBy('createdAt', 'desc'),
     limit(10)
   );

@@ -39,7 +39,7 @@ type Props = {
   parentCommentId?: string;
 };
 
-const Comment: FC<Props> = ({
+const CommentComponent: FC<Props> = ({
   body,
   owner,
   articleId,
@@ -248,7 +248,7 @@ const Comment: FC<Props> = ({
           <div className="ml-4 my-4 border-left">
             {childComments &&
               childComments.map((comment) => (
-                <Comment
+                <CommentComponent
                   key={comment.id}
                   articleId={articleId}
                   body={comment.body}
@@ -266,4 +266,4 @@ const Comment: FC<Props> = ({
   );
 };
 
-export default Comment;
+export default CommentComponent;

@@ -22,7 +22,7 @@ const SignInModal: FC<Props> = ({
     >
       <Card className={`bg-${theme}`}>
         <Modal.Header>
-          <Modal.Title className={`text-${textColor}`}>Create a free account</Modal.Title>
+          <Modal.Title className="text-primary">Create a free account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <SignupForm creator={true} isModal={true} closeModal={handleClose} />

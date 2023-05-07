@@ -107,44 +107,27 @@ const NavbarComponent: FC = () => {
               <Link href="/about">About</Link>
             </Nav.Item>
 
-            {user && (
+            {user ? (
               <Nav.Item
                 onClick={() => setExpanded(!expanded)}
                 style={{ margin: '.5rem 1rem' }}
               >
                 <Link href="/user/profile">Profile</Link>
               </Nav.Item>
-            )}
-
-            {
-              //@ts-ignore
-              !user && (
-                <Nav.Item
-                  onClick={() => setExpanded(!expanded)}
-                  style={{ margin: '.5rem 1rem' }}
-                >
-                  <Link href="/register">Create Account</Link>
-                </Nav.Item>
-              )
-            }
-
-            {
-              //@ts-ignore
-              !user && (
-                <Nav.Item
-                  onClick={() => setExpanded(!expanded)}
-                  style={{ margin: '.5rem 1rem' }}
-                >
-                  <Link href="/login">Login</Link>
-                </Nav.Item>
-              )
+            ) : (
+              <Nav.Item
+                onClick={() => setExpanded(!expanded)}
+                style={{ margin: '.5rem 1rem' }}
+              >
+                <Link href="/register">Create Account</Link>
+              </Nav.Item>)
             }
 
             <Nav.Item style={{ margin: '.5rem 1rem' }}>
               <Link href="/course">Courses</Link>
             </Nav.Item>
 
-            {user && (
+            {user ? (
               <Nav.Item
                 onClick={() => {
                   logout(expanded);
@@ -157,33 +140,43 @@ const NavbarComponent: FC = () => {
               >
                 <span>Logout</span>
               </Nav.Item>
+            ) : (
+              <Nav.Item
+                onClick={() => setExpanded(!expanded)}
+                style={{ margin: '.5rem 1rem' }}
+              >
+                <Link href="/login">Login</Link>
+              </Nav.Item>
             )}
-            <Nav.Item
-              onClick={() => setExpanded(!expanded)}
-              style={{ margin: '.5rem 1rem' }}
-            >
-              <span
-                // @ts-ignore
-                onClick={(e) => updateTheme('dark')}
-                className="text-dark"
-                style={{ cursor: 'pointer', fontWeight: 'bold' }}
+            {theme === 'light' ? (
+              <Nav.Item
+                onClick={() => setExpanded(!expanded)}
+                style={{ margin: '.5rem 1rem' }}
               >
-                <DarkModeIcon />
-              </span>
-            </Nav.Item>
-            <Nav.Item
-              onClick={() => setExpanded(!expanded)}
-              style={{ margin: '.5rem 1rem' }}
-            >
-              <span
-                // @ts-ignore
-                onClick={(e) => updateTheme('light')}
-                className="text-light"
-                style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                <span
+                  // @ts-ignore
+                  onClick={(e) => updateTheme('dark')}
+                  className="text-dark"
+                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                  <DarkModeIcon />
+                </span>
+              </Nav.Item>
+            ) : (
+              <Nav.Item
+                onClick={() => setExpanded(!expanded)}
+                style={{ margin: '.5rem 1rem' }}
               >
-                <LightModeIcon />
-              </span>
-            </Nav.Item>
+                <span
+                  // @ts-ignore
+                  onClick={(e) => updateTheme('light')}
+                  className="text-light"
+                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                  <LightModeIcon />
+                </span>
+              </Nav.Item>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

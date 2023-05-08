@@ -8,6 +8,7 @@ import AppStyle from './app.module.css';
 import SignInModal from '../components/Signin-Modal';
 import { ThemeContext } from './_app';
 import "./app.module.css"
+import { Container, Button, Link } from 'react-floating-action-button'
 type Props = {
   children: React.ReactNode;
 };
@@ -52,6 +53,7 @@ const Layout: FC<Props> = function ({ children }) {
         <div style={{ padding: '4rem .5rem', minHeight: '72vh' }}>
           <SignInModal show={show} handleClose={handleClose} />
           {children}
+          
         </div>
         <Footer />
       </div>

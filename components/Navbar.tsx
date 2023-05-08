@@ -12,7 +12,6 @@ import { User } from '../types';
 import { Menu, DarkModeIcon, LightModeIcon } from './svg/icons';
 import { ThemeContext, AuthContext } from '../pages/_app';
 import { useRouter } from 'next/router';
-import { getCurrentUser } from '../helper';
 
 const links = [
   {
@@ -36,22 +35,8 @@ const links = [
 const NavbarComponent: FC = () => {
   const router = useRouter();
   const { theme, updateTheme } = useContext(ThemeContext);
-  const [user, setUser] = useState<User | AuthUser | boolean>(false);
-  const {getLoggedInUser} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
   const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    async function getUser() {
-      if (getLoggedInUser) {
-        const _user = await getLoggedInUser()
-        if (_user){
-          setUser(_user);
-        }
-      }
-    }
-
-    getUser();
-  }, []);
 
   const logout = async (expanded: boolean) => {
     setExpanded(!expanded);

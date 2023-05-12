@@ -172,7 +172,7 @@ const BillingForm: FC<Props> = ({
         <hr className="mb-4" />
         {user && (
           <CheckoutButton
-            amount={price * 100}
+            amount={(price * 100) * 470}
             // @ts-ignore
             email={user?.email!}
             onClose={() => {
@@ -183,7 +183,7 @@ const BillingForm: FC<Props> = ({
             metadata={{ name: user?.name!, phone: user?.phone! }}
             text="Pay Now"
             showPayButton={showPayButton}
-            publicKey={'pk_test_16cd6b42be34091ff4fb964827bb5184395fe204'}
+            publicKey={'pk_live_14948b934d2e2e5243170514e9d5e1e72ac29fb1'}
             // pk_test_16cd6b42be34091ff4fb964827bb5184395fe204
             // pk_live_14948b934d2e2e5243170514e9d5e1e72ac29fb1
           />

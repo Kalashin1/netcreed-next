@@ -63,16 +63,6 @@ const UserCourses = ({
                 </Col>
               </Row>
             </Button>
-            <Col md={2}>
-              <span>
-                <GridIcon />
-              </span>
-            </Col>
-            <Col md={2}>
-              <span>
-                <ListIcon />
-              </span>
-            </Col>
           </Col>
         </Row>
 

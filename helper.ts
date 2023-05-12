@@ -630,7 +630,7 @@ export const getUserArticles = async (user: Partial<_UserProfile>) => {
 
 export const getAllUserArticles = async (user: Partial<_UserProfile>) => {
   delete user.bio, delete user.creator;
-  const q = query(collection(db, 'articles'), where('author', '==', user));
+  const q = query(collection(db, 'articles'), where('author', '==', user), orderBy('createdAt', 'desc'));
 
   const docs = await getDocs(q);
   const articles = docs.docs.map(

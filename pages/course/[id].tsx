@@ -103,9 +103,8 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
       </Head>
       <Container className="my-4">
         <h3
-          className={`my-4 display-6 text-${
-            theme === 'dark' ? 'light' : 'dark'
-          }`}
+          className={`my-4 display-6 text-${theme === 'dark' ? 'light' : 'dark'
+            }`}
         >
           {course.title}
         </h3>
@@ -119,9 +118,8 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
               <p>{course?.registeredUsers?.length ?? 0} Registered Users.</p>
               <ListGroup
                 variant="flush"
-                className={`text-${
-                  theme === 'dark' ? 'light' : 'dark'
-                } bg-${theme}`}
+                className={`text-${theme === 'dark' ? 'light' : 'dark'
+                  } bg-${theme}`}
               >
                 {lessons &&
                   lessons.map((l: LessonSchema, index: number) => (
@@ -130,15 +128,14 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                       onClick={() => {
                         router.push(`/lessons/${l.id}`);
                       }}
-                      className={`text-${
-                        theme === 'dark' ? 'light' : 'dark'
-                      } bg-${theme}`}
+                      className={`text-${theme === 'dark' ? 'light' : 'dark'
+                        } bg-${theme}`}
                     >
                       {l.title}
                     </ListGroup.Item>
                   ))}
               </ListGroup>
-              {userId === course?.author?.id && (
+              {userId === course?.author?.id ? (
                 <Button
                   onClick={() => {
                     router.push('/lessons/create');
@@ -146,6 +143,15 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   style={{ width: '100%' }}
                 >
                   Add Lesson
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    openCourse();
+                  }}
+                  style={{ width: '100%' }}
+                >
+                  Start Course
                 </Button>
               )}
             </Container>
@@ -157,17 +163,32 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   <CourseLessonHeader
                     description={l.description}
                     title={l.title}
+                    courseCreatorId={course.author.id}
+                    id={l.id}
                   />
                 </div>
               ))}
-            <Button
-              onClick={() => {
-                openCourse();
-              }}
-              style={{ width: '100%' }}
-            >
-              Start Course
-            </Button>
+            {
+              userId === course?.author?.id ? (
+                <Button
+                  onClick={() => {
+                    router.push(`/course/edit/${course?.id}`);
+                  }}
+                  style={{ width: '100%' }}
+                >
+                  Edit Course
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    openCourse();
+                  }}
+                  style={{ width: '100%' }}
+                >
+                  Start Course
+                </Button>
+              )
+            }
           </Col>
         </Row>
       </Container>

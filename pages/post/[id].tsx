@@ -10,11 +10,17 @@ import Head from 'next/head';
 import AppCss from '../app.module.css';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../_app';
-import { getArticle, getCurrentUser, getProfile } from '../../helper';
+import { getArticle, getCurrentUser, getProfile, getArticleBySlug } from '../../helper';
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
-  const { article, articles } = await getArticle(id);
+  let { article, articles } = await getArticleBySlug(id)
+  if (!article) {
+    let { article, articles }  = await (await getArticle(id)).article;
+    return {
+      props: { article, articles }
+    }
+  }
   return {
     props: { article, articles },
   };

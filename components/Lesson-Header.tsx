@@ -5,23 +5,23 @@ import { useRouter } from 'next/router';
 const marked = require('marked');
 import { Container, Row, Col } from 'react-bootstrap';
 import { useContext } from 'react';
-import { ThemeContext } from '../pages/_app';
+import { ThemeContext, AuthContext } from '../pages/_app';
 
 type Prop = {
   title: string;
   description: string;
+  creator?: string
 };
-const LessonHeader: FC<Prop> = ({ title, description }) => {
+const LessonHeader: FC<Prop> = ({ title, description, creator }) => {
   let theme: string = useContext(ThemeContext).theme;
-
+  let { user } = useContext(AuthContext)
   const router = useRouter();
 
   return (
     <Container>
       <div
-        className={`mb-3 pl-0 pt-0 pb-0 bg-${theme} text-${
-          theme === 'dark' ? 'light' : 'dark'
-        } position-relative`}
+        className={`mb-3 pl-0 pt-0 pb-0 bg-${theme} text-${theme === 'dark' ? 'light' : 'dark'
+          } position-relative`}
       >
         <div className="h-100 tofront">
           <Row className="justify-content-between">
@@ -30,13 +30,6 @@ const LessonHeader: FC<Prop> = ({ title, description }) => {
               {/* <img src={`/assets/img/demo/blog6.jpg`} className="img-fluid" alt="Leson 1" /> */}
             </Col>
             <Col md={12} className="pt pb-6 pr-6 align-self-center">
-              {
-                <p className="text-uppercase font-weight-bold">
-                  <a className="text-danger" href="./category.html">
-                    Edit
-                  </a>
-                </p>
-              }
               <h1 className="display-4 secondfont mb-3 font-weight-bold">
                 {title}
               </h1>

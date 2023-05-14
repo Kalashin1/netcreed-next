@@ -39,7 +39,7 @@ const UserCourses = ({
           theme === 'dark' ? 'light' : 'dark'
         }`}
       >
-        <Row className="justify-content-between">
+        <Row className="justify-content-between align-items-center">
           <Col md={6}>
             <h3
               className={`display-4 text-${

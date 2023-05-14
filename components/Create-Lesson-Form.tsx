@@ -12,8 +12,9 @@ import { ThemeContext } from '../pages/_app';
 import { getUserCourses, createLessonFormHandler } from '../helper';
 import { CourseSchema } from '../types';
 import { useRouter } from 'next/router';
+import Select from 'react-select';
 
-const CreateLessonForm: NextPage = () => {
+const CreateLessonForm: React.FC = () => {
   let theme: string = useContext(ThemeContext).theme;
   const router = useRouter();
 
@@ -22,7 +23,7 @@ const CreateLessonForm: NextPage = () => {
 
   const [courses, setCourses] = useState<CourseSchema[]>();
   const [showSpinner, setShowSpinner] = useState(false);
-  const [course, setCourse] = useState('');
+  const [course, setCourse] = useState<any>();
 
   useEffect(() => {
     const _getCourses = async () => {
@@ -31,8 +32,14 @@ const CreateLessonForm: NextPage = () => {
         router
       );
       if (!err) {
-        setCourses(_courses!);
+        setCourses(_courses.map((c: CourseSchema) => {
+          return {
+            value: c.id,
+            label: c.title
+          }
+        }));
       }
+
     };
 
     _getCourses();
@@ -41,10 +48,11 @@ const CreateLessonForm: NextPage = () => {
   const createLesson = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setShowSpinner(true);
+    console.log(course)
     try {
       const [data, err] = await createLessonFormHandler(
         createLessonForm.current!,
-        course
+        course?.value!
       );
       setShowSpinner(false);
       if (err) {
@@ -89,17 +97,12 @@ const CreateLessonForm: NextPage = () => {
             >
               Select Course
             </Form.Label>
-            <Form.Select
-              name="courses"
-              onChange={(e) => setCourse(e.target.value)}
-            >
-              {courses &&
-                courses.map((c, i) => (
-                  <option key={i} value={c.id}>
-                    {c.title}
-                  </option>
-                ))}
-            </Form.Select>
+            <Select
+              defaultValue={course}
+              // @ts-ignore
+              onChange={setCourse}
+              options={courses}
+            />
           </Form.Group>
 
           <Form.Group>

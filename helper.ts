@@ -151,7 +151,7 @@ export const updateArticle = async (
     }
 
     console.log(imageUrl);
-    const slug = slugify(article?.title!, {
+    const slug = slugify(title, {
       lower: true,
     });
 
@@ -164,8 +164,8 @@ export const updateArticle = async (
       tags: selectedTags,
       category: selectedCategory,
       status: status!,
-      url: `post/${article.id}`,
-      slug: `post/${slug}`,
+      url: `${article.id}`,
+      slug: `${slug}`,
     };
     await updateDoc(doc(db, 'articles', article.id), articleUpdate);
     setShowSpinner(true);
@@ -591,6 +591,24 @@ export const getArticle = async (id: string) => {
   return { article, articles };
 };
 
+export const getArticleBySlug = async (slug: string) => {
+  const ref = doc(db, 'articles', slug);
+  const docRes = await getDoc(ref);
+  const article = { ...docRes.data(), id: docRes.id } as Article;
+  const _q = query(
+    collection(db, 'articles'),
+    where('tags', 'array-contains-any', article.tags),
+    orderBy('createdAt', 'desc'),
+    limit(7)
+    );
+  const _docRes = await getDocs(_q);
+  const articles = _docRes.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  })) as Article[];
+  return { article, articles };
+}
+
 export const getArticleRef = async (id: string) => {
   const ref = doc(db, 'articles', id);
   const docRes = await getDoc(ref);
@@ -673,8 +691,8 @@ export const createLessonFormHandler = async (
   form: HTMLFormElement,
   _course: string
 ) => {
-  const { title, content, description } = form;
   console.log(_course);
+  const { title, content, description } = form;
   try {
     const [course, err] = await getCourse(_course);
     if (err) {
@@ -704,6 +722,7 @@ export const createLessonFormHandler = async (
     const slug = slugify(lesson.title, {
       lower: true,
     });
+    console.log("slug", slug)
     await updateDoc(doc(db, 'lessons', lessonDoc.id), {
       url: `lessons/${lessonDoc.id}`,
       slug: `lessons/${slug}`,

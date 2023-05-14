@@ -35,6 +35,7 @@ const CreateCourseForm: FC<Props> = ({ courseId }) => {
     const setUp = async () => {
       const [course, err] = await getCourse(courseId);
       if (!err) {
+        console.log(course)
         setCourse(course!);
         setTitle(course?.title!);
         setDescription(course?.description!);

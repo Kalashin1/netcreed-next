@@ -87,22 +87,17 @@ const Post: NextPage = ({ article, articles }) => {
         {article && <PostContent article={article} />}
         <div className="my-4">
           <h3
-            className={`text-left ml-4 mb-4 text-${
+            className={`text-left mb-4 text-${
               theme === 'dark' ? 'light' : 'dark'
             }`}
+            style={{ marginLeft: '5vw '}}
           >
             Add Comment
           </h3>
           <AddComment articleId={article?.id} userId={userId ? userId : ''} />
         </div>
         <div className="my-6">
-          <h3
-            className={`text-left ml-4 mb-4 text-${
-              theme === 'dark' ? 'light' : 'dark'
-            }`}
-          >
-            Comments
-          </h3>
+          
           {article &&
             article.comments &&
             article.comments.length > 0 &&

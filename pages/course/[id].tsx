@@ -13,6 +13,7 @@ import {
 import { LessonSchema } from '../../types';
 import { useRouter } from 'next/router';
 import { MoneyFormatter } from '../../helper';
+import { UsersIcon, DollarIcon } from '@components/svg/icons';
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
@@ -103,19 +104,28 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
       </Head>
       <Container className="my-4">
         <h3
-          className={`my-4 display-6 text-${theme === 'dark' ? 'light' : 'dark'
+          className={`my-4 display-4 text-${theme === 'dark' ? 'light' : 'dark'
             }`}
         >
           {course.title}
         </h3>
-        <Row className="justify-content-center">
-          <Col md={5}>
+        <Row className="justify-content-center mt-4">
+          <Col md={4}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
               <p>{course.description}</p>
-              <p>Price - {MoneyFormatter.format(course.price ?? 0)}</p>
-              <p>{course?.registeredUsers?.length ?? 0} Registered Users.</p>
+              <p>
+                <span className="mx-2">
+                  <DollarIcon />
+                </span>
+                Price - {MoneyFormatter.format(course.price ?? 0)}</p>
+              <p>
+                <span className='mx-2'>
+                  <UsersIcon />
+                </span>
+                {course?.registeredUsers?.length ?? 0} Registered Users.
+              </p>
               <ListGroup
                 variant="flush"
                 className={`text-${theme === 'dark' ? 'light' : 'dark'
@@ -156,7 +166,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
               )}
             </Container>
           </Col>
-          <Col md={7}>
+          <Col md={8}>
             {lessons &&
               lessons.map((l: LessonSchema, i: number) => (
                 <div className="my-2" key={i}>

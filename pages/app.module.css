@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Nunito&family=Roboto+Slab:wght@500&display=swap');
 .body {
-  font-family: 'Lato', sans-serif;
+  /* font-family: 'Lato', sans-serif; */
+  /* font-family: 'Nunito', sans-serif !important; */
+  font-family: 'Roboto Slab' sans-serif !important;
 }

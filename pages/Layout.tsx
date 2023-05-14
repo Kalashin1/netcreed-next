@@ -48,7 +48,7 @@ const Layout: FC<Props> = function ({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
       </Head>
-      <div className={`bg-${_theme == 'dark' ? 'dark' : 'light'}`}>
+      <div className={`bg-${_theme == 'dark' ? 'dark' : 'light'}`} style={{ fontFamily: 'Roboto Slab'}}>
         <Navbar />
         <div style={{ padding: '4rem .5rem', minHeight: '72vh' }}>
           <SignInModal show={show} handleClose={handleClose} />

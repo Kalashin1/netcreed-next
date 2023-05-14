@@ -6,6 +6,7 @@ import { getCurrentUser, getUserWithoutID } from '../helper';
 import { User } from '../types'
 import { User as AuthUser } from '@firebase/auth';
 import Script from 'next/script';
+require('./app.module.css');
 
 let _theme: string;
 let _textColor: string;

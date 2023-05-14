@@ -127,7 +127,7 @@ const CommentComponent: FC<Props> = ({
 
   return (
     <Container>
-      <Row className="pt-4">
+      <Row>
         <Col lg={2} className="py-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

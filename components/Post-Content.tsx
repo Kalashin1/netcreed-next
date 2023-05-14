@@ -91,6 +91,7 @@ const PostContent: FC<_Article> = ({ article }) => {
             className={`article-post text-${
               theme === 'light' ? 'dark' : 'light'
             }`}
+            style={{ fontFamily: 'Roboto Slab'}}
             dangerouslySetInnerHTML={{ __html: marked.marked(article.body) }}
           ></article>
           <div

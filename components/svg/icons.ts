@@ -22,6 +22,8 @@ import LikeCommentIconFilled from './like-comment-filled';
 import LikeCommentIconOutline from './like-comment-outline';
 import GridIcon from './grid';
 import ListIcon from './list';
+import UsersIcon from './users';
+import DollarIcon from './dollar';
 
 export {
   DevIcon,
@@ -48,4 +50,6 @@ export {
   LikeCommentIconOutline,
   GridIcon,
   ListIcon,
+  UsersIcon,
+  DollarIcon,
 };

@@ -1,7 +1,7 @@
 import { Card, Row, Col } from 'react-bootstrap';
 import { FC, useContext } from 'react';
 import { ThemeContext, AuthContext } from '../pages/_app';
-import { EditIcon } from './svg/icons'
+import { EditIcon, DeleteIcon } from './svg/icons'
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -19,9 +19,10 @@ const CourseLessonHeader: FC<Props> = ({ title, description, courseCreatorId, id
     <Card bg={theme} className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
       <Card.Header>
         <Row className="justify-content-between align-items-center flex-row">
-          <Col lg={11}>
+          <Col lg={10}>
             <Card.Title className="mb-1 h4 font-weight-bold">{title}</Card.Title>
           </Col>
+          {/* // * Update Icon */}
           {
             user?.uid === courseCreatorId ?
             (<Col lg={1}>
@@ -31,6 +32,17 @@ const CourseLessonHeader: FC<Props> = ({ title, description, courseCreatorId, id
               <></>
             )
           }
+          {/* // * Delete Icon */}
+          {/* {
+            user?.uid === courseCreatorId ?
+            (<Col lg={1}>
+              <span style={{ cursor: 'pointer'}} onClick={() => {}}><DeleteIcon fill="red" /></span>
+            </Col>
+            ): (
+              <></>
+            )
+          }
+           */}
         </Row>
       </Card.Header>
       <Card.Body>

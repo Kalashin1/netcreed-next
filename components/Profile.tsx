@@ -144,7 +144,7 @@ const UserProfile: FC = () => {
                   Create Post
                 </Button>
               )}
-              <Button
+              {/* <Button
                 variant="secondary"
                 className="my-2"
                 type="submit"
@@ -152,7 +152,7 @@ const UserProfile: FC = () => {
                 onClick={(e: any) => navigate(`/course/create`)}
               >
                 Create Course
-              </Button>
+              </Button> */}
               <h5
                 className={`text-${
                   theme === 'dark' ? 'light' : 'dark'

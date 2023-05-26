@@ -51,7 +51,7 @@ import {
   LessonRef,
 } from './types';
 
-export const uploadImage = async (file: HTMLInputElement, folder: string) => {
+export const uploadImage = async (file: HTMLInputElement, folder: string, isVideo?: boolean) => {
   console.log(file);
   const extension = file.files
     ? file.files![0].name.split('.')[1]
@@ -68,6 +68,12 @@ export const uploadImage = async (file: HTMLInputElement, folder: string) => {
   const metadata = {
     contentType: 'image/jpeg',
   };
+
+  if (isVideo) {
+    metadata['contentType'] = 'video/mp4'
+  }
+
+ 
 
   const res = await uploadBytes(
     articleImagesRef,
@@ -177,9 +183,9 @@ export const updateArticle = async (
   }
 };
 
-export const getUser = async (user: Partial<AuthUser>): Promise<Author> => {
+export const getUser = async (user: Partial<AuthUser> | string): Promise<Author> => {
   if (!user) throw Error('no user');
-  const uid = user.uid;
+  let uid = typeof user !== 'string' ? user.uid!: user;
   const docRef = doc(db, 'users', uid!);
   const document = await getDoc(docRef);
   const userDoc = (await document.data()) as User;

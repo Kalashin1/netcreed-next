@@ -60,7 +60,7 @@ const NavbarComponent: FC = () => {
     >
       <Container>
         <Navbar.Brand href="/">
-          <Image src="/logo.png" width={50} height={60} alt="Netcreed" />
+          <Image src={theme === 'dark' ? '/logo-dark.png': '/logo.png'} width={50} objectFit="cover" height={60} alt="Netcreed" />
         </Navbar.Brand>
         <Navbar.Toggle
           aria-controls="basic-navbar-nav"

@@ -97,7 +97,7 @@ const Lesson: NextPage<{
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
-              <p>{course?.description}</p>
+              { /** <p>{course?.description}</p> **/}
               <ListGroup
                 variant="flush"
                 className={`text-${

@@ -1,5 +1,5 @@
 import { Card, Row, Col } from 'react-bootstrap';
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { ThemeContext, AuthContext } from '../pages/_app';
 import { EditIcon, DeleteIcon } from './svg/icons'
 import { useRouter } from 'next/router';
@@ -7,20 +7,29 @@ import { useRouter } from 'next/router';
 type Props = {
   title: string;
   description: string;
-  id?: string
-  courseCreatorId?: string
+  id?: string;
+  courseCreatorId?: string;
+  openCourse: (id?: string) => void
 };
 
-const CourseLessonHeader: FC<Props> = ({ title, description, courseCreatorId, id }) => {
+const CourseLessonHeader: FC<Props> = ({ title, description, courseCreatorId, id, openCourse }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
-  let { user } = useContext(AuthContext);
+  let { user, getLoggedInUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (getLoggedInUser) getLoggedInUser();
+  }, [getLoggedInUser])
+
+  console.log('courseCreatorId', courseCreatorId);
+  console.log('userId', user?.uid);
+  console.log(courseCreatorId === user?.uid)
   return (
     <Card bg={theme} className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
       <Card.Header>
         <Row className="justify-content-between align-items-center flex-row">
           <Col lg={10}>
-            <Card.Title className="mb-1 h4 font-weight-bold">{title}</Card.Title>
+            <Card.Title onClick={() => openCourse(id)} style={{ cursor: 'pointer' }} className="mb-1 h4 font-weight-bold">{title}</Card.Title>
           </Col>
           {/* // * Update Icon */}
           {
@@ -45,7 +54,7 @@ const CourseLessonHeader: FC<Props> = ({ title, description, courseCreatorId, id
            */}
         </Row>
       </Card.Header>
-      <Card.Body>
+      <Card.Body onClick={() => openCourse(id)} style={{ cursor: 'pointer' }}>
         <p className="my-4">{description}</p>
       </Card.Body>
     </Card>

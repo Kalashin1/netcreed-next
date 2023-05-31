@@ -8,7 +8,7 @@ type Props = {
 
 
 const DollarIcon: FC<Props> = ({
-  width = 15
+  width = 10
 }) => {
   const { theme } = useContext(ThemeContext);
 

@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { Container, Row, Col, ListGroup } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Button } from 'react-bootstrap';
 import LessonHeader from '../../components/Lesson-Header';
 import LessonContent from '../../components/Lesson-Content';
 import Layout from '../Layout';
@@ -50,8 +50,7 @@ const Lesson: NextPage<{
         />
         <meta
           name="keywords"
-          content={lesson.title
-            .split(' ')
+          content={lesson?.title?.split(' ')
             .map((t: any) => t.value)
             .join(', ')}
         />
@@ -93,16 +92,22 @@ const Lesson: NextPage<{
           </Col>
         </Row>
         <Row className="justify-content-between">
-          <Col md={2}>
+
+          <Col md={8}>
+            <div className="m-2">
+              <LessonContent content={lesson?.courseContent} />
+            </div>
+          </Col>
+
+          <Col md={4}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
-              { /** <p>{course?.description}</p> **/}
+              <h4 className='ml-2'>Course Outline</h4>
               <ListGroup
                 variant="flush"
-                className={`text-${
-                  theme === 'dark' ? 'light' : 'dark'
-                } bg-${theme}`}
+                className={`text-${theme === 'dark' ? 'light' : 'dark'
+                  } bg-${theme}`}
               >
                 {lessons &&
                   lessons.map((l: LessonSchema, index: number) => (
@@ -111,9 +116,8 @@ const Lesson: NextPage<{
                       onClick={() => {
                         router.push(`/lessons/${l.id}`);
                       }}
-                      className={`text-${
-                        theme === 'dark' ? 'light' : 'dark'
-                      } bg-${theme}`}
+                      className={`text-${theme === 'dark' ? 'light' : 'dark'
+                        } bg-${theme}`}
                     >
                       {l.title}
                     </ListGroup.Item>
@@ -121,10 +125,13 @@ const Lesson: NextPage<{
               </ListGroup>
             </Container>
           </Col>
-          <Col md={10}>
-            <div className="m-2">
-              <LessonContent content={lesson?.courseContent} />
-            </div>
+        </Row>
+        <Row className="my-4">
+          <Col>
+            <Button>Previous Lesson</Button>
+          </Col>
+          <Col>
+            <Button>Next Lesson</Button>
           </Col>
         </Row>
       </Container>

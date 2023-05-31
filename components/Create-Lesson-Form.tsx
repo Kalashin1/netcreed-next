@@ -58,9 +58,8 @@ const CreateLessonForm: React.FC = () => {
       if (err) {
         console.log(err);
       } else if (data) {
-        console.log(data);
+        router.push(`/course/${course.value}`);
       }
-      router.push(`/course/${course}`);
     } catch (error: any) {
       setShowSpinner(true);
       console.log(error);

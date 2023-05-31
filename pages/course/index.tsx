@@ -54,7 +54,7 @@ const Courses: NextPage = ({ courses }) => {
               Courses
             </h3>
           </Col>
-          <Col md={8}>
+          {/* <Col md={8}>
             <Form className="d-flex" onSubmit={e => search(e, searchTerm)}>
               <Form.Control
                 type="search"
@@ -73,7 +73,7 @@ const Courses: NextPage = ({ courses }) => {
                 <Reload />
               </Button>
             </Form>
-          </Col>
+          </Col> */}
         </Row>
 
         <Row className="justify-content-center">

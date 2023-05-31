@@ -747,29 +747,20 @@ export const editLessonFormHandler = async (
   _course: string,
   _lesson: string
 ) => {
+  console.log('course', _course);
+  console.log(title, description, content)
   try {
-    const [course, err] = await getCourse(_course);
-    if (err) {
-      return [null, err];
-    }
-
-    const coursePayload: CourseRef = {
-      id: course!.id,
-      url: course!.url ? course?.url : '',
-      slug: course!.slug ? course?.slug : '',
-    };
-
     const slug = slugify(title, {
       lower: true,
     });
+
+    console.log("slug", slug);
     const lesson: Partial<LessonSchema> = {
-      course: coursePayload,
       status: 'SAVED',
       description: description,
       // @ts-ignore
       title,
       courseContent: content!,
-      courseId: coursePayload?.id,
       url: `lessons/${_lesson}`,
       slug: `lessons/${slug}`,
       updatedAt: new Date().getTime(),

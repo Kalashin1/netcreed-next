@@ -41,6 +41,10 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
         if (!_err) {
           console.log(_lesson);
           setLesson(_lesson!);
+          setCourse(_lesson?.courseId!)
+          setTitle(_lesson?.title!);
+          setDescription(_lesson?.description!);
+          setContent(_lesson?.courseContent!);
         }
         _err && console.log(_err);
       }
@@ -55,7 +59,7 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
     setShowSpinner(true);
     try {
       const [data, err] = await editLessonFormHandler(
-        { title, description, content }!,
+        { title, description, content },
         course,
         lessonId
       );
@@ -90,14 +94,14 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
             <Form.Control
               type="text"
               onChange={(e) => setTitle(e.target.value)}
-              defaultValue={lesson?.title}
+              value={title}
               className="form-control"
               id="exampleFormControlInput1"
               placeholder="name@example.com"
             />
           </Form.Group>
 
-          <Form.Group>
+          {/* <Form.Group>
             <Form.Label
               className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
@@ -117,7 +121,7 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
                   </option>
                 ))}
             </Form.Select>
-          </Form.Group>
+          </Form.Group> */}
 
           <Form.Group>
             <label
@@ -129,7 +133,7 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
             <textarea
               className="form-control"
               onChange={(e) => setDescription(e.target.value)}
-              defaultValue={lesson?.description}
+              value={description}
               name="description"
               id="exampleFormControlTextarea1"
               rows={3}
@@ -146,7 +150,7 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
             <textarea
               className="form-control"
               onChange={(e) => setContent(e.target.value)}
-              defaultValue={lesson?.courseContent}
+              value={content}
               name="content"
               id="exampleFormControlTextarea1"
               rows={15}
@@ -158,7 +162,7 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
               {showSpinner && (
                 <Spinner animation="border" role="status"></Spinner>
               )}
-              {!showSpinner && 'Create Lesson'}
+              {!showSpinner && 'Edit Lesson'}
             </Button>
           </div>
         </Form>

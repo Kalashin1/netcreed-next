@@ -50,8 +50,7 @@ const Lesson: NextPage<{
         />
         <meta
           name="keywords"
-          content={lesson.title
-            .split(' ')
+          content={lesson?.title?.split(' ')
             .map((t: any) => t.value)
             .join(', ')}
         />
@@ -127,14 +126,14 @@ const Lesson: NextPage<{
             </Container>
           </Col>
         </Row>
-        {/* <Row className="my-4">
+        <Row className="my-4">
           <Col>
             <Button>Previous Lesson</Button>
           </Col>
           <Col>
             <Button>Next Lesson</Button>
           </Col>
-        </Row> */}
+        </Row>
       </Container>
     </Layout>
   );

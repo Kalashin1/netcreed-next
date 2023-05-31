@@ -138,6 +138,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   } ml-2 my-4`}>Course Outline</h4>
               <ListGroup
                 variant="flush"
+                style={{ borderRadius: '3rem'}}
                 className={`my-2 text-${theme === 'dark' ? 'black' : 'white'
                   }`}
               >
@@ -182,12 +183,13 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
           <Col md={6}>
             {lessons &&
               lessons.map((l: LessonSchema, i: number) => (
-                <div className="my-2" key={i} onClick={e => openCourse(l.id)} style={{ cursor: 'pointer' }}>
+                <div className="my-2" key={i}>
                   <CourseLessonHeader
                     description={l.description}
                     title={l.title}
                     courseCreatorId={course.author.id}
                     id={l.id}
+                    openCourse={openCourse}
                   />
                 </div>
               ))}

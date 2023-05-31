@@ -521,7 +521,7 @@ export const getLessonsByCourseId = async (
     const _q = query(
       collection(db, 'lessons'),
       where('courseId', '==', course),
-      orderBy('createdAt', 'desc')
+      orderBy('createdAt')
     );
     const _docRes = await getDocs(_q);
     const lessons = _docRes.docs.map((doc) => ({

@@ -24,18 +24,13 @@ type Prop = {
 const LessonContent: FC<Prop> = ({ content }) => {
   let theme: string = useContext(ThemeContext).theme;
   return (
-    <Container className="pt-4 pb-4">
-      <Row className="justify-content-center">
-        <Col md={12} lg={8}>
-          <article
-            className={`article-post text-${
-              theme === 'dark' ? 'light' : 'dark'
-            }`}
-          >
-            <p dangerouslySetInnerHTML={{ __html: marked.marked(content) }}></p>
-          </article>
-        </Col>
-      </Row>
+    <Container className="pb-4">
+      <article
+        className={`article-post text-${theme === 'dark' ? 'light' : 'dark'
+          }`}
+      >
+        <p dangerouslySetInnerHTML={{ __html: marked.marked(content) }}></p>
+      </article>
     </Container>
   );
 };

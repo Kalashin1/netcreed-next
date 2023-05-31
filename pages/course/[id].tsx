@@ -1,6 +1,13 @@
 import { NextPage } from 'next';
 import Layout from '../Layout';
-import { Container, Row, Col, Button, ListGroup } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  ListGroup,
+  Card
+} from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
 import { ThemeContext } from '../_app';
 import Head from 'next/head';
@@ -47,7 +54,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
     setUserId(id);
   }, []);
 
-  const openCourse = async () => {
+  const openCourse = async (id?: string) => {
     if (course.isPaid) {
       const [bool, err] = await hasUserPaidForCourse(course.id!);
       if (err && err.includes('Please login')) {
@@ -59,8 +66,9 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
       } else if (!err && !bool) {
         router.push(`checkout/${course.id}`);
       }
-    } else router.push(`/lessons/${lessons[0].id}`);
+    } else router.push(`/lessons/${id ? id : lessons[0].id}`);
   };
+
   return (
     <Layout>
       <Head>
@@ -110,7 +118,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
           {course.title}
         </h3>
         <Row className="justify-content-center mt-4">
-          <Col md={4}>
+          <Col md={6}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
@@ -126,10 +134,12 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                 </span>
                 {course?.registeredUsers?.length ?? 0} Registered Users.
               </p>
+              <h4 className={`text-${theme === 'dark' ? 'light' : 'dark'
+                  } ml-2 my-4`}>Course Outline</h4>
               <ListGroup
                 variant="flush"
-                className={`text-${theme === 'dark' ? 'light' : 'dark'
-                  } bg-${theme}`}
+                className={`my-2 text-${theme === 'dark' ? 'black' : 'white'
+                  }`}
               >
                 {lessons &&
                   lessons.map((l: LessonSchema, index: number) => (
@@ -138,8 +148,9 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                       onClick={() => {
                         router.push(`/lessons/${l.id}`);
                       }}
-                      className={`text-${theme === 'dark' ? 'light' : 'dark'
-                        } bg-${theme}`}
+                      style={{ cursor: 'pointer' }}
+                      className={`text-${theme === 'dark' ? 'white' : 'dark'
+                        } bg-${theme === 'dark' ? 'black': 'white'}`}
                     >
                       {l.title}
                     </ListGroup.Item>
@@ -150,6 +161,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   onClick={() => {
                     router.push('/lessons/create');
                   }}
+                  className="my-2"
                   style={{ width: '100%' }}
                 >
                   Add Lesson
@@ -159,6 +171,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   onClick={() => {
                     openCourse();
                   }}
+                  className="my-2"
                   style={{ width: '100%' }}
                 >
                   Start Course
@@ -166,10 +179,10 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
               )}
             </Container>
           </Col>
-          <Col md={8}>
+          <Col md={6}>
             {lessons &&
               lessons.map((l: LessonSchema, i: number) => (
-                <div className="my-2" key={i}>
+                <div className="my-2" key={i} onClick={e => openCourse(l.id)} style={{ cursor: 'pointer' }}>
                   <CourseLessonHeader
                     description={l.description}
                     title={l.title}

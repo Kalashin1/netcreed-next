@@ -2,7 +2,7 @@ import { Card, Button } from 'react-bootstrap';
 import { FC, useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../pages/_app';
 import { useRouter } from 'next/router';
-import { DeleteIcon } from './svg/icons';
+import { DeleteIcon, DollarIcon, UsersIcon } from './svg/icons';
 import { deleteCourse } from '../helper';
 
 type Props = {
@@ -61,12 +61,12 @@ const CourseComponent: FC<Props> = ({
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        {showDetails && price && <p className="my-2">Price - ${price}</p>}
-        {showDetails && (<p className="my-2">{registeredUsers?.length ?? 0} Registered Users</p>)}
-        {showDeleteIcon && price && (
+        {showDetails && <p className="my-2"><DollarIcon /> Price - ${price}</p>}
+        {showDetails && (<p className="my-2"><UsersIcon /> {registeredUsers?.length ?? 0} Registered Users</p>)}
+        {showDeleteIcon && (
           <p className="my-2">
             You have earned $
-            {Math.floor((registeredUsers?.length ?? 0) * price)}
+            {Math.floor((registeredUsers?.length ?? 0) * (price ?? 0))}
           </p>
         )}
         <p className="my-2">{description.slice(0, 100)}...</p>
@@ -79,7 +79,7 @@ const CourseComponent: FC<Props> = ({
           </Button>
           {showDeleteIcon && (
             <div style={{ cursor: 'pointer' }} onClick={_deleteCourse}>
-              <DeleteIcon />
+              <DeleteIcon fill='red' />
             </div>
           )}
         </div>

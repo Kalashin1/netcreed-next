@@ -40,6 +40,25 @@ const Lesson: NextPage<{
 }> = ({ lesson, lessons, course }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
+
+  const gotoNextLesson = () => {
+    const indexOfNextLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) + 1 ;
+    const nextLesson = lessons.map((l) => l.id).at(indexOfNextLesson);
+    if (indexOfNextLesson > lessons.length - 1) {
+      return;
+    }
+    router.push(`/lessons/${nextLesson}`);
+  }
+
+  const gotoLastLesson = () => {
+    const indexOfLastLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) - 1 ;
+    if (indexOfLastLesson < 0) {
+      return;
+    }
+    const lastLesson = lessons.map((l) => l.id).at(indexOfLastLesson);
+    router.push(`/lessons/${lastLesson}`);
+  }
+
   return (
     <Layout>
       <Head>
@@ -58,26 +77,26 @@ const Lesson: NextPage<{
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="3 days" />
-        <meta name="author" content={course.author.name} />
+        <meta name="author" content={course?.author?.name} />
         {/* TWITTER CARD  */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={lesson.title} />
+        <meta name="twitter:title" content={lesson?.title} />
         <meta name="twitter:site" content="@netcreed" />
         <meta name="twitter:creator" content="@netcreed" />
-        <meta name="twitter:description" content={lesson.description} />
-        <meta name="twitter:image" content={course.photoUrl} />
+        <meta name="twitter:description" content={lesson?.description} />
+        <meta name="twitter:image" content={course?.photoUrl} />
         {/* Open Graph  */}
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://blog.thenetcreed.com/lessons/${lesson.id}`}
+          content={`https://blog.thenetcreed.com/lessons/${lesson?.id}`}
         />
-        <meta property="og:title" content={lesson.title} />
-        <meta property="og:description" content={lesson.description} />
+        <meta property="og:title" content={lesson?.title} />
+        <meta property="og:description" content={lesson?.description} />
         <meta
           property="og:image"
           itemProp="image"
-          content={`${course.photoUrl}`}
+          content={`${course?.photoUrl}`}
         />
       </Head>
       <Container className="my-4">
@@ -93,13 +112,7 @@ const Lesson: NextPage<{
         </Row>
         <Row className="justify-content-between">
 
-          <Col md={8}>
-            <div className="m-2">
-              <LessonContent content={lesson?.courseContent} />
-            </div>
-          </Col>
-
-          <Col md={4}>
+        <Col md={4}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
@@ -113,11 +126,12 @@ const Lesson: NextPage<{
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
+                      style={{ cursor: 'pointer'}}
                       onClick={() => {
                         router.push(`/lessons/${l.id}`);
                       }}
-                      className={`text-${theme === 'dark' ? 'light' : 'dark'
-                        } bg-${theme}`}
+                      className={`text-${l.id === lesson.id ? 'light': theme === 'dark' ? 'light' : 'dark'
+                        } bg-${l.id === lesson.id ? 'primary' : theme}`}
                     >
                       {l.title}
                     </ListGroup.Item>
@@ -125,15 +139,21 @@ const Lesson: NextPage<{
               </ListGroup>
             </Container>
           </Col>
+
+          <Col md={8}>
+            <div className="m-2 my-4">
+              <LessonContent content={lesson?.courseContent} />
+            </div>
+          </Col>
         </Row>
-        { /* <Row className="my-4">
-          <Col>
-            <Button>Previous Lesson</Button>
+        <Row className="my-4">
+          <Col className="py-2" xs={12} md={6}>
+            <Button onClick={gotoLastLesson} style={{ width: '100%'}}>Last Lesson</Button>
           </Col>
-          <Col>
-            <Button>Next Lesson</Button>
+          <Col className="py-2" xs={12} md={6}>
+            <Button onClick={gotoNextLesson} style={{ width: '100%'}}>Next Lesson</Button>
           </Col>
-        </Row> */ }
+        </Row>
       </Container>
     </Layout>
   );

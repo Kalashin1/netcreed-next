@@ -1,13 +1,22 @@
-import { useContext } from 'react';
+import { useContext, FC } from 'react';
 import { ThemeContext } from '../../pages/_app';
 
-const Plus = () => {
-  const theme = useContext(ThemeContext).theme;
 
+type Props = {
+  width?: number,
+  fill?: string
+}
+
+const Plus: FC<Props> = ({
+  width = 15,
+  fill
+}) => {
+  const theme = useContext(ThemeContext).theme;
+  fill = fill || `${theme === 'dark' ? '#fff' : '#000'}`;
   return (
     <svg
-      width={15}
-      fill={`${theme === 'dark' ? '#fff' : '#000'}`}
+      width={width}
+      fill={fill}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 448 512"
     >

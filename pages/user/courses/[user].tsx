@@ -58,7 +58,7 @@ const UserCourses = ({
                 </Col>
                 <Col md={2}>
                   <span>
-                    <Plus />
+                    <Plus fill="#fff" />
                   </span>
                 </Col>
               </Row>

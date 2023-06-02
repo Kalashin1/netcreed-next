@@ -44,11 +44,17 @@ const Lesson: NextPage<{
   const gotoNextLesson = () => {
     const indexOfNextLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) + 1 ;
     const nextLesson = lessons.map((l) => l.id).at(indexOfNextLesson);
+    if (indexOfNextLesson > lessons.length - 1) {
+      return;
+    }
     router.push(`/lessons/${nextLesson}`);
   }
 
   const gotoLastLesson = () => {
     const indexOfLastLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) - 1 ;
+    if (indexOfLastLesson < 0) {
+      return;
+    }
     const lastLesson = lessons.map((l) => l.id).at(indexOfLastLesson);
     router.push(`/lessons/${lastLesson}`);
   }
@@ -134,7 +140,7 @@ const Lesson: NextPage<{
           </Col>
 
           <Col md={8}>
-            <div className="m-2">
+            <div className="m-2 my-4">
               <LessonContent content={lesson?.courseContent} />
             </div>
           </Col>

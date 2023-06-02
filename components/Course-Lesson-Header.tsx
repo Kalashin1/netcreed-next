@@ -21,9 +21,6 @@ const CourseLessonHeader: FC<Props> = ({ title, description, courseCreatorId, id
     if (getLoggedInUser) getLoggedInUser();
   }, [getLoggedInUser])
 
-  console.log('courseCreatorId', courseCreatorId);
-  console.log('userId', user?.uid);
-  console.log(courseCreatorId === user?.uid)
   return (
     <Card bg={theme} className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
       <Card.Header>
@@ -31,7 +28,7 @@ const CourseLessonHeader: FC<Props> = ({ title, description, courseCreatorId, id
           <Col lg={10}>
             <Card.Title onClick={() => openCourse(id)} style={{ cursor: 'pointer' }} className="mb-1 h4 font-weight-bold">{title}</Card.Title>
           </Col>
-          {/* // * Update Icon */}
+          {/* Update Icon */}
           {
             user?.uid === courseCreatorId ?
             (<Col lg={1}>

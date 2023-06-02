@@ -40,6 +40,19 @@ const Lesson: NextPage<{
 }> = ({ lesson, lessons, course }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
+
+  const gotoNextLesson = () => {
+    const indexOfNextLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) + 1 ;
+    const nextLesson = lessons.map((l) => l.id).at(indexOfNextLesson);
+    router.push(`/lessons/${nextLesson}`);
+  }
+
+  const gotoLastLesson = () => {
+    const indexOfLastLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) - 1 ;
+    const lastLesson = lessons.map((l) => l.id).at(indexOfLastLesson);
+    router.push(`/lessons/${lastLesson}`);
+  }
+
   return (
     <Layout>
       <Head>
@@ -93,13 +106,7 @@ const Lesson: NextPage<{
         </Row>
         <Row className="justify-content-between">
 
-          <Col md={8}>
-            <div className="m-2">
-              <LessonContent content={lesson?.courseContent} />
-            </div>
-          </Col>
-
-          <Col md={4}>
+        <Col md={4}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
@@ -125,15 +132,21 @@ const Lesson: NextPage<{
               </ListGroup>
             </Container>
           </Col>
+
+          <Col md={8}>
+            <div className="m-2">
+              <LessonContent content={lesson?.courseContent} />
+            </div>
+          </Col>
         </Row>
-        { /* <Row className="my-4">
-          <Col>
-            <Button>Previous Lesson</Button>
+        <Row className="my-4">
+          <Col className="py-2" xs={12} md={6}>
+            <Button onClick={gotoLastLesson} style={{ width: '100%'}}>Last Lesson</Button>
           </Col>
-          <Col>
-            <Button>Next Lesson</Button>
+          <Col className="py-2" xs={12} md={6}>
+            <Button onClick={gotoNextLesson} style={{ width: '100%'}}>Next Lesson</Button>
           </Col>
-        </Row> */ }
+        </Row>
       </Container>
     </Layout>
   );

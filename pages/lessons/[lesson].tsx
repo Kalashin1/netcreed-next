@@ -77,26 +77,26 @@ const Lesson: NextPage<{
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="3 days" />
-        <meta name="author" content={course.author.name} />
+        <meta name="author" content={course?.author?.name} />
         {/* TWITTER CARD  */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={lesson.title} />
+        <meta name="twitter:title" content={lesson?.title} />
         <meta name="twitter:site" content="@netcreed" />
         <meta name="twitter:creator" content="@netcreed" />
-        <meta name="twitter:description" content={lesson.description} />
-        <meta name="twitter:image" content={course.photoUrl} />
+        <meta name="twitter:description" content={lesson?.description} />
+        <meta name="twitter:image" content={course?.photoUrl} />
         {/* Open Graph  */}
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://blog.thenetcreed.com/lessons/${lesson.id}`}
+          content={`https://blog.thenetcreed.com/lessons/${lesson?.id}`}
         />
-        <meta property="og:title" content={lesson.title} />
-        <meta property="og:description" content={lesson.description} />
+        <meta property="og:title" content={lesson?.title} />
+        <meta property="og:description" content={lesson?.description} />
         <meta
           property="og:image"
           itemProp="image"
-          content={`${course.photoUrl}`}
+          content={`${course?.photoUrl}`}
         />
       </Head>
       <Container className="my-4">
@@ -126,6 +126,7 @@ const Lesson: NextPage<{
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
+                      style={{ cursor: 'pointer'}}
                       onClick={() => {
                         router.push(`/lessons/${l.id}`);
                       }}

@@ -129,8 +129,8 @@ const Lesson: NextPage<{
                       onClick={() => {
                         router.push(`/lessons/${l.id}`);
                       }}
-                      className={`text-${theme === 'dark' ? 'light' : 'dark'
-                        } bg-${theme}`}
+                      className={`text-${l.id === lesson.id ? 'light': theme === 'dark' ? 'light' : 'dark'
+                        } bg-${l.id === lesson.id ? 'primary' : theme}`}
                     >
                       {l.title}
                     </ListGroup.Item>

@@ -79,7 +79,7 @@ const CourseComponent: FC<Props> = ({
           </Button>
           {showDeleteIcon && (
             <div style={{ cursor: 'pointer' }} onClick={_deleteCourse}>
-              <DeleteIcon />
+              <DeleteIcon fill='red' />
             </div>
           )}
         </div>

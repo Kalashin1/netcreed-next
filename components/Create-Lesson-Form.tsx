@@ -1,4 +1,3 @@
-import { NextPage } from 'next';
 import { Container, Form, Button, Spinner } from 'react-bootstrap';
 import {
   useContext,

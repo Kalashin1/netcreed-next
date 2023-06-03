@@ -155,7 +155,7 @@ const ProfileHeader: FC<Props> = ({
             <TwitterIcon width={22} />{' '}
           </a>
           <a
-            href={`https://github.com/${github.toLowerCase()}`}
+            href={`https://github.com/${github?.toLowerCase()}`}
             className="btn btn-social-icon mr-1 btn-github"
           >
             <GithubIcon width={22} />

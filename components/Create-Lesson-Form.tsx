@@ -1,4 +1,10 @@
-import { Container, Form, Button, Spinner } from 'react-bootstrap';
+import {
+  Container,
+  Form,
+  Button,
+  Spinner,
+  Card,
+} from 'react-bootstrap';
 import {
   useContext,
   MutableRefObject,
@@ -6,6 +12,7 @@ import {
   useEffect,
   useState,
   FormEvent,
+  useCallback,
 } from 'react';
 import { ThemeContext } from '../pages/_app';
 import { getUserCourses, createLessonFormHandler, getLessonsByCourseId } from '../helper';
@@ -18,6 +25,21 @@ const CreateLessonForm: React.FC = () => {
   let theme: string = useContext(ThemeContext).theme;
   const router = useRouter();
 
+  const onDrop = useCallback((acceptedFiles: FileList) => {
+    console.log(acceptedFiles)
+    updateUploadedVideos(acceptedFiles)
+    Array.from(acceptedFiles).forEach((file: any) => { })
+  }, [])
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    // @ts-ignore
+    onDrop,
+    accept: {
+      'video/mp4': ['.mp4']
+    },
+    maxFiles: 1
+  })
+
   const createLessonForm: MutableRefObject<HTMLFormElement | null> =
     useRef(null);
 
@@ -25,6 +47,10 @@ const CreateLessonForm: React.FC = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [lessonPosition, setLessonPosition] = useState(0);
   const [showNextPage, updateShowNextPage] = useState(false);
+  const [uploadedVideos, updateUploadedVideos] = useState<FileList>();
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [content, setContent] = useState('');
 
   type SelectOption = {
     value: string;
@@ -81,9 +107,10 @@ const CreateLessonForm: React.FC = () => {
     console.log(course)
     try {
       const [data, err] = await createLessonFormHandler(
-        createLessonForm.current!,
+        { title, description, content },
         course?.value!,
-        lessonPosition
+        lessonPosition,
+        uploadedVideos
       );
       setShowSpinner(false);
       if (err) {
@@ -105,7 +132,7 @@ const CreateLessonForm: React.FC = () => {
           ref={createLessonForm}
           onSubmit={(e) => createLesson(e)}
         >
-          <Form.Group className="my-4">
+          {!showNextPage ? (<><Form.Group className="my-4">
             <Form.Label
               className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
               htmlFor="exampleFormControlInput1"
@@ -116,88 +143,123 @@ const CreateLessonForm: React.FC = () => {
               type="text"
               name="title"
               required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               className="form-control"
               id="exampleFormControlInput1"
-              placeholder="name@example.com"
-            />
-          </Form.Group>
-          <Form.Group className="my-4">
-            <Form.Label
-              className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
-            >
-              Select Course
-            </Form.Label>
-            <Select
-              defaultValue={course}
-              // @ts-ignore
-              onChange={(selectedOption) => getSelectedCourse(selectedOption.value, selectedOption.label)}
-              options={courses}
-            />
-          </Form.Group>
+              placeholder="name@example.com" />
+          </Form.Group><Form.Group className="my-4">
+              <label
+                className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
+                htmlFor="exampleFormControlTextarea1"
+              >
+                Description
+              </label>
+              <textarea
+                className="form-control"
+                name="description"
+                required
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                id="exampleFormControlTextarea1"
+                rows={3}
+              ></textarea>
+            </Form.Group><Form.Group>
+              <label
+                className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
+                htmlFor="exampleFormControlTextarea1"
+              >
+                Lesson Content
+              </label>
+              <textarea
+                className="form-control"
+                name="content"
+                required
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                id="exampleFormControlTextarea1"
+                rows={15}
+              ></textarea>
+            </Form.Group></>
+          ) : (
+            <>
+              <Form.Group className="my-4">
+                <Form.Label
+                  className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
+                >
+                  Select Course
+                </Form.Label>
+                <Select
+                  defaultValue={course}
+                  // @ts-ignore
+                  onChange={(selectedOption) => getSelectedCourse(selectedOption.value, selectedOption.label)}
+                  options={courses}
+                />
+              </Form.Group>
 
-          <Form.Group className="my-4">
-            <label
-              className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
-              htmlFor="exampleFormControlTextarea1"
-            >
-              Description
-            </label>
-            <textarea
-              className="form-control"
-              name="description"
-              required
-              id="exampleFormControlTextarea1"
-              rows={3}
-            ></textarea>
-          </Form.Group>
+              <Form.Group className="my-4">
+                <Form.Label
+                  className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
+                  htmlFor="lessonPosition"
+                >
+                  Lesson Position
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  name="position"
+                  required
+                  value={lessonPosition}
+                  onChange={(e) => setLessonPosition(Number(e.target.value))}
+                  className="form-control"
+                  id="lessonPosition"
+                />
+              </Form.Group>
 
-          <Form.Group>
-            <label
-              className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
-              htmlFor="exampleFormControlTextarea1"
-            >
-              Lesson Content
-            </label>
-            <textarea
-              className="form-control"
-              name="content"
-              required
-              id="exampleFormControlTextarea1"
-              rows={15}
-            ></textarea>
-          </Form.Group>
-
-          <Form.Group className="my-4">
-            <Form.Label
-              className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
-              htmlFor="lessonPosition"
-            >
-              Lesson Position
-            </Form.Label>
-            <Form.Control
-              type="number"
-              name="position"
-              required
-              value={lessonPosition}
-              onChange={(e) => setLessonPosition(Number(e.target.value))}
-              className="form-control"
-              id="lessonPosition"
-            />
-          </Form.Group>
+              <Form.Group className="my-4">
+                <div {...getRootProps()}>
+                  <input name="lessonPhoto" type="file" {...getInputProps()} />
+                  {
+                    isDragActive ?
+                      (
+                        <Card>
+                          <Card.Body>
+                            Drop Video Here
+                          </Card.Body>
+                        </Card>
+                      ) :
+                      (
+                        <Card style={{ cursor: 'pointer' }} bg={theme === 'dark' ? 'black' : 'white'}>
+                          <Card.Body>
+                            <p className={`text-${theme === 'dark' ? 'light' : 'black'}`}>Add your video here</p>
+                          </Card.Body>
+                        </Card>
+                      )
+                  }
+                </div>
+              </Form.Group>
+            </>
+          )}
 
           {
-            showNextPage ? (
-              <Button variant="primary" type="submit">
-                Next
-              </Button>
-            ): (<></>)}
-
-          <Button variant="primary" type="submit" style={{ width: '100%' }}>
-            {showSpinner && (
-              <Spinner animation="border" role="status"></Spinner>
+            !showNextPage ? (
+              <Form.Group>
+                <Button onClick={(e) => {
+                  e.preventDefault()
+                  updateShowNextPage(true)
+                }} variant="primary" className='my-4' type="button" style={{ width: '100%' }}>
+                  Next
+                </Button>
+              </Form.Group>
+            ) : (
+              <Form.Group>
+                <Button variant="primary" type="submit" style={{ width: '100%' }}>
+                  {showSpinner && (
+                    <Spinner animation="border" role="status"></Spinner>
+                  )}
+                  {!showSpinner && 'Create Lesson'}
+                </Button>
+              </Form.Group>
             )}
-            {!showSpinner && 'Create Lesson'}
-          </Button>
         </Form>
       </div>
     </Container >

@@ -51,12 +51,23 @@ import {
   LessonRef,
 } from './types';
 
-export const uploadImage = async (file: HTMLInputElement, folder: string, isVideo?: boolean) => {
+export const uploadAsset = async (file: any, folder: string, isVideo?: boolean) => {
   console.log(file);
-  const extension = file.files
-    ? file.files![0].name.split('.')[1]
-    : file.name.split('.')[1];
-  const blob = file as unknown as Blob;
+  let extension = 'mp4'
+  let blob: any = {};
+
+  const metadata = {
+    contentType: 'image/jpeg',
+  };
+
+  if (isVideo) {
+    metadata['contentType'] = 'video/mp4'
+  } else {
+    extension = file.files
+      ? file.files![0].name.split('.')[1]
+      : file.name.split('.')[1];
+    blob = file as unknown as Blob;
+  }
 
   const key = randomBytes(16).toString('hex');
   const name = `${key}.${extension}`;
@@ -65,19 +76,10 @@ export const uploadImage = async (file: HTMLInputElement, folder: string, isVide
   const storageRef = ref(storage);
   const articleImagesRef = ref(storageRef, `${folder}/${name}`);
 
-  const metadata = {
-    contentType: 'image/jpeg',
-  };
-
-  if (isVideo) {
-    metadata['contentType'] = 'video/mp4'
-  }
-
- 
-
   const res = await uploadBytes(
     articleImagesRef,
-    file.files ? file.files![0] : blob,
+    // ts-ignore
+    file.files ? file.files![0] : file[0].name ? file[0] : blob,
     metadata
   );
 
@@ -151,7 +153,7 @@ export const updateArticle = async (
     const photo = coverPhoto.current!;
 
     if (photo.files![0]) {
-      imageUrl = await uploadImage(photo, 'articles');
+      imageUrl = await uploadAsset(photo, 'articles');
     } else {
       imageUrl = article.coverPhoto;
     }
@@ -185,7 +187,7 @@ export const updateArticle = async (
 
 export const getUser = async (user: Partial<AuthUser> | string): Promise<Author> => {
   if (!user) throw Error('no user');
-  let uid = typeof user !== 'string' ? user.uid!: user;
+  let uid = typeof user !== 'string' ? user.uid! : user;
   const docRef = doc(db, 'users', uid!);
   const document = await getDoc(docRef);
   const userDoc = (await document.data()) as User;
@@ -244,7 +246,7 @@ export const createCourseFormHandler = async (
     const [authUser, err] = await getCurrentUser();
     if (err) router.push('/login');
     const author: Author = await getUser(authUser!);
-    const imageUrl = await uploadImage(
+    const imageUrl = await uploadAsset(
       coverPhoto as HTMLInputElement,
       'courses'
     );
@@ -346,7 +348,7 @@ export const createArticleHandler = async (
     }
     const { articleName, coverPhoto, body } = form;
 
-    const imageUrl = await uploadImage(
+    const imageUrl = await uploadAsset(
       coverPhoto as HTMLInputElement,
       'articles'
     );
@@ -517,7 +519,6 @@ export const getLessonsByCourseId = async (
   course: string
 ): Promise<[LessonSchema[] | null, string | null]> => {
   try {
-    // console.log(course)
     const _q = query(
       collection(db, 'lessons'),
       where('courseId', '==', course),
@@ -606,7 +607,7 @@ export const getArticleBySlug = async (slug: string) => {
     where('tags', 'array-contains-any', article.tags),
     orderBy('createdAt', 'desc'),
     limit(7)
-    );
+  );
   const _docRes = await getDocs(_q);
   const articles = _docRes.docs.map((doc) => ({
     ...doc.data(),
@@ -694,12 +695,12 @@ export const getArticles = async () => {
 };
 
 export const createLessonFormHandler = async (
-  form: HTMLFormElement,
+  {title, content, description}: { title: string, content: string, description: string},
   _course: string,
   lessonPosition: number,
+  uploadedFiles?: FileList,
 ) => {
   console.log(_course);
-  const { title, content, description } = form;
   try {
     const [course, err] = await getCourse(_course);
     if (err) {
@@ -714,16 +715,23 @@ export const createLessonFormHandler = async (
       slug: course?.slug ? course?.slug : '',
     };
 
+    console.log(uploadedFiles);
+
+    const videoURL = uploadedFiles && await uploadAsset(
+      uploadedFiles as unknown as HTMLInputElement,
+      `${course?.title}/videos/`,
+      true
+    );
     const lesson: LessonSchema = {
       course: coursePayload,
       status: 'SAVED',
-      description: description.value,
+      description: description,
       courseId: course?.id!,
-      // @ts-ignore
-      title: title.value,
-      courseContent: content.value!,
+      title: title,
+      courseContent: content,
       createdAt: new Date().getTime(),
       lessonPosition,
+      video: videoURL
     };
 
     const lessonDoc = await addDoc(collection(db, 'lessons'), lesson);
@@ -859,7 +867,7 @@ export const uploadProfilePhoto = async (
       try {
         file = input.files![0];
         // console.log(file)
-        const url = await uploadImage(input, 'profile-photo');
+        const url = await uploadAsset(input, 'profile-photo');
 
         await updateDoc(doc(db, 'users', userId), { profilePhoto: url });
         await updateProfile(auth.currentUser!, { photoURL: url });
@@ -871,7 +879,7 @@ export const uploadProfilePhoto = async (
     };
   }
 
-  const url = await uploadImage(file, 'profile-photo');
+  const url = await uploadAsset(file, 'profile-photo');
   await updateDoc(doc(db, 'users', userId), { profilePhoto: url });
   await updateProfile(auth.currentUser!, { photoURL: url });
   return ['Profile Photo updated successfully!', null];

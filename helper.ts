@@ -695,7 +695,8 @@ export const getArticles = async () => {
 
 export const createLessonFormHandler = async (
   form: HTMLFormElement,
-  _course: string
+  _course: string,
+  lessonPosition: number,
 ) => {
   console.log(_course);
   const { title, content, description } = form;
@@ -722,6 +723,7 @@ export const createLessonFormHandler = async (
       title: title.value,
       courseContent: content.value!,
       createdAt: new Date().getTime(),
+      lessonPosition,
     };
 
     const lessonDoc = await addDoc(collection(db, 'lessons'), lesson);

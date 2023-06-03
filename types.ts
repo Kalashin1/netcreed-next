@@ -136,6 +136,7 @@ export interface LessonSchema extends DocumentData {
   description: string;
   course: CourseRef;
   createdAt: number;
+  lessonPosition?: number;
   courseId: string;
   status: 'APPROVED' | 'SAVED' | 'REJECTED';
   updatedAt?: number;

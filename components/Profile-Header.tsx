@@ -120,13 +120,13 @@ const ProfileHeader: FC<Props> = ({
             <p>{bio?.slice(0, 100)}...</p>
           </div>
           <div className="mb-2 mt-3">
-            {/* <Button
+           {twitter === 'kinanee_samson' && (<Button
               onClick={() => router.push(`/user/courses/${id}`)}
               style={{ cursor: 'pointer' }}
               className="w-100 btn-warning my-4 text-small font-weight-bold"
             >
               Your Courses
-            </Button> */}
+            </Button>)}
             <Button
               onClick={() => router.push(`/user/courses/registered/${id}`)}
               style={{ cursor: 'pointer' }}
@@ -155,7 +155,7 @@ const ProfileHeader: FC<Props> = ({
             <TwitterIcon width={22} />{' '}
           </a>
           <a
-            href={`https://github.com/${github}`}
+            href={`https://github.com/${github.toLowerCase()}`}
             className="btn btn-social-icon mr-1 btn-github"
           >
             <GithubIcon width={22} />

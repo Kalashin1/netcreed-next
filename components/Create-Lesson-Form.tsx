@@ -84,12 +84,12 @@ const CreateLessonForm: React.FC = () => {
             <Form.Control
               type="text"
               name="title"
+              required
               className="form-control"
               id="exampleFormControlInput1"
               placeholder="name@example.com"
             />
           </Form.Group>
-
           <Form.Group>
             <Form.Label
               className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
@@ -114,6 +114,7 @@ const CreateLessonForm: React.FC = () => {
             <textarea
               className="form-control"
               name="description"
+              required
               id="exampleFormControlTextarea1"
               rows={3}
             ></textarea>
@@ -129,9 +130,27 @@ const CreateLessonForm: React.FC = () => {
             <textarea
               className="form-control"
               name="content"
+              required
               id="exampleFormControlTextarea1"
               rows={15}
             ></textarea>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label
+              className={`text-${theme === 'dark' ? 'light' : 'dark'}`}
+              htmlFor="exampleFormControlInput1"
+            >
+              Lesson Position
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="title"
+              required
+              className="form-control"
+              id="exampleFormControlInput1"
+              placeholder="name@example.com"
+            />
           </Form.Group>
 
           <div className="my-4 flex">

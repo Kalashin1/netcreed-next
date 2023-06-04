@@ -1,4 +1,15 @@
-import { addDoc, collection, updateDoc, doc, getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore";
+import { 
+  addDoc,
+  collection,
+  updateDoc,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where
+} from "firebase/firestore";
 import slugify from "slugify";
 import { db } from "../Firebase-settings";
 import { getCourse } from "../helper";

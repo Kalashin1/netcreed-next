@@ -3,7 +3,7 @@ import { NextRouter } from "next/router";
 import { FormEvent, Dispatch, SetStateAction } from "react";
 import slugify from "slugify";
 import { db } from "../Firebase-settings";
-import { uploadImage } from "../helper";
+import { uploadAsset } from "../helper";
 import { CourseSchema } from "../types";
 
 export const createCourseFormHandler = async (
@@ -18,7 +18,7 @@ export const createCourseFormHandler = async (
 
     const { title, coverPhoto, description } = form;
 
-    const imageUrl = await uploadImage(
+    const imageUrl = await uploadAsset(
       coverPhoto as HTMLInputElement,
       'courses'
     );

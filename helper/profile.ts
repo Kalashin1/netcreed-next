@@ -1,7 +1,7 @@
 import { updateProfile, User as AuthUser } from "firebase/auth";
 import { updateDoc, doc, collection, getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { db, auth } from "../Firebase-settings";
-import { uploadImage } from "../helper";
+import { uploadAsset } from "../helper";
 import { Article, Author, User, UserProfile } from "../types";
 
 export const uploadProfilePhoto = async (
@@ -21,7 +21,7 @@ export const uploadProfilePhoto = async (
       try {
         file = input.files![0];
         // console.log(file)
-        const url = await uploadImage(input, 'profile-photo');
+        const url = await uploadAsset(input, 'profile-photo');
 
         await updateDoc(doc(db, 'users', userId), { profilePhoto: url });
         await updateProfile(auth.currentUser!, { photoURL: url });
@@ -33,7 +33,7 @@ export const uploadProfilePhoto = async (
     };
   }
 
-  const url = await uploadImage(file, 'profile-photo');
+  const url = await uploadAsset(file, 'profile-photo');
   await updateDoc(doc(db, 'users', userId), { profilePhoto: url });
   await updateProfile(auth.currentUser!, { photoURL: url });
   return ['Profile Photo updated successfully!', null];

@@ -1380,9 +1380,10 @@ export const registerCourse = async (courseId: string) => {
 
 export const hasUserPaidForCourse = async (courseId: string) => {
   const [course, err] = await getCourse(courseId);
-  if (err) return [null, err];
+  if (err) return [false, err];
+  
   const [payload, error] = await getUserWithoutID();
-  if (error) return [null, error];
+  if (error) return [false, error];
   const userCourses = payload?.user?.registeredCourses ?? [];
   if (userCourses.find((course) => course.id === courseId)) return [true, null];
   return [false, null];

@@ -3,7 +3,7 @@ import { NextRouter } from "next/router";
 import { FormEvent, Dispatch, SetStateAction, MutableRefObject } from "react";
 import slugify from "slugify";
 import { auth, db } from "../Firebase-settings";
-import { tags, getUser, uploadImage } from "../helper";
+import { tags, getUser, uploadAsset } from "../helper";
 import { Article, ArticleRef, ARTICLE_STATUS, Author, User, UserProfile as _UserProfile } from "../types";
 
 export const getArticle = async (id: string) => {
@@ -95,7 +95,7 @@ export const createArticleHandler = async (
     }
     const { articleName, coverPhoto, body } = form;
 
-    const imageUrl = await uploadImage(
+    const imageUrl = await uploadAsset(
       coverPhoto as HTMLInputElement,
       'articles'
     );
@@ -171,7 +171,7 @@ export const updateArticle = async (
     const photo = coverPhoto.current!;
 
     if (photo.files![0]) {
-      imageUrl = await uploadImage(photo, 'articles');
+      imageUrl = await uploadAsset(photo, 'articles');
     } else {
       imageUrl = article.coverPhoto;
     }

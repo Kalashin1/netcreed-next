@@ -37,6 +37,7 @@ import { getDoc, getDocs, limit, query, setDoc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  GithubAuthProvider,
   sendEmailVerification,
   signInWithPopup,
   updateProfile,
@@ -416,10 +417,9 @@ export const signinWithGoogle = async (
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential!.accessToken;
     const user = result.user;
-    localStorage.setItem('userToken', token!);
+    localStorage.setItem('googleToken', token!);
     localStorage.setItem('userId', user.uid);
     console.log(credential, token, user);
-    setShowSpinner2(false);
     await setDoc(doc(db, 'users', user.uid), {
       name: user.displayName,
       email: user.email,
@@ -428,10 +428,44 @@ export const signinWithGoogle = async (
       creator: creator,
     });
     alert('Your account has been created successfully');
-    router.push('/profile');
+    setShowSpinner2(false);
+    router.push('/user/profile');
   } catch (error: any) {
     setShowSpinner2(false);
     // alert(error.message);
+  }
+};
+export const signinWithGithub = async (
+  e: any,
+  setShowSpinner2: Dispatch<SetStateAction<boolean>>,
+  creator: boolean,
+  router: NextRouter
+) => {
+  e.preventDefault();
+  setShowSpinner2(true);
+  try {
+    const provider = new GithubAuthProvider();
+
+    const result = await signInWithPopup(auth, provider);
+    const credential = GithubAuthProvider.credentialFromResult(result);
+    const token = credential!.accessToken;
+    const user = result.user;
+    localStorage.setItem('githubToken', token!);
+    localStorage.setItem('userId', user.uid);
+    console.log(credential, token, user);
+    await setDoc(doc(db, 'users', user.uid), {
+      name: user.displayName,
+      email: user.email,
+      articles: [],
+      createdAt: new Date().getTime(),
+      creator: creator,
+    });
+    alert('Your account has been created successfully');
+    setShowSpinner2(false);
+    router.push('/user/profile');
+  } catch (error: any) {
+    setShowSpinner2(false);
+    console.log(error.message);
   }
 };
 

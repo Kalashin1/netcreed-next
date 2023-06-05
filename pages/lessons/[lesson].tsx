@@ -5,10 +5,11 @@ import LessonContent from '../../components/Lesson-Content';
 import Layout from '../Layout';
 import { ThemeContext } from '../_app';
 import Head from 'next/head';
-import { getLesson, getLessonsByCourseId, getCourse } from '../../helper';
+import { getLesson, getLessonsByCourseId, getCourse, hasUserPaidForCourse } from '../../helper';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { CourseSchema, LessonSchema } from '../../types';
+import { useEffect } from 'react'
 
 export const getServerSideProps = async (context: any) => {
   const { lesson } = context.query;
@@ -38,6 +39,7 @@ const Lesson: NextPage<{
   lessons: LessonSchema[];
   course: CourseSchema;
 }> = ({ lesson, lessons, course }) => {
+  console.log(lesson?.video)
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
 
@@ -58,6 +60,21 @@ const Lesson: NextPage<{
     const lastLesson = lessons.map((l) => l.id).at(indexOfLastLesson);
     router.push(`/lessons/${lastLesson}`);
   }
+
+  useEffect(() => {
+    const checkIfUserHasPaid = async () => {
+      const [hasPaid, err] = await hasUserPaidForCourse(course?.id!);
+      if (!hasPaid) {
+        if (err) {
+          console.log(err);
+        } else {
+          router.push(`/course/checkout/${course?.id}`);
+        }
+      }
+    }
+
+    checkIfUserHasPaid();
+  }, [router, course?.id])
 
   return (
     <Layout>
@@ -145,6 +162,11 @@ const Lesson: NextPage<{
               <LessonContent content={lesson?.courseContent} />
             </div>
           </Col>
+        </Row>
+        <Row>
+          <video controls loop width='100%' height='auto'>
+              <source src={lesson?.video} type="video/mp4" />
+          </video>
         </Row>
         <Row className="my-4">
           <Col className="py-2" xs={12} md={6}>

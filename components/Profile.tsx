@@ -144,19 +144,21 @@ const UserProfile: FC = () => {
                   Create Post
                 </Button>
               )}
-              {/* <Button
-                variant="secondary"
-                className="my-2"
-                type="submit"
-                style={{ width: '100%' }}
-                onClick={(e: any) => navigate(`/course/create`)}
-              >
-                Create Course
-              </Button> */}
+              {
+                user.twitter === 'kinanee_samson' && (
+                  <Button
+                    variant="secondary"
+                    className="my-2"
+                    type="submit"
+                    style={{ width: '100%' }}
+                    onClick={(e: any) => navigate(`/course/create`)}
+                  >
+                    Create Course
+                  </Button>
+                )}
               <h5
-                className={`text-${
-                  theme === 'dark' ? 'light' : 'dark'
-                } font-weight-bold span my-4`}
+                className={`text-${theme === 'dark' ? 'light' : 'dark'
+                  } font-weight-bold span my-4`}
               >
                 <span>Posts From {user?.name}</span>
               </h5>
@@ -168,14 +170,12 @@ const UserProfile: FC = () => {
                   >
                     <Card
                       bg={theme}
-                      className={`p-4 text-${
-                        theme === 'dark' ? 'light' : 'dark'
-                      }`}
+                      className={`p-4 text-${theme === 'dark' ? 'light' : 'dark'
+                        }`}
                     >
                       <h2
-                        className={`mb-4 h4 font-weight-bold text-${
-                          theme === 'dark' ? 'light' : 'dark'
-                        }`}
+                        className={`mb-4 h4 font-weight-bold text-${theme === 'dark' ? 'light' : 'dark'
+                          }`}
                       >
                         <a
                           style={{ cursor: 'pointer' }}
@@ -211,9 +211,8 @@ const UserProfile: FC = () => {
                         <span className="mr-4 d-flex align-items-center">
                           <FavoriteOutlined />
                           <span
-                            className={`mx-2 lead text-${
-                              theme === 'light' ? 'dark' : 'light'
-                            }`}
+                            className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                              }`}
                           >
                             {article.likes.length}
                           </span>
@@ -221,9 +220,8 @@ const UserProfile: FC = () => {
                         <span className="mr-4 d-flex align-items-center">
                           <SaveOutlined />
                           <span
-                            className={`mx-2 lead text-${
-                              theme === 'light' ? 'dark' : 'light'
-                            }`}
+                            className={`mx-2 lead text-${theme === 'light' ? 'dark' : 'light'
+                              }`}
                           >
                             {article.saves.length}
                           </span>

@@ -7,6 +7,7 @@ import CourseComponent from '../../../components/Course-Component';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getUserCourses } from '../../../helper';
 import { Plus, GridIcon, ListIcon } from '../../../components/svg/icons';
+import { useRouter } from 'next/router';
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -32,6 +33,11 @@ const UserCourses = ({
   user: string;
 }) => {
   const { theme } = useContext(ThemeContext);
+  const router = useRouter();
+
+  const createCourse = () => {
+    router.push('/course/create');
+  }
   return (
     <Layout>
       <Container
@@ -51,7 +57,7 @@ const UserCourses = ({
           </Col>
 
           <Col md={6}>
-            <Button>
+            <Button onClick={createCourse}>
               <Row style={{ alignItems: 'center' }}>
                 <Col md={10}>
                   <span>Create New Course</span>

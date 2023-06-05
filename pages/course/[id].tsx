@@ -91,23 +91,23 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
         <meta name="author" content={course?.author?.name} />
         {/* TWITTER CARD  */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={course.title} />
+        <meta name="twitter:title" content={course?.title} />
         <meta name="twitter:site" content="@netcreed" />
         <meta name="twitter:creator" content="@netcreed" />
-        <meta name="twitter:description" content={course.description} />
-        <meta name="twitter:image" content={course.coverPhoto} />
+        <meta name="twitter:description" content={course?.description} />
+        <meta name="twitter:image" content={course?.coverPhoto} />
         {/* Open Graph  */}
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://blog.thenetcreed.com/course/${course.id}`}
+          content={`https://blog.thenetcreed.com/course/${course?.id}`}
         />
-        <meta property="og:title" content={course.title} />
-        <meta property="og:description" content={course.description} />
+        <meta property="og:title" content={course?.title} />
+        <meta property="og:description" content={course?.description} />
         <meta
           property="og:image"
           itemProp="image"
-          content={`${course.photoUrl}`}
+          content={`${course?.photoUrl}`}
         />
       </Head>
       <Container className="my-4">
@@ -115,19 +115,19 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
           className={`my-4 display-4 text-${theme === 'dark' ? 'light' : 'dark'
             }`}
         >
-          {course.title}
+          {course?.title}
         </h3>
         <Row className="justify-content-center mt-4">
           <Col md={6}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
-              <p>{course.description}</p>
+              <p>{course?.description}</p>
               <p>
                 <span className="mx-2">
                   <DollarIcon />
                 </span>
-                Price - {MoneyFormatter.format(course.price ?? 0)}</p>
+                Price - {MoneyFormatter.format(course?.price ?? 0)}</p>
               <p>
                 <span className='mx-2'>
                   <UsersIcon />

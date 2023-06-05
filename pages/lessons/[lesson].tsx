@@ -39,7 +39,6 @@ const Lesson: NextPage<{
   lessons: LessonSchema[];
   course: CourseSchema;
 }> = ({ lesson, lessons, course }) => {
-  console.log(lesson?.video)
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
 
@@ -163,11 +162,11 @@ const Lesson: NextPage<{
             </div>
           </Col>
         </Row>
-        <Row>
+       { lesson.video && ( <Row>
           <video controls loop width='100%' height='auto'>
               <source src={lesson?.video} type="video/mp4" />
           </video>
-        </Row>
+        </Row>)}
         <Row className="my-4">
           <Col className="py-2" xs={12} md={6}>
             <Button onClick={gotoLastLesson} style={{ width: '100%'}}>Last Lesson</Button>

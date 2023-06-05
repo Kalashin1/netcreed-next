@@ -1415,12 +1415,17 @@ export const registerCourse = async (courseId: string) => {
 export const hasUserPaidForCourse = async (courseId: string) => {
   const [course, err] = await getCourse(courseId);
   if (err) return [false, err];
-  
-  const [payload, error] = await getUserWithoutID();
-  if (error) return [false, error];
-  const userCourses = payload?.user?.registeredCourses ?? [];
-  if (userCourses.find((course) => course.id === courseId)) return [true, null];
-  return [false, null];
+
+  if (course) {
+    const [payload, error] = await getUserWithoutID();
+    if ((course.isPaid) && (course.price) && (course.price > 0)) {
+      if (error) return [false, error];
+      const userCourses = payload?.user?.registeredCourses ?? [];
+      if (userCourses.find((course) => course.id === courseId)) return [true, null];
+      return [false, null];
+    } 
+  }
+  return [true, null];
 };
 
 export const getRegisteredCourses = async (userId: string) => {

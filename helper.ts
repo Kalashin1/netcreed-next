@@ -431,7 +431,7 @@ export const signinWithGoogle = async (
     router.push('/profile');
   } catch (error: any) {
     setShowSpinner2(false);
-    alert(error.message);
+    // alert(error.message);
   }
 };
 

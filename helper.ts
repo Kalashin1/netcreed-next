@@ -1467,7 +1467,7 @@ export const addQuestions = async (
   questions: QuestionSchema[],
   _collection: ADD_QUESTION_TYPE,
   id: string
-) => {
+): Promise<[ QuestionSchema[] | null, any|null]> => {
   let existingQuestions: QuestionSchema[];
   switch (_collection) {
     case 'COURSE':
@@ -1476,14 +1476,14 @@ export const addQuestions = async (
       existingQuestions = course?.questions ?? [];
       existingQuestions = [...existingQuestions, ...questions];
       await updateDoc(doc(db, 'courses', id), { questions: existingQuestions });
-      return [{ ...course, questions: existingQuestions }, null];
+      return [existingQuestions, null];
     case 'LESSON':
       const [lesson, lessonErr] = await getLesson(id);
       if (lessonErr) return [null, lessonErr];
       existingQuestions = lesson?.questions ?? [];
       existingQuestions = [...existingQuestions, ...questions];
       await updateDoc(doc(db, 'lessons', id), { questions: existingQuestions });
-      return { ...lesson, questions: existingQuestions };
+      return [existingQuestions, null];
     default:
       return [null, null];
   }

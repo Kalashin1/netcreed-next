@@ -151,10 +151,15 @@ export type NOTIFICATION_TYPE = 'FOLLOW' | 'COMMENT' | 'LIKE';
 export type QuestionSchema = {
   id: string;
   question: string;
-  options: string[];
-  answer?: string;
-  correctAnswer: string;
+  options: Option[];
+  correctAnswer: Option;
 };
+
+export type Option = {
+  answer: string;
+  id: string
+  isCorrect?: boolean;
+}
 
 export interface NotificiationSchema extends DocumentData {
   id?: string;

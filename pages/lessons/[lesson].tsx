@@ -10,6 +10,7 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { CourseSchema, LessonSchema } from '../../types';
 import { useEffect } from 'react'
+import Question from '@components/Questions';
 
 export const getServerSideProps = async (context: any) => {
   const { lesson } = context.query;
@@ -162,11 +163,13 @@ const Lesson: NextPage<{
             </div>
           </Col>
         </Row>
+        <Question />
        { lesson.video && ( <Row>
           <video controls loop width='100%' height='auto'>
               <source src={lesson?.video} type="video/mp4" />
           </video>
         </Row>)}
+
         <Row className="my-4">
           <Col className="py-2" xs={12} md={6}>
             <Button onClick={gotoLastLesson} style={{ width: '100%'}}>Last Lesson</Button>

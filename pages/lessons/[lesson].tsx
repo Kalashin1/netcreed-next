@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { Container, Row, Col, ListGroup, Button } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Button, Accordion } from 'react-bootstrap';
 import LessonHeader from '../../components/Lesson-Header';
 import LessonContent from '../../components/Lesson-Content';
 import Layout from '../Layout';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { CourseSchema, LessonSchema } from '../../types';
 import { useEffect } from 'react'
 import Question from '@components/Questions';
+
 
 export const getServerSideProps = async (context: any) => {
   const { lesson } = context.query;
@@ -42,9 +43,10 @@ const Lesson: NextPage<{
 }> = ({ lesson, lessons, course }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
+  const bgColor = theme === 'light' ? 'white' : 'black';
 
   const gotoNextLesson = () => {
-    const indexOfNextLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) + 1 ;
+    const indexOfNextLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) + 1;
     const nextLesson = lessons.map((l) => l.id).at(indexOfNextLesson);
     if (indexOfNextLesson > lessons.length - 1) {
       return;
@@ -53,7 +55,7 @@ const Lesson: NextPage<{
   }
 
   const gotoLastLesson = () => {
-    const indexOfLastLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) - 1 ;
+    const indexOfLastLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) - 1;
     if (indexOfLastLesson < 0) {
       return;
     }
@@ -129,7 +131,7 @@ const Lesson: NextPage<{
         </Row>
         <Row className="justify-content-between">
 
-        <Col md={4}>
+          <Col md={4}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
@@ -143,11 +145,11 @@ const Lesson: NextPage<{
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
-                      style={{ cursor: 'pointer'}}
+                      style={{ cursor: 'pointer' }}
                       onClick={() => {
                         router.push(`/lessons/${l.id}`);
                       }}
-                      className={`text-${l.id === lesson.id ? 'light': theme === 'dark' ? 'light' : 'dark'
+                      className={`text-${l.id === lesson.id ? 'light' : theme === 'dark' ? 'light' : 'dark'
                         } bg-${l.id === lesson.id ? 'primary' : theme}`}
                     >
                       {l.title}
@@ -163,19 +165,31 @@ const Lesson: NextPage<{
             </div>
           </Col>
         </Row>
-        <Question />
-       { lesson.video && ( <Row>
+        {lesson?.video && (<Row>
           <video controls loop width='100%' height='auto'>
-              <source src={lesson?.video} type="video/mp4" />
+            <source src={lesson?.video} type="video/mp4" />
           </video>
         </Row>)}
+        <h4 className="m-4">Questions</h4>
+        {lesson && lesson.questions && lesson.questions.length > 0 && (
+          <Accordion defaultActiveKey={lesson?.questions[0]?.id}>
+            {lesson.questions.map((q, index) => (
+              <Accordion.Item key={index} eventKey={q.id} className={`bg-${bgColor}`}>
+                <Accordion.Header>Question {index + 1}</Accordion.Header>
+                <Accordion.Body>
+                  <Question question={q} lessonId={lesson?.id!} />
+                </Accordion.Body>
+              </Accordion.Item>
+            ))}
+          </Accordion>
+        )}
 
         <Row className="my-4">
           <Col className="py-2" xs={12} md={6}>
-            <Button onClick={gotoLastLesson} style={{ width: '100%'}}>Last Lesson</Button>
+            <Button onClick={gotoLastLesson} style={{ width: '100%' }}>Last Lesson</Button>
           </Col>
           <Col className="py-2" xs={12} md={6}>
-            <Button onClick={gotoNextLesson} style={{ width: '100%'}}>Next Lesson</Button>
+            <Button onClick={gotoNextLesson} style={{ width: '100%' }}>Next Lesson</Button>
           </Col>
         </Row>
       </Container>

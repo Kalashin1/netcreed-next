@@ -1,4 +1,4 @@
-import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Spinner, Form } from 'react-bootstrap';
 import { ThemeContext, fontFamily } from '../pages/_app';
 import { useContext, useState, FC } from 'react';
 import { addQuestions } from '../helper';
@@ -42,6 +42,8 @@ const QuestionForm: FC<QuestionFormProps> = ({
   const [options, setOptions] = useState<Option[]>(_options);
   const [showSpinner, setShowSpinner] = useState(false);
   const router = useRouter();
+  const [marks, setMarks] = useState(5);
+  const [attempts, setAttempts] = useState(2);
 
   const goBack = () => {
     router.back()
@@ -54,7 +56,9 @@ const QuestionForm: FC<QuestionFormProps> = ({
       id: randomBytes(16).toString('hex'),
       correctAnswer: correctOption,
       options,
-      question
+      question,
+      marks,
+      maxAttempts: attempts,
     }
     const [payload, err] = await addQuestions(
       [newQuestion],
@@ -78,12 +82,32 @@ const QuestionForm: FC<QuestionFormProps> = ({
       <Row>
         <Col sm={12}>
           <Card bg={color}>
-            <Card.Title className={`m-4 text-${textColor}`}>Add Question</Card.Title>
+            <Row>
+              <Col xs={12} md={8}>
+                <Card.Title className={`m-4 text-${textColor}`}>Add Question</Card.Title>
+              </Col>
+              <Col md={4}>
+                <Row className="my-2 px-3">
+                  <Col xs={12} sm={6}>
+                    <Form.Group className="my-2 px-3">
+                      <Form.Label className={`text-${textColor}`}>Marks</Form.Label>
+                      <Form.Control value={marks} type="number" onChange={(e) => {setMarks(Number(e.target.value))} } className={`bg-${theme} text-${textColor}`} />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={12} sm={6}>
+                    <Form.Group className="my-2 px-3">
+                      <Form.Label className={`text-${textColor}`}>Attempts</Form.Label>
+                      <Form.Control type="number" value={attempts} onChange={(e) => {setAttempts(Number(e.target.value))}} className={`bg-${theme} text-${textColor}`} />
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
 
             <Card.Body>
               <div style={{ width: '100%' }}>
                 <Card.Text className={`text-${textColor}`}>Whats your question</Card.Text>
-                <textarea className={`bg-${theme} text-${textColor}`} style={{ width: '100%', height: '30vh' }}></textarea>
+                <textarea value={question} onChange={e => setQuestion(e.target.value)} className={`bg-${theme} my-2 text-${textColor}`} style={{ width: '100%', height: '20vh' }}></textarea>
               </div>
 
               <h6 className={`text-${textColor}`}>Answers</h6>
@@ -93,14 +117,14 @@ const QuestionForm: FC<QuestionFormProps> = ({
                   <Col key={index} sm={6}>
                     <Card className={`p-2 my-2 border border-primary rounded bg-${color}`}>
                       <Row>
-                        <Col sm={10}>
+                        <Col xs={10}>
                           <input value={option.answer} onChange={(e) => {
                             const newOptions = [...options];
                             newOptions[index].answer = e.target.value;
                             setOptions(newOptions)
                           }} style={{ width: '100%' }} placeholder='option 1' className={`p-4 border-0 bg-${color} text-${textColor}`} />
                         </Col>
-                        <Col sm={2}>
+                        <Col xs={2} className="px-2">
                           <input type="checkbox" checked={option.isCorrect} onChange={(e) => {
                             const newOptions = [...options];
                             newOptions[index].isCorrect = !option.isCorrect;
@@ -134,11 +158,11 @@ const QuestionForm: FC<QuestionFormProps> = ({
                   </Button>
                 </Col>
                 <Col xs={12} md={6}>
-                  <Button 
-                  variant="danger" 
-                  onClick={e => goBack()}
-                  className="mb-4" 
-                  style={{ width: '100%', fontFamily }}>Cancel</Button>
+                  <Button
+                    variant="danger"
+                    onClick={e => goBack()}
+                    className="mb-4"
+                    style={{ width: '100%', fontFamily }}>Cancel</Button>
                 </Col>
               </Row>
             </Card.Footer>

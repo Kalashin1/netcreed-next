@@ -153,7 +153,23 @@ export type QuestionSchema = {
   question: string;
   options: Option[];
   correctAnswer: Option;
+  marks: number;
+  answers?: Answer[];
+  maxAttempts: number
 };
+
+export type AnswerQuestionType = {
+  option: Option; 
+  lessonId: string;
+  userId: string;
+  questionId: string;
+}
+
+export type Answer = {
+  userId: string;
+  answer: Option
+  date: number;
+} 
 
 export type Option = {
   answer: string;

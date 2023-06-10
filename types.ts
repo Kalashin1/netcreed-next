@@ -25,7 +25,7 @@ export interface User extends DocumentData {
   blocked?: Author[];
   articles?: Array<ArticleRef>;
   savedArticles?: Array<ArticleRef>;
-  registeredCourses?: CourseRef[];
+  registeredCourses?: StudentCourseRef[];
   createdCourses?: CourseRef[];
 }
 

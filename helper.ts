@@ -813,7 +813,7 @@ export const editLessonFormHandler = async (
       uploadedFiles as unknown as HTMLInputElement,
       `${course?.title}/videos/`,
       true
-    ): '';
+    ) : '';
 
     const lesson: Partial<LessonSchema> = {
       status: 'SAVED',
@@ -1426,8 +1426,9 @@ export const registerCourse = async (courseId: string) => {
     await updateDoc(doc(db, 'courses', course?.id!), {
       registeredUsers: [...registeredUsers, payload?.user.id!],
     });
-    return courseRef;
+    return [courseRef, null];
   }
+  return [null, null];
 };
 
 export const hasUserPaidForCourse = async (courseId: string) => {
@@ -1448,7 +1449,14 @@ export const hasUserPaidForCourse = async (courseId: string) => {
 
 export const getRegisteredCourses = async (userId: string) => {
   try {
-    const q = query(collection(db, "courses"), where("registeredUsers", "array-contains", userId));
+    const q = query(
+      collection(db, "courses"),
+      where(
+        "registeredUsers",
+        "array-contains",
+        userId
+      )
+    );
     const _docRes = await getDocs(q);
     const courses = _docRes.docs.map((doc) => ({
       ...doc.data(),
@@ -1460,6 +1468,38 @@ export const getRegisteredCourses = async (userId: string) => {
   }
 
 };
+
+export const getRegisteredCourseRefs = async (userId: string):
+Promise<[StudentCourseRef[]|null, null|any]> => {
+  try {
+    const docRef = doc(db, 'users', userId!);
+    const document = await getDoc(docRef);
+    const userDoc = (await document.data()) as User;
+    const registeredCourses = userDoc.registeredCourses ?? [];
+    return [registeredCourses, null];
+  } catch (err: any) {
+    return [null, err]
+  }
+}
+
+export const getRegisteredCourseRef = async (userId: string, courseId: string) => {
+  try {
+    const [regCourses, err] = await getRegisteredCourseRefs(userId);
+    if (err) {
+      throw Error(err);
+    }
+
+    if (regCourses) {
+      const course = regCourses.find(
+        (courseRef) => courseRef.id === courseId
+      );
+      return [course, null];
+    };
+    return [null, null];
+  } catch (err: any) {
+    return [null, err]
+  }
+}
 
 export const getUserCourses = async (user: string, router?: NextRouter) => {
   try {
@@ -1602,7 +1642,7 @@ export const answerQuestion = async ({
 
   // Get existing user answer
   const answers = question.answers ?? [];
-  const existingAnswer =  answers.filter((a) => a.userId === user.id);
+  const existingAnswer = answers.filter((a) => a.userId === user.id);
   if (existingAnswer) {
     // check if the maxAttempts to see how many times the user has attempted this course recently
     if (existingAnswer.length >= question.maxAttempts) return [null, 'Max attempts reached'];
@@ -1624,42 +1664,46 @@ export const answerQuestion = async ({
 }
 
 
-const progressToNextLesson = async (
+export const progressToNextLesson = async (
   userId: string,
   courseId: string,
   lessonId: string,
 ) => {
-  // get user
-  const [payload, err] = await getUserWithoutID(userId);
-  if(err || (!payload)) return [null, 'User not found'];
-  
-  // get course
-  const [course, courseErr] = await getCourse(courseId);
-  if(courseErr) return [null, courseErr];
+  try {
+    // get user
+    const [payload, err] = await getUserWithoutID(userId);
+    if (err || (!payload)) return [null, 'User not found'];
 
-  // get lesson
-  const [lesson, lessonErr] = await getLesson(lessonId);
-  if(err) return [null, lessonErr];
+    // get course
+    const [course, courseErr] = await getCourse(courseId);
+    if (courseErr) return [null, courseErr];
 
-  // check if the user is registered to that course
-  const userCourses = payload?.user?.registeredCourses ?? []
-  const registeredCourse = userCourses.find((c) => c.id === courseId);
-  if (!registeredCourse) return [null, 'User not registered to that course'];
+    // get lesson
+    const [lesson, lessonErr] = await getLesson(lessonId);
+    if (err) return [null, lessonErr];
+
+    // check if the user is registered to that course
+    const userCourses = payload?.user?.registeredCourses ?? []
+    const registeredCourse = userCourses.find((c) => c.id === courseId);
+    if (!registeredCourse) return [null, 'User not registered to that course'];
 
 
-  // update user
-  await updateDoc(doc(db, 'users', userId), {
-    registeredCourses: [...userCourses.filter((c) => c.id !== courseId), {
-      id: course?.id,
-      slug: course?.slug,
-      url: course?.url,
-      currentLesson: {
-        id: lesson?.id ?? '',
-        slug: lesson?.slug ?? '',
-        url: lesson?.url ?? '',
-      },
-    }],
-  })
+    // update user
+    await updateDoc(doc(db, 'users', userId), {
+      registeredCourses: [...userCourses.filter((c) => c.id !== courseId), {
+        id: course?.id,
+        slug: course?.slug,
+        url: course?.url,
+        currentLesson: {
+          id: lesson?.id ?? '',
+          slug: lesson?.slug ?? '',
+          url: lesson?.url ?? '',
+        },
+      }],
+    })
+  } catch (error: any) {
+    console.log(error)
+  }
 
 }
 

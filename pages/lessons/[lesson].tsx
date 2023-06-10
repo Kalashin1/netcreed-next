@@ -3,10 +3,16 @@ import { Container, Row, Col, ListGroup, Button, Accordion } from 'react-bootstr
 import LessonHeader from '../../components/Lesson-Header';
 import LessonContent from '../../components/Lesson-Content';
 import Layout from '../Layout';
-import { ThemeContext } from '../_app';
+import { ThemeContext, AuthContext } from '../_app';
 import Head from 'next/head';
-import { getLesson, getLessonsByCourseId, getCourse, hasUserPaidForCourse } from '../../helper';
-import { useContext } from 'react';
+import {
+  getLesson,
+  getLessonsByCourseId,
+  getCourse,
+  hasUserPaidForCourse,
+  progressToNextLesson,
+} from '../../helper';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { CourseSchema, LessonSchema } from '../../types';
 import { useEffect } from 'react'
@@ -43,15 +49,32 @@ const Lesson: NextPage<{
 }> = ({ lesson, lessons, course }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
+  const { getLoggedInUser, user } = useContext(AuthContext);
+  const [currentUser, setCurrentUser] = useState(user);
   const bgColor = theme === 'light' ? 'white' : 'black';
 
-  const gotoNextLesson = () => {
-    const indexOfNextLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) + 1;
-    const nextLesson = lessons.map((l) => l.id).at(indexOfNextLesson);
-    if (indexOfNextLesson > lessons.length - 1) {
-      return;
+  const gotoNextLesson = async () => {
+    console.log('clicked')
+    try {
+      const indexOfNextLesson = lessons
+        .map((l) => l.id)
+        .indexOf(lesson?.id!) + 1;
+      const nextLesson = lessons
+        .map((l) => l.id)
+        .at(indexOfNextLesson);
+      if (indexOfNextLesson > lessons.length - 1) {
+        return;
+      };
+      await progressToNextLesson(
+        user?.uid,
+        course?.id!,
+        nextLesson!
+      )
+      console.log('progress')
+      router.push(`/lessons/${nextLesson}`);
+    } catch (error: any) {
+      console.log(error)
     }
-    router.push(`/lessons/${nextLesson}`);
   }
 
   const gotoLastLesson = () => {
@@ -65,6 +88,12 @@ const Lesson: NextPage<{
 
   useEffect(() => {
     const checkIfUserHasPaid = async () => {
+      if (getLoggedInUser) {
+        const _user = await getLoggedInUser();
+        if (_user) {
+          setCurrentUser(_user);
+        }
+      }
       const [hasPaid, err] = await hasUserPaidForCourse(course?.id!);
       if (!hasPaid) {
         if (err) {
@@ -76,7 +105,7 @@ const Lesson: NextPage<{
     }
 
     checkIfUserHasPaid();
-  }, [router, course?.id])
+  }, [router, course?.id, getLoggedInUser])
 
   return (
     <Layout>
@@ -170,18 +199,20 @@ const Lesson: NextPage<{
             <source src={lesson?.video} type="video/mp4" />
           </video>
         </Row>)}
-        <h4 className="m-4">Questions</h4>
         {lesson && lesson.questions && lesson.questions.length > 0 && (
-          <Accordion defaultActiveKey={lesson?.questions[0]?.id}>
-            {lesson.questions.map((q, index) => (
-              <Accordion.Item key={index} eventKey={q.id} className={`bg-${bgColor}`}>
-                <Accordion.Header>Question {index + 1}</Accordion.Header>
-                <Accordion.Body>
-                  <Question question={q} lessonId={lesson?.id!} />
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-          </Accordion>
+          <>
+            <h4 className="m-4">Questions</h4>
+            <Accordion defaultActiveKey={lesson?.questions[0]?.id}>
+              {lesson.questions.map((q, index) => (
+                <Accordion.Item key={index} eventKey={q.id} className={`bg-${bgColor}`}>
+                  <Accordion.Header>Question {index + 1}</Accordion.Header>
+                  <Accordion.Body>
+                    <Question question={q} lessonId={lesson?.id!} />
+                  </Accordion.Body>
+                </Accordion.Item>
+              ))}
+            </Accordion>
+          </>
         )}
 
         <Row className="my-4">
@@ -189,7 +220,7 @@ const Lesson: NextPage<{
             <Button onClick={gotoLastLesson} style={{ width: '100%' }}>Last Lesson</Button>
           </Col>
           <Col className="py-2" xs={12} md={6}>
-            <Button onClick={gotoNextLesson} style={{ width: '100%' }}>Next Lesson</Button>
+            <Button onClick={() => gotoNextLesson()} style={{ width: '100%' }}>Next Lesson</Button>
           </Col>
         </Row>
       </Container>

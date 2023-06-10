@@ -9,15 +9,18 @@ import {
   Card
 } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
-import { ThemeContext } from '../_app';
+import { ThemeContext, AuthContext } from '../_app';
 import Head from 'next/head';
 import { useContext, useEffect, useState } from 'react';
 import {
   getCourse,
   getLessonsByCourseId,
   hasUserPaidForCourse,
+  getRegisteredCourses,
+  registerCourse,
+  getRegisteredCourseRef,
 } from '../../helper';
-import { LessonSchema } from '../../types';
+import { CourseSchema, LessonSchema, StudentCourseRef} from '../../types';
 import { useRouter } from 'next/router';
 import { MoneyFormatter } from '../../helper';
 import { UsersIcon, DollarIcon } from '@components/svg/icons';
@@ -48,11 +51,40 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
   const [userId, setUserId] = useState<string>();
+  const [isUserReg, updateIsUserReg] = useState(false)
+  
+  const [courseRef, setCourseRef] = useState<CourseSchema>()
 
   useEffect(() => {
-    const id = localStorage.getItem('userId')!;
-    setUserId(id);
-  }, []);
+    const checkIfUserIsReg = async (id: string) => {
+      const [courses, err] = await getRegisteredCourses(id);
+      if (err && !courses) {
+        console.log(err)
+      }
+      console.log(courses)
+      const foundCourse: CourseSchema = courses.find(
+        (_course: CourseSchema) => _course.id === course.id
+      );
+
+      if (foundCourse) {
+        updateIsUserReg(true)
+        const [courseRef, err] = await getRegisteredCourseRef(id, foundCourse?.id!);
+        console.log("courseRef", courseRef);
+        if (err && !courseRef) {
+          console.log(err)
+        }
+        setCourseRef(courseRef)
+        console.log('foundCourse', foundCourse);
+      }
+    }
+    const id = localStorage.getItem('userId');
+    if (id) {
+      setUserId(id);
+      checkIfUserIsReg(id);
+    } else {
+      router.push('/login');
+    }
+  }, [router, course.id]);
 
   const openCourse = async (id?: string) => {
     if (course.isPaid) {
@@ -62,11 +94,23 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
         router.push('/login');
       }
       if (!err && bool) {
-        router.push(`/lessons/${lessons[0].id}`);
+        if (isUserReg) router.push(
+          `/lessons/${courseRef?.currentLesson?.id ? courseRef?.currentLesson?.id: lessons[0].id}`
+        );
       } else if (!err && !bool) {
         router.push(`checkout/${course.id}`);
       }
-    } else router.push(`/lessons/${id ? id : lessons[0].id}`);
+    } else {
+      if (!isUserReg) {
+        const [payload, err] = await registerCourse(course?.id!);
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(payload);
+        }
+      }
+      router.push(`/lessons/${id ? id : courseRef?.currentLesson?.id}`);
+    };
   };
 
   return (
@@ -135,10 +179,10 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                 {course?.registeredUsers?.length ?? 0} Registered Users.
               </p>
               <h4 className={`text-${theme === 'dark' ? 'light' : 'dark'
-                  } ml-2 my-4`}>Course Outline</h4>
+                } ml-2 my-4`}>Course Outline</h4>
               <ListGroup
                 variant="flush"
-                style={{ borderRadius: '3rem'}}
+                style={{ borderRadius: '3rem' }}
                 className={`my-2 text-${theme === 'dark' ? 'black' : 'white'
                   }`}
               >
@@ -151,7 +195,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                       }}
                       style={{ cursor: 'pointer' }}
                       className={`text-${theme === 'dark' ? 'white' : 'dark'
-                        } bg-${theme === 'dark' ? 'black': 'white'}`}
+                        } bg-${theme === 'dark' ? 'black' : 'white'}`}
                     >
                       {l.title}
                     </ListGroup.Item>
@@ -170,12 +214,12 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
               ) : (
                 <Button
                   onClick={() => {
-                    openCourse();
+                    openCourse(lessons[0].id);
                   }}
                   className="my-2"
                   style={{ width: '100%' }}
                 >
-                  Start Course
+                  {isUserReg ? 'Continue Course': 'Start Course'}
                 </Button>
               )}
             </Container>
@@ -210,7 +254,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   }}
                   style={{ width: '100%' }}
                 >
-                  Start Course
+                  {isUserReg ? 'Continue Course': 'Start Course'}
                 </Button>
               )
             }

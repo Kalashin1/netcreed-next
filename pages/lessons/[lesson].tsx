@@ -11,6 +11,7 @@ import {
   getCourse,
   hasUserPaidForCourse,
   progressToNextLesson,
+  deleteLesson,
 } from '../../helper';
 import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -106,6 +107,18 @@ const Lesson: NextPage<{
     checkIfUserHasPaid();
   }, [router, course?.id, getLoggedInUser])
 
+  const _deleteLesson = async (id: string) => {
+    if(confirm("Do you want to delete this lesson?")){
+      const [bool, err] = await deleteLesson(id);
+      if (err) {
+        alert('opps something happened')
+      } else if (bool) {
+        alert("lesson deleted");
+        router.reload();
+      }
+    }
+  }
+
   return (
     <Layout>
       <Head>
@@ -184,9 +197,14 @@ const Lesson: NextPage<{
                               router.push(`/lessons/${l.id}`);
                             }}>{l.title}</span>
                         </Col>
-                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={2} xs={2}>
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
                           <span style={{ cursor: 'pointer' }} onClick={() => router.push(`/lessons/edit/${l.id}`)}>
                             <EditIcon />
+                          </span>
+                        </Col>)}
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
+                          <span style={{ cursor: 'pointer' }} onClick={() => _deleteLesson(l.id!) }>
+                            <DeleteIcon fill="red" />
                           </span>
                         </Col>)}
                       </Row>

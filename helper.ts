@@ -1707,6 +1707,18 @@ export const progressToNextLesson = async (
 
 }
 
+export const deleteLesson = async (
+  lessonId: string
+): Promise<[boolean, string | null]> => {
+  const [, lessonErr] = await getLesson(lessonId);
+  if (lessonErr) {
+    return [false, lessonErr];
+  }
+  await deleteDoc(doc(db, 'lessons', lessonId));
+  return [true, null];
+};
+
+
 export const MoneyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',

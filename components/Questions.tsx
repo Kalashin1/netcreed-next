@@ -5,7 +5,7 @@ import { ThemeContext, fontFamily } from "../pages/_app";
 import { useContext, useState, useRef } from "react";
 import { Option, QuestionSchema } from "../types";
 import { answerQuestion, removeQuestions } from "../helper";
-import { useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 
 type QuestionProps = {
   question: QuestionSchema;
@@ -57,7 +57,7 @@ const Question: FC<QuestionProps> = ({
   }
 
   const deleteQuestion = async (id: string) => {
-    if(confirm('Do you want to delete this question')) {
+    if (confirm('Do you want to delete this question')) {
       const [res, err] = await removeQuestions(
         [id],
         'LESSON',
@@ -111,7 +111,7 @@ const Question: FC<QuestionProps> = ({
             <Container>
               <Card.Text className={`${textColor} mt-4`}>
                 <span>{question.question}</span>
-                <span style={{cursor: 'pointer'}} onClick={() => deleteQuestion(question.id)} className='mx-2 ml-4'><DeleteIcon /></span>
+                <span style={{ cursor: 'pointer' }} onClick={() => deleteQuestion(question.id)} className='mx-2 ml-4'><DeleteIcon /></span>
               </Card.Text>
               <Row>
                 <Col sm={6}>
@@ -124,7 +124,6 @@ const Question: FC<QuestionProps> = ({
             </Container>
 
             <Row>
-
               {question.options && question.options.map((option, index) => (
                 <Col xs={12} sm={6} key={index}>
                   <OptionComponent option={option} />

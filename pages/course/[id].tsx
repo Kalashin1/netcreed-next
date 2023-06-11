@@ -19,11 +19,12 @@ import {
   getRegisteredCourses,
   registerCourse,
   getRegisteredCourseRef,
+  deleteLesson,
 } from '../../helper';
 import { CourseSchema, LessonSchema, StudentCourseRef, User } from '../../types';
 import { useRouter } from 'next/router';
 import { MoneyFormatter } from '../../helper';
-import { UsersIcon, DollarIcon, EditIcon } from '@components/svg/icons';
+import { UsersIcon, DollarIcon, EditIcon, DeleteIcon } from '@components/svg/icons';
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
@@ -50,7 +51,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
 }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
-  const {getLoggedInUser} = useContext(AuthContext);
+  const { getLoggedInUser } = useContext(AuthContext);
 
   const [userId, setUserId] = useState<string>();
   const [isUserReg, updateIsUserReg] = useState(false)
@@ -122,6 +123,18 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
       router.push(`/lessons/${id ? id : courseRef?.currentLesson?.id}`);
     };
   };
+
+  const _deleteLesson = async (id: string) => {
+    if (confirm("Do you want to delete this lesson?")) {
+      const [bool, err] = await deleteLesson(id);
+      if (err) {
+        alert('opps something happened')
+      } else if (bool) {
+        alert("lesson deleted");
+        router.reload();
+      }
+    }
+  }
 
   return (
     <Layout>
@@ -210,9 +223,14 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                               router.push(`/lessons/${l.id}`);
                             }}>{l.title}</span>
                         </Col>
-                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={2} xs={2}>
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
                           <span style={{ cursor: 'pointer' }} onClick={() => router.push(`/lessons/edit/${l.id}`)}>
                             <EditIcon />
+                          </span>
+                        </Col>)}
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
+                          <span style={{ cursor: 'pointer' }} onClick={() => _deleteLesson(l.id!)}>
+                            <DeleteIcon fill="red" />
                           </span>
                         </Col>)}
                       </Row>
@@ -225,7 +243,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                     router.push('/lessons/create');
                   }}
                   className="my-2"
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', fontFamily }}
                 >
                   Add Lesson
                 </Button>
@@ -235,7 +253,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                     openCourse(lessons[0].id);
                   }}
                   className="my-2"
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', fontFamily }}
                 >
                   {isUserReg ? 'Continue Course' : 'Start Course'}
                 </Button>

@@ -9,7 +9,7 @@ import {
   FC,
   useCallback,
 } from 'react';
-import { ThemeContext } from '../pages/_app';
+import { ThemeContext, fontFamily } from '../pages/_app';
 import { getCourses, editLessonFormHandler, getLesson } from '../helper';
 import { CourseSchema, LessonSchema } from '../types';
 import Select from 'react-select';
@@ -99,7 +99,7 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
         console.log(data);
         const res = confirm("Do you want to add questions to this lesson?")
         if (res) {
-          router.push(`/lessons/question/${data.id}`)
+          router.push(`/lessons/question/${data.id}`);
         } else router.push(`/course/${course}`);
       }
     } catch (error: any) {
@@ -219,13 +219,13 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
                 <Button onClick={(e) => {
                   e.preventDefault()
                   updateShowNextPage(true)
-                }} variant="primary" className='my-4' type="button" style={{ width: '100%' }}>
+                }} variant="primary" className='my-4' type="button" style={{ width: '100%', fontFamily }}>
                   Next
                 </Button>
               </Form.Group>
             ) : (
               <Form.Group>
-                <Button variant="primary" type="submit" style={{ width: '100%' }}>
+                <Button variant="primary" type="submit" style={{ width: '100%', fontFamily }}>
                   {showSpinner && (
                     <Spinner animation="border" role="status"></Spinner>
                   )}
@@ -233,6 +233,13 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
                 </Button>
               </Form.Group>
             )}
+             <Form.Group>
+                <Button onClick={(e) => {
+                  router.push(`/lessons/question/${lessonId}`);
+                }} variant="secondary" type="button" style={{ width: '100%', fontFamily }}>
+                  Add Question
+                </Button>
+              </Form.Group>
         </Form>
       </div>
     </Container>

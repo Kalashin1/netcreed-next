@@ -16,6 +16,7 @@ import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { CourseSchema, LessonSchema } from '../../types';
 import { useEffect } from 'react'
+import { EditIcon } from '@components/svg/icons'
 import Question from '@components/Questions';
 
 
@@ -24,18 +25,18 @@ export const getServerSideProps = async (context: any) => {
   const [_lesson, err] = await getLesson(lesson);
 
   if (err) {
-    console.log(err);
+    // console.log(err);
   }
 
   const [lessons, lessonErr] = await getLessonsByCourseId(_lesson?.courseId!);
 
   if (lessonErr) {
-    console.log(lessonErr);
+    // console.log(lessonErr);
   }
 
   const [course, courseErr] = await getCourse(_lesson?.courseId!);
 
-  if (courseErr) console.log(courseErr);
+  if (courseErr) // console.log(courseErr);
   return {
     props: { lesson: _lesson, lessons, course },
   };
@@ -54,7 +55,6 @@ const Lesson: NextPage<{
   const bgColor = theme === 'light' ? 'white' : 'black';
 
   const gotoNextLesson = async () => {
-    console.log('clicked')
     try {
       const indexOfNextLesson = lessons
         .map((l) => l.id)
@@ -70,7 +70,6 @@ const Lesson: NextPage<{
         course?.id!,
         nextLesson!
       )
-      console.log('progress')
       router.push(`/lessons/${nextLesson}`);
     } catch (error: any) {
       console.log(error)
@@ -174,14 +173,23 @@ const Lesson: NextPage<{
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => {
-                        router.push(`/lessons/${l.id}`);
-                      }}
                       className={`text-${l.id === lesson.id ? 'light' : theme === 'dark' ? 'light' : 'dark'
                         } bg-${l.id === lesson.id ? 'primary' : theme}`}
                     >
-                      {l.title}
+                      <Row>
+                        <Col sm={10} xs={10}>
+                          <span
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              router.push(`/lessons/${l.id}`);
+                            }}>{l.title}</span>
+                        </Col>
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={2} xs={2}>
+                          <span style={{ cursor: 'pointer' }} onClick={() => router.push(`/lessons/edit/${l.id}`)}>
+                            <EditIcon />
+                          </span>
+                        </Col>)}
+                      </Row>
                     </ListGroup.Item>
                   ))}
               </ListGroup>

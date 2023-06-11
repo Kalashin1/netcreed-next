@@ -116,7 +116,12 @@ const CreateLessonForm: React.FC = () => {
       if (err) {
         console.log(err);
       } else if (data) {
-        router.push(`/course/${course.value}`);
+        const res = confirm('Do you want to add questions to this course?');
+        if (res) {
+          router.push(`/lessons/question/${data.id}`)
+        } else {
+          router.push(`/course/${course.value}`);
+        }
       }
     } catch (error: any) {
       setShowSpinner(true);

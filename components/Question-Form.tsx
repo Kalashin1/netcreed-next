@@ -45,8 +45,8 @@ const QuestionForm: FC<QuestionFormProps> = ({
   const [marks, setMarks] = useState(5);
   const [attempts, setAttempts] = useState(2);
 
-  const goBack = () => {
-    router.back()
+  const gotoLesson = () => {
+    router.push('/lessons/'+lessonId)
   }
 
   const createQuestion = async (e: any) => {
@@ -160,7 +160,7 @@ const QuestionForm: FC<QuestionFormProps> = ({
                 <Col xs={12} md={6}>
                   <Button
                     variant="danger"
-                    onClick={e => goBack()}
+                    onClick={e => gotoLesson()}
                     className="mb-4"
                     style={{ width: '100%', fontFamily }}>Cancel</Button>
                 </Col>

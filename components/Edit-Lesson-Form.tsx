@@ -97,7 +97,10 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
         console.log(err);
       } else if (data) {
         console.log(data);
-        router.push(`/course/${course}`);
+        const res = confirm("Do you want to add questions to this lesson?")
+        if (res) {
+          router.push(`/lessons/question/${data.id}`)
+        } else router.push(`/course/${course}`);
       }
     } catch (error: any) {
       setShowSpinner(true);

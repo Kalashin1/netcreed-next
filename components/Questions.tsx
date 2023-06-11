@@ -34,7 +34,7 @@ const Question: FC<QuestionProps> = ({
       })
       if (err) {
         console.log(err)
-        if (err.includes('Max attempts reached')) alert('Max attempts reached')
+        if (err.includes('Max attempts reached')) alert('Max attempts reached');
       }
       if (result) {
         console.log(result)
@@ -58,9 +58,15 @@ const Question: FC<QuestionProps> = ({
         setSelectedOption(option)
         updateShowCorrectOption(false)
       }} bg={bgColor} className={`my-2 border ${textColor} 
-      ${selectedOption && selectedOption.id === option.id ? 'border-success' : ''
+      ${
+        selectedOption && selectedOption.id === option.id ? 'border-success' : ''
         } 
-      ${showCorrectOption ? option.id === question.correctAnswer.id ? 'border-success' : selectedOption?.id === option.id ? 'border-danger' : '' : ''
+      ${
+          showCorrectOption ? 
+          option.id === question.correctAnswer.id ?
+          'border-success':
+          selectedOption?.id === option.id ?
+          'border-danger' : '' : ''
         }
       rounded`}>
         <Card.Body>
@@ -77,7 +83,9 @@ const Question: FC<QuestionProps> = ({
     <Container>
       <Row>
         <Col sm={12}>
-          <Card bg={bgColor} className={`${textColor} border-0`}>
+          <Card 
+            bg={bgColor}
+            className={`${textColor} border-0`}>
             <Container>
               <Card.Text className={`${textColor} mt-4`}>{question.question}</Card.Text>
               <Row>

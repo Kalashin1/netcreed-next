@@ -20,7 +20,6 @@ const CreateQuestion:React.FC<{ lesson: LessonSchema }> = ({
   lesson
 }) => {
   let theme: string = useContext(ThemeContext).theme;
-  console.log(lesson)
   return (
     <Layout>
       <div>

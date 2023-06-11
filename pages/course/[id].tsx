@@ -9,7 +9,7 @@ import {
   Card
 } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
-import { ThemeContext, AuthContext } from '../_app';
+import { ThemeContext, AuthContext, fontFamily } from '../_app';
 import Head from 'next/head';
 import { useContext, useEffect, useState } from 'react';
 import {
@@ -20,10 +20,10 @@ import {
   registerCourse,
   getRegisteredCourseRef,
 } from '../../helper';
-import { CourseSchema, LessonSchema, StudentCourseRef} from '../../types';
+import { CourseSchema, LessonSchema, StudentCourseRef, User } from '../../types';
 import { useRouter } from 'next/router';
 import { MoneyFormatter } from '../../helper';
-import { UsersIcon, DollarIcon } from '@components/svg/icons';
+import { UsersIcon, DollarIcon, EditIcon } from '@components/svg/icons';
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
@@ -50,13 +50,23 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
 }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
+  const {getLoggedInUser} = useContext(AuthContext);
+
   const [userId, setUserId] = useState<string>();
   const [isUserReg, updateIsUserReg] = useState(false)
-  
+  const [currentUser, updateCurrentUser] = useState<any>()
+
   const [courseRef, setCourseRef] = useState<CourseSchema>()
 
   useEffect(() => {
     const checkIfUserIsReg = async (id: string) => {
+      if (getLoggedInUser) {
+        const user = await getLoggedInUser(id);
+        if (user) {
+          updateCurrentUser(user)
+          console.log(user);
+        }
+      }
       const [courses, err] = await getRegisteredCourses(id);
       if (err && !courses) {
         console.log(err)
@@ -84,7 +94,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
     } else {
       router.push('/login');
     }
-  }, [router, course.id]);
+  }, [router, course.id, getLoggedInUser]);
 
   const openCourse = async (id?: string) => {
     if (course.isPaid) {
@@ -95,7 +105,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
       }
       if (!err && bool) {
         if (isUserReg) router.push(
-          `/lessons/${courseRef?.currentLesson?.id ? courseRef?.currentLesson?.id: lessons[0].id}`
+          `/lessons/${courseRef?.currentLesson?.id ? courseRef?.currentLesson?.id : lessons[0].id}`
         );
       } else if (!err && !bool) {
         router.push(`checkout/${course.id}`);
@@ -190,14 +200,22 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
-                      onClick={() => {
-                        router.push(`/lessons/${l.id}`);
-                      }}
-                      style={{ cursor: 'pointer' }}
-                      className={`text-${theme === 'dark' ? 'white' : 'dark'
-                        } bg-${theme === 'dark' ? 'black' : 'white'}`}
+                      className={`text-${theme === 'dark' ? 'light' : 'dark'} bg-${theme}`}
                     >
-                      {l.title}
+                      <Row>
+                        <Col sm={10} xs={10}>
+                          <span
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              router.push(`/lessons/${l.id}`);
+                            }}>{l.title}</span>
+                        </Col>
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={2} xs={2}>
+                          <span style={{ cursor: 'pointer' }} onClick={() => router.push(`/lessons/edit/${l.id}`)}>
+                            <EditIcon />
+                          </span>
+                        </Col>)}
+                      </Row>
                     </ListGroup.Item>
                   ))}
               </ListGroup>
@@ -219,7 +237,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   className="my-2"
                   style={{ width: '100%' }}
                 >
-                  {isUserReg ? 'Continue Course': 'Start Course'}
+                  {isUserReg ? 'Continue Course' : 'Start Course'}
                 </Button>
               )}
             </Container>
@@ -243,7 +261,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   onClick={() => {
                     router.push(`/course/edit/${course?.id}`);
                   }}
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', fontFamily }}
                 >
                   Edit Course
                 </Button>
@@ -252,9 +270,9 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   onClick={() => {
                     openCourse();
                   }}
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', fontFamily }}
                 >
-                  {isUserReg ? 'Continue Course': 'Start Course'}
+                  {isUserReg ? 'Continue Course' : 'Start Course'}
                 </Button>
               )
             }

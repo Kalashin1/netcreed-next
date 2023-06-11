@@ -25,13 +25,13 @@ const CourseLessonHeader: FC<Props> = ({ title, description, courseCreatorId, id
     <Card bg={theme} className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
       <Card.Header>
         <Row className="justify-content-between align-items-center flex-row">
-          <Col sm={10}>
+          <Col sm={10} xs={10}>
             <Card.Title onClick={() => openCourse(id)} style={{ cursor: 'pointer' }} className="mb-1 h4 font-weight-bold">{title}</Card.Title>
           </Col>
           {/* Update Icon */}
           {
             user?.uid === courseCreatorId ?
-            (<Col sm={2}>
+            (<Col sm={1} xs={1}>
               <span style={{ cursor: 'pointer'}} onClick={() => router.push(`/lessons/edit/${id}`)}><EditIcon /></span>
             </Col>
             ): (

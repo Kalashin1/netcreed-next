@@ -16,7 +16,7 @@ import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { CourseSchema, LessonSchema } from '../../types';
 import { useEffect } from 'react'
-import { EditIcon } from '@components/svg/icons'
+import { EditIcon, DeleteIcon } from '@components/svg/icons'
 import Question from '@components/Questions';
 
 
@@ -36,7 +36,7 @@ export const getServerSideProps = async (context: any) => {
 
   const [course, courseErr] = await getCourse(_lesson?.courseId!);
 
-  if (courseErr) // console.log(courseErr);
+  if (courseErr) {/** console.log(courseErr);  **/ }
   return {
     props: { lesson: _lesson, lessons, course },
   };
@@ -213,7 +213,9 @@ const Lesson: NextPage<{
             <Accordion defaultActiveKey={lesson?.questions[0]?.id}>
               {lesson.questions.map((q, index) => (
                 <Accordion.Item key={index} eventKey={q.id} className={`bg-${bgColor}`}>
-                  <Accordion.Header>Question {index + 1}</Accordion.Header>
+                  <Accordion.Header>
+                    Question {index + 1}
+                  </Accordion.Header>
                   <Accordion.Body>
                     <Question question={q} lessonId={lesson?.id!} />
                   </Accordion.Body>

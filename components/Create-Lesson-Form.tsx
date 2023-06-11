@@ -14,7 +14,7 @@ import {
   FormEvent,
   useCallback,
 } from 'react';
-import { ThemeContext } from '../pages/_app';
+import { ThemeContext, fontFamily } from '../pages/_app';
 import { getUserCourses, createLessonFormHandler, getLessonsByCourseId } from '../helper';
 import { CourseSchema } from '../types';
 import { useRouter } from 'next/router';
@@ -26,7 +26,6 @@ const CreateLessonForm: React.FC = () => {
   const router = useRouter();
 
   const onDrop = useCallback((acceptedFiles: FileList) => {
-    console.log(acceptedFiles)
     updateUploadedVideos(acceptedFiles)
     Array.from(acceptedFiles).forEach((file: any) => { })
   }, [])
@@ -62,7 +61,7 @@ const CreateLessonForm: React.FC = () => {
   const getSelectedCourse = async (courseId: string, courseTitle: string) => {
     const [course, error] = await getLessonsByCourseId(courseId);
     if (error) {
-      // alert(`opps`)
+      alert(`oops something happened`)
       console.log(error)
     } else if (course) {
       setLessonPosition(course.length + 1);
@@ -104,7 +103,6 @@ const CreateLessonForm: React.FC = () => {
   const createLesson = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setShowSpinner(true);
-    console.log(course)
     try {
       const [data, err] = await createLessonFormHandler(
         { title, description, content },
@@ -251,13 +249,13 @@ const CreateLessonForm: React.FC = () => {
                 <Button onClick={(e) => {
                   e.preventDefault()
                   updateShowNextPage(true)
-                }} variant="primary" className='my-4' type="button" style={{ width: '100%' }}>
+                }} variant="primary" className='my-4' type="button" style={{ width: '100%', fontFamily }}>
                   Next
                 </Button>
               </Form.Group>
             ) : (
               <Form.Group>
-                <Button variant="primary" type="submit" style={{ width: '100%' }}>
+                <Button variant="primary" type="submit" style={{ width: '100%', fontFamily }}>
                   {showSpinner && (
                     <Spinner animation="border" role="status"></Spinner>
                   )}

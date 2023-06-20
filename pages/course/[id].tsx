@@ -9,18 +9,22 @@ import {
   Card
 } from 'react-bootstrap';
 import CourseLessonHeader from '../../components/Course-Lesson-Header';
-import { ThemeContext } from '../_app';
+import { ThemeContext, AuthContext, fontFamily } from '../_app';
 import Head from 'next/head';
 import { useContext, useEffect, useState } from 'react';
 import {
   getCourse,
   getLessonsByCourseId,
   hasUserPaidForCourse,
+  getRegisteredCourses,
+  registerCourse,
+  getRegisteredCourseRef,
+  deleteLesson,
 } from '../../helper';
-import { LessonSchema } from '../../types';
+import { CourseSchema, LessonSchema, StudentCourseRef, User } from '../../types';
 import { useRouter } from 'next/router';
 import { MoneyFormatter } from '../../helper';
-import { UsersIcon, DollarIcon } from '@components/svg/icons';
+import { UsersIcon, DollarIcon, EditIcon, DeleteIcon } from '@components/svg/icons';
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
@@ -47,12 +51,51 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
 }) => {
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
+  const { getLoggedInUser } = useContext(AuthContext);
+
   const [userId, setUserId] = useState<string>();
+  const [isUserReg, updateIsUserReg] = useState(false)
+  const [currentUser, updateCurrentUser] = useState<any>()
+
+  const [courseRef, setCourseRef] = useState<CourseSchema>()
 
   useEffect(() => {
-    const id = localStorage.getItem('userId')!;
-    setUserId(id);
-  }, []);
+    const checkIfUserIsReg = async (id: string) => {
+      if (getLoggedInUser) {
+        const user = await getLoggedInUser(id);
+        if (user) {
+          updateCurrentUser(user)
+          console.log(user);
+        }
+      }
+      const [courses, err] = await getRegisteredCourses(id);
+      if (err && !courses) {
+        console.log(err)
+      }
+      console.log(courses)
+      const foundCourse: CourseSchema = courses.find(
+        (_course: CourseSchema) => _course.id === course.id
+      );
+
+      if (foundCourse) {
+        updateIsUserReg(true)
+        const [courseRef, err] = await getRegisteredCourseRef(id, foundCourse?.id!);
+        console.log("courseRef", courseRef);
+        if (err && !courseRef) {
+          console.log(err)
+        }
+        setCourseRef(courseRef)
+        console.log('foundCourse', foundCourse);
+      }
+    }
+    const id = localStorage.getItem('userId');
+    if (id) {
+      setUserId(id);
+      checkIfUserIsReg(id);
+    } else {
+      router.push('/login');
+    }
+  }, [router, course.id, getLoggedInUser]);
 
   const openCourse = async (id?: string) => {
     if (course.isPaid) {
@@ -62,12 +105,36 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
         router.push('/login');
       }
       if (!err && bool) {
-        router.push(`/lessons/${lessons[0].id}`);
+        if (isUserReg) router.push(
+          `/lessons/${courseRef?.currentLesson?.id ? courseRef?.currentLesson?.id : lessons[0].id}`
+        );
       } else if (!err && !bool) {
         router.push(`checkout/${course.id}`);
       }
-    } else router.push(`/lessons/${id ? id : lessons[0].id}`);
+    } else {
+      if (!isUserReg) {
+        const [payload, err] = await registerCourse(course?.id!);
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(payload);
+        }
+      }
+      router.push(`/lessons/${id ? id : courseRef?.currentLesson?.id}`);
+    };
   };
+
+  const _deleteLesson = async (id: string) => {
+    if (confirm("Do you want to delete this lesson?")) {
+      const [bool, err] = await deleteLesson(id);
+      if (err) {
+        alert('opps something happened')
+      } else if (bool) {
+        alert("lesson deleted");
+        router.reload();
+      }
+    }
+  }
 
   return (
     <Layout>
@@ -135,10 +202,10 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                 {course?.registeredUsers?.length ?? 0} Registered Users.
               </p>
               <h4 className={`text-${theme === 'dark' ? 'light' : 'dark'
-                  } ml-2 my-4`}>Course Outline</h4>
+                } ml-2 my-4`}>Course Outline</h4>
               <ListGroup
                 variant="flush"
-                style={{ borderRadius: '3rem'}}
+                style={{ borderRadius: '3rem' }}
                 className={`my-2 text-${theme === 'dark' ? 'black' : 'white'
                   }`}
               >
@@ -146,14 +213,27 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
-                      onClick={() => {
-                        router.push(`/lessons/${l.id}`);
-                      }}
-                      style={{ cursor: 'pointer' }}
-                      className={`text-${theme === 'dark' ? 'white' : 'dark'
-                        } bg-${theme === 'dark' ? 'black': 'white'}`}
+                      className={`text-${theme === 'dark' ? 'light' : 'dark'} bg-${theme}`}
                     >
-                      {l.title}
+                      <Row>
+                        <Col sm={10} xs={10}>
+                          <span
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              router.push(`/lessons/${l.id}`);
+                            }}>{l.title}</span>
+                        </Col>
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
+                          <span style={{ cursor: 'pointer' }} onClick={() => router.push(`/lessons/edit/${l.id}`)}>
+                            <EditIcon />
+                          </span>
+                        </Col>)}
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
+                          <span style={{ cursor: 'pointer' }} onClick={() => _deleteLesson(l.id!)}>
+                            <DeleteIcon fill="red" />
+                          </span>
+                        </Col>)}
+                      </Row>
                     </ListGroup.Item>
                   ))}
               </ListGroup>
@@ -163,19 +243,19 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                     router.push('/lessons/create');
                   }}
                   className="my-2"
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', fontFamily }}
                 >
                   Add Lesson
                 </Button>
               ) : (
                 <Button
                   onClick={() => {
-                    openCourse();
+                    openCourse(lessons[0].id);
                   }}
                   className="my-2"
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', fontFamily }}
                 >
-                  Start Course
+                  {isUserReg ? 'Continue Course' : 'Start Course'}
                 </Button>
               )}
             </Container>
@@ -199,7 +279,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   onClick={() => {
                     router.push(`/course/edit/${course?.id}`);
                   }}
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', fontFamily }}
                 >
                   Edit Course
                 </Button>
@@ -208,9 +288,9 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                   onClick={() => {
                     openCourse();
                   }}
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', fontFamily }}
                 >
-                  Start Course
+                  {isUserReg ? 'Continue Course' : 'Start Course'}
                 </Button>
               )
             }

@@ -37,6 +37,7 @@ import { getDoc, getDocs, limit, query, setDoc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  GithubAuthProvider,
   sendEmailVerification,
   signInWithPopup,
   updateProfile,
@@ -49,6 +50,8 @@ import {
   engagement,
   QuestionSchema,
   LessonRef,
+  AnswerQuestionType,
+  Answer
 } from './types';
 
 export const uploadAsset = async (file: any, folder: string, isVideo?: boolean) => {
@@ -416,10 +419,9 @@ export const signinWithGoogle = async (
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential!.accessToken;
     const user = result.user;
-    localStorage.setItem('userToken', token!);
+    localStorage.setItem('googleToken', token!);
     localStorage.setItem('userId', user.uid);
     console.log(credential, token, user);
-    setShowSpinner2(false);
     await setDoc(doc(db, 'users', user.uid), {
       name: user.displayName,
       email: user.email,
@@ -428,10 +430,44 @@ export const signinWithGoogle = async (
       creator: creator,
     });
     alert('Your account has been created successfully');
-    router.push('/profile');
+    setShowSpinner2(false);
+    router.push('/user/profile');
   } catch (error: any) {
     setShowSpinner2(false);
     // alert(error.message);
+  }
+};
+export const signinWithGithub = async (
+  e: any,
+  setShowSpinner2: Dispatch<SetStateAction<boolean>>,
+  creator: boolean,
+  router: NextRouter
+) => {
+  e.preventDefault();
+  setShowSpinner2(true);
+  try {
+    const provider = new GithubAuthProvider();
+
+    const result = await signInWithPopup(auth, provider);
+    const credential = GithubAuthProvider.credentialFromResult(result);
+    const token = credential!.accessToken;
+    const user = result.user;
+    localStorage.setItem('githubToken', token!);
+    localStorage.setItem('userId', user.uid);
+    console.log(credential, token, user);
+    await setDoc(doc(db, 'users', user.uid), {
+      name: user.displayName,
+      email: user.email,
+      articles: [],
+      createdAt: new Date().getTime(),
+      creator: creator,
+    });
+    alert('Your account has been created successfully');
+    setShowSpinner2(false);
+    router.push('/user/profile');
+  } catch (error: any) {
+    setShowSpinner2(false);
+    console.log(error.message);
   }
 };
 
@@ -695,7 +731,7 @@ export const getArticles = async () => {
 };
 
 export const createLessonFormHandler = async (
-  {title, content, description}: { title: string, content: string, description: string},
+  { title, content, description }: { title: string, content: string, description: string },
   _course: string,
   lessonPosition: number,
   uploadedFiles?: FileList,
@@ -731,7 +767,7 @@ export const createLessonFormHandler = async (
       courseContent: content,
       createdAt: new Date().getTime(),
       lessonPosition,
-      video: videoURL
+      video: videoURL ? videoURL : '',
     };
 
     const lessonDoc = await addDoc(collection(db, 'lessons'), lesson);
@@ -755,16 +791,30 @@ export const createLessonFormHandler = async (
 export const editLessonFormHandler = async (
   { title, description, content }: any,
   _course: string,
-  _lesson: string
+  _lesson: string,
+  lessonPosition: number,
+  uploadedFiles?: FileList,
 ) => {
   console.log('course', _course);
   console.log(title, description, content)
+  const [course, err] = await getCourse(_course);
+  if (err) {
+    return [null, err];
+  }
+
   try {
     const slug = slugify(title, {
       lower: true,
     });
 
     console.log("slug", slug);
+
+    const videoURL = uploadedFiles ? await uploadAsset(
+      uploadedFiles as unknown as HTMLInputElement,
+      `${course?.title}/videos/`,
+      true
+    ) : '';
+
     const lesson: Partial<LessonSchema> = {
       status: 'SAVED',
       description: description,
@@ -773,7 +823,9 @@ export const editLessonFormHandler = async (
       courseContent: content!,
       url: `lessons/${_lesson}`,
       slug: `lessons/${slug}`,
+      lessonPosition,
       updatedAt: new Date().getTime(),
+      video: videoURL ? videoURL : '',
     };
     await updateDoc(doc(db, 'lessons', _lesson), lesson);
     return [true, null];
@@ -1374,24 +1426,37 @@ export const registerCourse = async (courseId: string) => {
     await updateDoc(doc(db, 'courses', course?.id!), {
       registeredUsers: [...registeredUsers, payload?.user.id!],
     });
-    return courseRef;
+    return [courseRef, null];
   }
+  return [null, null];
 };
 
 export const hasUserPaidForCourse = async (courseId: string) => {
   const [course, err] = await getCourse(courseId);
   if (err) return [false, err];
-  
-  const [payload, error] = await getUserWithoutID();
-  if (error) return [false, error];
-  const userCourses = payload?.user?.registeredCourses ?? [];
-  if (userCourses.find((course) => course.id === courseId)) return [true, null];
-  return [false, null];
+
+  if (course) {
+    const [payload, error] = await getUserWithoutID();
+    if ((course.isPaid) && (course.price) && (course.price > 0)) {
+      if (error) return [false, error];
+      const userCourses = payload?.user?.registeredCourses ?? [];
+      if (userCourses.find((course) => course.id === courseId)) return [true, null];
+      return [false, null];
+    }
+  }
+  return [true, null];
 };
 
 export const getRegisteredCourses = async (userId: string) => {
   try {
-    const q = query(collection(db, "courses"), where("registeredUsers", "array-contains", userId));
+    const q = query(
+      collection(db, "courses"),
+      where(
+        "registeredUsers",
+        "array-contains",
+        userId
+      )
+    );
     const _docRes = await getDocs(q);
     const courses = _docRes.docs.map((doc) => ({
       ...doc.data(),
@@ -1403,6 +1468,38 @@ export const getRegisteredCourses = async (userId: string) => {
   }
 
 };
+
+export const getRegisteredCourseRefs = async (userId: string):
+Promise<[StudentCourseRef[]|null, null|any]> => {
+  try {
+    const docRef = doc(db, 'users', userId!);
+    const document = await getDoc(docRef);
+    const userDoc = (await document.data()) as User;
+    const registeredCourses = userDoc.registeredCourses ?? [];
+    return [registeredCourses, null];
+  } catch (err: any) {
+    return [null, err]
+  }
+}
+
+export const getRegisteredCourseRef = async (userId: string, courseId: string) => {
+  try {
+    const [regCourses, err] = await getRegisteredCourseRefs(userId);
+    if (err) {
+      throw Error(err);
+    }
+
+    if (regCourses) {
+      const course = regCourses.find(
+        (courseRef) => courseRef.id === courseId
+      );
+      return [course, null];
+    };
+    return [null, null];
+  } catch (err: any) {
+    return [null, err]
+  }
+}
 
 export const getUserCourses = async (user: string, router?: NextRouter) => {
   try {
@@ -1428,7 +1525,7 @@ export const addQuestions = async (
   questions: QuestionSchema[],
   _collection: ADD_QUESTION_TYPE,
   id: string
-) => {
+): Promise<[QuestionSchema[] | null, any | null]> => {
   let existingQuestions: QuestionSchema[];
   switch (_collection) {
     case 'COURSE':
@@ -1437,14 +1534,14 @@ export const addQuestions = async (
       existingQuestions = course?.questions ?? [];
       existingQuestions = [...existingQuestions, ...questions];
       await updateDoc(doc(db, 'courses', id), { questions: existingQuestions });
-      return [{ ...course, questions: existingQuestions }, null];
+      return [existingQuestions, null];
     case 'LESSON':
       const [lesson, lessonErr] = await getLesson(id);
       if (lessonErr) return [null, lessonErr];
       existingQuestions = lesson?.questions ?? [];
       existingQuestions = [...existingQuestions, ...questions];
       await updateDoc(doc(db, 'lessons', id), { questions: existingQuestions });
-      return { ...lesson, questions: existingQuestions };
+      return [existingQuestions, null];
     default:
       return [null, null];
   }
@@ -1525,6 +1622,102 @@ export const removeQuestions = async (
       return [null, null];
   }
 };
+
+export const answerQuestion = async ({
+  lessonId,
+  option,
+  userId,
+  questionId
+}: AnswerQuestionType) => {
+  // Get Lesson
+  const [lesson, lessonErr] = await getLesson(lessonId);
+  if (lessonErr) return [null, lessonErr];
+  // Get Question
+  const question = lesson?.questions?.find((q) => q.id === questionId);
+  if (!question) return [null, null];
+  // Get user
+  const user = await getUser({ uid: userId });
+  console.log(user);
+  if (!user) return [null, 'No user with that id'];
+
+  // Get existing user answer
+  const answers = question.answers ?? [];
+  const existingAnswer = answers.filter((a) => a.userId === user.id);
+  if (existingAnswer) {
+    // check if the maxAttempts to see how many times the user has attempted this course recently
+    if (existingAnswer.length >= question.maxAttempts) return [null, 'Max attempts reached'];
+  }
+
+  question.answers = [
+    ...answers,
+    {
+      userId: user.id,
+      answer: option,
+      date: new Date().getTime(),
+    }
+  ]
+  // update database
+  await updateDoc(doc(db, 'lessons', lessonId), {
+    questions: lesson?.questions ? [...lesson?.questions.filter((q) => q.id !== questionId), question] : [question]
+  });
+  return [{ question, user, lesson }, null]
+}
+
+
+export const progressToNextLesson = async (
+  userId: string,
+  courseId: string,
+  lessonId: string,
+) => {
+  try {
+    // get user
+    const [payload, err] = await getUserWithoutID(userId);
+    if (err || (!payload)) return [null, 'User not found'];
+
+    // get course
+    const [course, courseErr] = await getCourse(courseId);
+    if (courseErr) return [null, courseErr];
+
+    // get lesson
+    const [lesson, lessonErr] = await getLesson(lessonId);
+    if (err) return [null, lessonErr];
+
+    // check if the user is registered to that course
+    const userCourses = payload?.user?.registeredCourses ?? []
+    const registeredCourse = userCourses.find((c) => c.id === courseId);
+    if (!registeredCourse) return [null, 'User not registered to that course'];
+
+
+    // update user
+    await updateDoc(doc(db, 'users', userId), {
+      registeredCourses: [...userCourses.filter((c) => c.id !== courseId), {
+        id: course?.id,
+        slug: course?.slug,
+        url: course?.url,
+        currentLesson: {
+          id: lesson?.id ?? '',
+          slug: lesson?.slug ?? '',
+          url: lesson?.url ?? '',
+        },
+      }],
+    })
+  } catch (error: any) {
+    console.log(error)
+  }
+
+}
+
+export const deleteLesson = async (
+  lessonId: string
+): Promise<[boolean, string | null]> => {
+  const [, lessonErr] = await getLesson(lessonId);
+  if (lessonErr) {
+    return [false, lessonErr];
+  }
+  await deleteDoc(doc(db, 'lessons', lessonId));
+  return [true, null];
+};
+
 
 export const MoneyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',

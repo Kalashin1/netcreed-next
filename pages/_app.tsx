@@ -36,6 +36,8 @@ export const AuthContext = React.createContext<{
   user: null
 })
 
+export const fontFamily = 'Roboto Slab'
+
 function CustomApp({ Component, pageProps, router }: AppProps) {
   const [theme, setTheme] = useState(_theme);
   const [textColor, setTextColor] = useState(_textColor);

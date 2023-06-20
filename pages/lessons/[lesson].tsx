@@ -1,33 +1,43 @@
 import { NextPage } from 'next';
-import { Container, Row, Col, ListGroup, Button } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Button, Accordion } from 'react-bootstrap';
 import LessonHeader from '../../components/Lesson-Header';
 import LessonContent from '../../components/Lesson-Content';
 import Layout from '../Layout';
-import { ThemeContext } from '../_app';
+import { ThemeContext, AuthContext } from '../_app';
 import Head from 'next/head';
-import { getLesson, getLessonsByCourseId, getCourse, hasUserPaidForCourse } from '../../helper';
-import { useContext } from 'react';
+import {
+  getLesson,
+  getLessonsByCourseId,
+  getCourse,
+  hasUserPaidForCourse,
+  progressToNextLesson,
+  deleteLesson,
+} from '../../helper';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { CourseSchema, LessonSchema } from '../../types';
 import { useEffect } from 'react'
+import { EditIcon, DeleteIcon } from '@components/svg/icons'
+import Question from '@components/Questions';
+
 
 export const getServerSideProps = async (context: any) => {
   const { lesson } = context.query;
   const [_lesson, err] = await getLesson(lesson);
 
   if (err) {
-    console.log(err);
+    // console.log(err);
   }
 
   const [lessons, lessonErr] = await getLessonsByCourseId(_lesson?.courseId!);
 
   if (lessonErr) {
-    console.log(lessonErr);
+    // console.log(lessonErr);
   }
 
   const [course, courseErr] = await getCourse(_lesson?.courseId!);
 
-  if (courseErr) console.log(courseErr);
+  if (courseErr) {/** console.log(courseErr);  **/ }
   return {
     props: { lesson: _lesson, lessons, course },
   };
@@ -39,21 +49,36 @@ const Lesson: NextPage<{
   lessons: LessonSchema[];
   course: CourseSchema;
 }> = ({ lesson, lessons, course }) => {
-  console.log(lesson?.video)
   const router = useRouter();
   let theme: string = useContext(ThemeContext).theme;
+  const { getLoggedInUser, user } = useContext(AuthContext);
+  const [currentUser, setCurrentUser] = useState(user);
+  const bgColor = theme === 'light' ? 'white' : 'black';
 
-  const gotoNextLesson = () => {
-    const indexOfNextLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) + 1 ;
-    const nextLesson = lessons.map((l) => l.id).at(indexOfNextLesson);
-    if (indexOfNextLesson > lessons.length - 1) {
-      return;
+  const gotoNextLesson = async () => {
+    try {
+      const indexOfNextLesson = lessons
+        .map((l) => l.id)
+        .indexOf(lesson?.id!) + 1;
+      const nextLesson = lessons
+        .map((l) => l.id)
+        .at(indexOfNextLesson);
+      if (indexOfNextLesson > lessons.length - 1) {
+        return;
+      };
+      await progressToNextLesson(
+        user?.uid,
+        course?.id!,
+        nextLesson!
+      )
+      router.push(`/lessons/${nextLesson}`);
+    } catch (error: any) {
+      console.log(error)
     }
-    router.push(`/lessons/${nextLesson}`);
   }
 
   const gotoLastLesson = () => {
-    const indexOfLastLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) - 1 ;
+    const indexOfLastLesson = lessons.map((l) => l.id).indexOf(lesson?.id!) - 1;
     if (indexOfLastLesson < 0) {
       return;
     }
@@ -63,6 +88,12 @@ const Lesson: NextPage<{
 
   useEffect(() => {
     const checkIfUserHasPaid = async () => {
+      if (getLoggedInUser) {
+        const _user = await getLoggedInUser();
+        if (_user) {
+          setCurrentUser(_user);
+        }
+      }
       const [hasPaid, err] = await hasUserPaidForCourse(course?.id!);
       if (!hasPaid) {
         if (err) {
@@ -74,7 +105,19 @@ const Lesson: NextPage<{
     }
 
     checkIfUserHasPaid();
-  }, [router, course?.id])
+  }, [router, course?.id, getLoggedInUser])
+
+  const _deleteLesson = async (id: string) => {
+    if(confirm("Do you want to delete this lesson?")){
+      const [bool, err] = await deleteLesson(id);
+      if (err) {
+        alert('opps something happened')
+      } else if (bool) {
+        alert("lesson deleted");
+        router.reload();
+      }
+    }
+  }
 
   return (
     <Layout>
@@ -129,7 +172,7 @@ const Lesson: NextPage<{
         </Row>
         <Row className="justify-content-between">
 
-        <Col md={4}>
+          <Col md={4}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
@@ -143,14 +186,28 @@ const Lesson: NextPage<{
                   lessons.map((l: LessonSchema, index: number) => (
                     <ListGroup.Item
                       key={index}
-                      style={{ cursor: 'pointer'}}
-                      onClick={() => {
-                        router.push(`/lessons/${l.id}`);
-                      }}
-                      className={`text-${l.id === lesson.id ? 'light': theme === 'dark' ? 'light' : 'dark'
+                      className={`text-${l.id === lesson.id ? 'light' : theme === 'dark' ? 'light' : 'dark'
                         } bg-${l.id === lesson.id ? 'primary' : theme}`}
                     >
-                      {l.title}
+                      <Row>
+                        <Col sm={10} xs={10}>
+                          <span
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              router.push(`/lessons/${l.id}`);
+                            }}>{l.title}</span>
+                        </Col>
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
+                          <span style={{ cursor: 'pointer' }} onClick={() => router.push(`/lessons/edit/${l.id}`)}>
+                            <EditIcon />
+                          </span>
+                        </Col>)}
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
+                          <span style={{ cursor: 'pointer' }} onClick={() => _deleteLesson(l.id!) }>
+                            <DeleteIcon fill="red" />
+                          </span>
+                        </Col>)}
+                      </Row>
                     </ListGroup.Item>
                   ))}
               </ListGroup>
@@ -163,17 +220,35 @@ const Lesson: NextPage<{
             </div>
           </Col>
         </Row>
-        <Row>
+        {lesson?.video && (<Row>
           <video controls loop width='100%' height='auto'>
-              <source src={lesson?.video} type="video/mp4" />
+            <source src={lesson?.video} type="video/mp4" />
           </video>
-        </Row>
+        </Row>)}
+        {lesson && lesson.questions && lesson.questions.length > 0 && (
+          <>
+            <h4 className="m-4">Questions</h4>
+            <Accordion defaultActiveKey={lesson?.questions[0]?.id}>
+              {lesson.questions.map((q, index) => (
+                <Accordion.Item key={index} eventKey={q.id} className={`bg-${bgColor}`}>
+                  <Accordion.Header>
+                    Question {index + 1}
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <Question question={q} lessonId={lesson?.id!} />
+                  </Accordion.Body>
+                </Accordion.Item>
+              ))}
+            </Accordion>
+          </>
+        )}
+
         <Row className="my-4">
           <Col className="py-2" xs={12} md={6}>
-            <Button onClick={gotoLastLesson} style={{ width: '100%'}}>Last Lesson</Button>
+            <Button onClick={gotoLastLesson} style={{ width: '100%' }}>Last Lesson</Button>
           </Col>
           <Col className="py-2" xs={12} md={6}>
-            <Button onClick={gotoNextLesson} style={{ width: '100%'}}>Next Lesson</Button>
+            <Button onClick={() => gotoNextLesson()} style={{ width: '100%' }}>Next Lesson</Button>
           </Col>
         </Row>
       </Container>

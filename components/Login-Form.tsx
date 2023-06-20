@@ -15,6 +15,8 @@ import {
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../pages/_app';
 import { Form, Button, Spinner } from 'react-bootstrap';
+import { GithubIcon } from './svg/icons'
+import { signinWithGithub } from '../helper'
 
 const LoginForm: NextComponentType = () => {
   let theme: string = useContext(ThemeContext).theme;
@@ -29,6 +31,7 @@ const LoginForm: NextComponentType = () => {
   const [showSpinner, setShowSpinner] = useState(false);
 
   const [showSpinner2, setShowSpinner2] = useState(false);
+  const [showSpinner3, setShowSpinner3] = useState(false);
   const [passwordError, showPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -144,13 +147,19 @@ const LoginForm: NextComponentType = () => {
         </Button>
       </Form>
       
-      <h5 className="text-center my-4">OR</h5>
-      
+      <h5 className={"text-center my-4"} style={{color: theme === 'dark' ? 'white' : 'black'}}>OR</h5>
+
       <Button variant="primary" onClick={signinWithGoogle} style={{ width: '100%', marginTop: '.5rem' }}>
         {showSpinner2 && (<Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>)}
         {!showSpinner2 && (<svg xmlns="http://www.w3.org/2000/svg" fill="white" width={25} viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" /></svg>)}
+      </Button>
+      <Button variant="primary" onClick={e => signinWithGithub(e, setShowSpinner3, true, router)} style={{ width: '100%', marginTop: '.5rem' }}>
+        {showSpinner3 && (<Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>)}
+        {!showSpinner3 && (<GithubIcon width={25} fill="#fff" />)}
       </Button>
     </>
   );

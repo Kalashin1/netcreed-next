@@ -25,7 +25,7 @@ export interface User extends DocumentData {
   blocked?: Author[];
   articles?: Array<ArticleRef>;
   savedArticles?: Array<ArticleRef>;
-  registeredCourses?: CourseRef[];
+  registeredCourses?: StudentCourseRef[];
   createdCourses?: CourseRef[];
 }
 
@@ -151,10 +151,32 @@ export type NOTIFICATION_TYPE = 'FOLLOW' | 'COMMENT' | 'LIKE';
 export type QuestionSchema = {
   id: string;
   question: string;
-  options: string[];
-  answer?: string;
-  correctAnswer: string;
+  options: Option[];
+  correctAnswer: Option;
+  marks: number;
+  answers?: Answer[];
+  required: boolean;
+  maxAttempts: number
 };
+
+export type AnswerQuestionType = {
+  option: Option; 
+  lessonId: string;
+  userId: string;
+  questionId: string;
+}
+
+export type Answer = {
+  userId: string;
+  answer: Option
+  date: number;
+} 
+
+export type Option = {
+  answer: string;
+  id: string
+  isCorrect?: boolean;
+}
 
 export interface NotificiationSchema extends DocumentData {
   id?: string;

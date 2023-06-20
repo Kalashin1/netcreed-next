@@ -1,6 +1,6 @@
 import { Card, Button } from 'react-bootstrap';
 import { FC, useContext, useEffect, useState } from 'react';
-import { ThemeContext } from '../pages/_app';
+import { ThemeContext, fontFamily } from '../pages/_app';
 import { useRouter } from 'next/router';
 import { DeleteIcon, DollarIcon, UsersIcon } from './svg/icons';
 import { deleteCourse } from '../helper';
@@ -74,7 +74,7 @@ const CourseComponent: FC<Props> = ({
           className="my-2 mt-4 d-flex justify-items-center justify-content-between"
           onClick={(e) => router.push(`/course/${id}`)}
         >
-          <Button onClick={(e) => router.push(`/course/${id}`)}>
+          <Button style={{ cursor: 'pointer', fontFamily}} onClick={(e) => router.push(`/course/${id}`)}>
             View Course
           </Button>
           {showDeleteIcon && (

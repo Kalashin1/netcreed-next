@@ -155,6 +155,7 @@ export type QuestionSchema = {
   correctAnswer: Option;
   marks: number;
   answers?: Answer[];
+  required: boolean;
   maxAttempts: number
 };
 

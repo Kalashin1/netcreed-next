@@ -148,7 +148,6 @@ const QuestionForm: FC<QuestionFormProps> = ({
                             const newOptions = Array.from(options.map(({answer, id}) => {
                               return ({answer, id, isCorrect: false})
                             }));
-                            console.log(newOptions)
                             if (!option?.isCorrect && option.id === e.target.value) {
                               newOptions[index].isCorrect = true;
                               console.log(newOptions[index])

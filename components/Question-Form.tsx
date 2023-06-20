@@ -1,6 +1,6 @@
 import { Container, Row, Col, Card, Button, Spinner, Form } from 'react-bootstrap';
 import { ThemeContext, fontFamily } from '../pages/_app';
-import { useContext, useState, FC, useEffect } from 'react';
+import React, { useContext, useState, FC, useEffect } from 'react';
 import { addQuestions, getLesson } from '../helper';
 import { randomBytes } from 'crypto';
 import { QuestionSchema, Option } from '../types';

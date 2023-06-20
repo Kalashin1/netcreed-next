@@ -108,7 +108,7 @@ const CreateLessonForm: React.FC = () => {
         { title, description, content },
         course?.value!,
         lessonPosition,
-        uploadedVideos ?? []
+        uploadedVideos
       );
       setShowSpinner(false);
       if (err) {

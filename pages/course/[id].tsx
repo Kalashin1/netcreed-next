@@ -216,19 +216,19 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                       className={`text-${theme === 'dark' ? 'light' : 'dark'} bg-${theme}`}
                     >
                       <Row>
-                        <Col sm={10} xs={10}>
+                        <Col xs={9}>
                           <span
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
                               router.push(`/lessons/${l.id}`);
                             }}>{l.title}</span>
                         </Col>
-                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col xs={1}>
                           <span style={{ cursor: 'pointer' }} onClick={() => router.push(`/lessons/edit/${l.id}`)}>
                             <EditIcon />
                           </span>
                         </Col>)}
-                        {currentUser && currentUser.uid === course?.author?.id && (<Col sm={1} xs={1}>
+                        {currentUser && currentUser.uid === course?.author?.id && (<Col xs={1}>
                           <span style={{ cursor: 'pointer' }} onClick={() => _deleteLesson(l.id!)}>
                             <DeleteIcon fill="red" />
                           </span>

@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  ignoreBuildErrors: true,
+  // ignoreBuildErrors: true,
   images: {
     domains: ['firebasestorage.googleapis.com'],
   },

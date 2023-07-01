@@ -427,16 +427,25 @@ export const signinWithGoogle = async (
     localStorage.setItem('googleToken', token!);
     localStorage.setItem('userId', user.uid);
     console.log(credential, token, user);
-    await setDoc(doc(db, 'users', user.uid), {
-      name: user.displayName,
-      email: user.email,
-      articles: [],
-      createdAt: new Date().getTime(),
-      creator: creator,
-    });
-    alert('Your account has been created successfully');
-    setShowSpinner2(false);
-    router.push('/user/profile');
+    const docRef = doc(db, 'users', user.uid);
+    const docRes = await getDoc(docRef);
+    const _user = { ...docRes.data(), id: docRes.id } as User;
+    if (_user) {
+      alert('login successfully');
+      setShowSpinner2(false);
+      router.push('/user/profile');
+    } else {
+      await setDoc(doc(db, 'users', user.uid), {
+        name: user.displayName,
+        email: user.email,
+        articles: [],
+        createdAt: new Date().getTime(),
+        creator: creator,
+      });
+      alert('Your account has been created successfully');
+      setShowSpinner2(false);
+      router.push('/user/profile');
+    }
   } catch (error: any) {
     setShowSpinner2(false);
     // alert(error.message);
@@ -475,6 +484,7 @@ export const signinWithGithub = async (
         email: user.email,
         phone: user.providerData[0].phoneNumber,
         articles: [],
+        profilePhoto: user.providerData[0].photoURL,
         createdAt: new Date().getTime(),
         creator: creator,
       });

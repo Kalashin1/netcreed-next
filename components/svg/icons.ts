@@ -25,6 +25,7 @@ import ListIcon from './list';
 import UsersIcon from './users';
 import DollarIcon from './dollar';
 import CircleIcon from './circle';
+import TimesIcon from './times';
 
 export {
   DevIcon,
@@ -54,4 +55,5 @@ export {
   UsersIcon,
   DollarIcon,
   CircleIcon,
+  TimesIcon,
 };

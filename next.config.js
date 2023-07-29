@@ -6,9 +6,6 @@ const nextConfig = {
   images: {
     domains: ['firebasestorage.googleapis.com'],
   },
-  env: {
-    DB_USERNAME: 'kalashin'
-  }
 }
 
 module.exports = nextConfig

@@ -160,12 +160,12 @@ const Lesson: NextPage<{
         />
       </Head>
       <Container className="my-4">
-        <h3 className={`display-4 text-${theme === 'dark' ? 'light' : 'dark'}`}>
+        {/* <h3 className={`display-4 text-${theme === 'dark' ? 'light' : 'dark'}`}>
           {course?.title}
-        </h3>
+        </h3> */}
         <Row className="justify-content-between">
           <Col md={12}>
-            <div className="my-4">
+            <div>
               <LessonHeader {...lesson} />
             </div>
           </Col>

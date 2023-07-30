@@ -41,9 +41,8 @@ const PersonalDetailsComponent: React.FC<appProps> = ({
             <span className="float-left">Mail</span>
             <span
               className="float-right text-muted"
-              style={{ fontSize: '.8rem' }}
             >
-              {email}
+              {email?.slice(0, 10)}...
             </span>
           </p>
           <p className="clearfix">

@@ -4,11 +4,16 @@ import { Tab, Tabs, Card, Row, Col, Container, Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import PersonalDetailsComponent from './Personal-Details-Component';
 const marked = require('marked');
-import { ThemeContext } from '../pages/_app';
+import { ThemeContext, fontFamily } from '../pages/_app';
 import Bio from './Bio';
 import ProfileHeader from './Profile-Header';
 import ProfileForm from './Profile-Form';
-import { FavoriteOutlined, SaveOutlined } from './svg/icons';
+import {
+  FavoriteOutlined,
+  SaveOutlined,
+  EditIcon,
+  SquarePlusIcon
+} from './svg/icons';
 import {
   getUserWithoutID,
   getUserEngagements,
@@ -133,29 +138,33 @@ const UserProfile: FC = () => {
             </Card>
 
             <div>
-              {user.creator && (
-                <Button
-                  variant="primary"
-                  className="mb-2 mt-4"
-                  type="submit"
-                  style={{ width: '100%' }}
-                  onClick={(e: any) => navigate(`/post/create`)}
-                >
-                  Create Post
-                </Button>
-              )}
-              {
-                user.twitter === 'kinanee_samson' && (
+              <div className="mx-4">
+                {user.creator && (
                   <Button
-                    variant="secondary"
-                    className="my-2"
-                    type="submit"
-                    style={{ width: '100%' }}
-                    onClick={(e: any) => navigate(`/course/create`)}
+                    className="my-4 d-flex justify-content-center align-items-center"
+                    style={{ fontFamily, cursor:'pointer', width: '100%' }}
+                    onClick={(e: any) => navigate(`/post/create`)}
                   >
-                    Create Course
+                    <EditIcon width={40} onClick={() => {}} />
+                    <span className="mx-2">
+                      New Post
+                    </span>
                   </Button>
                 )}
+                {
+                  user.twitter === 'kinanee_samson' && (
+                    <Button
+                      className="my-4 d-flex justify-content-center align-items-center"
+                      style={{ fontFamily, cursor:'pointer', width: '100%' }}
+                      onClick={(e: any) => navigate(`/course/create`)}
+                    >
+                      <SquarePlusIcon width={40} onClick={() => { }} />
+                      <span className="mr-2">
+                        New Course
+                      </span>
+                    </Button>
+                  )}
+              </div>
               <h5
                 className={`text-${theme === 'dark' ? 'light' : 'dark'
                   } font-weight-bold span my-4`}

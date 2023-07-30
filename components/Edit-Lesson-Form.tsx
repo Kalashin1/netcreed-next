@@ -225,7 +225,7 @@ const EditLessonForm: FC<Props> = ({ lessonId }) => {
               </Form.Group>
             ) : (
               <Form.Group>
-                <Button variant="primary" type="submit" style={{ width: '100%', fontFamily }}>
+                <Button variant="primary" className="my-4" type="submit" style={{ width: '100%', fontFamily }}>
                   {showSpinner && (
                     <Spinner animation="border" role="status"></Spinner>
                   )}

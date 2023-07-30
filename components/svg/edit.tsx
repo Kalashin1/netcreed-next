@@ -1,12 +1,17 @@
-import { useContext } from 'react';
+import { useContext, FC } from 'react';
+import { IconProps } from '.';
 import { ThemeContext } from '../../pages/_app';
 
-const EditIcon = () => {
+const EditIcon:FC<IconProps> = ({
+  width=15,
+  onClick=() => {}
+}) => {
   const theme = useContext(ThemeContext).theme;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={15}
+      width={width}
+      onClick={onClick}
       fill={`${theme === 'dark' ? '#fff' : '#000'}`}
       viewBox="0 0 512 512"
     >

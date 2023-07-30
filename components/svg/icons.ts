@@ -25,6 +25,10 @@ import ListIcon from './list';
 import UsersIcon from './users';
 import DollarIcon from './dollar';
 import CircleIcon from './circle';
+import TimesIcon from './times';
+import BookMarkIcon from './bookmark';
+import FolderIcon from './folder';
+import SquarePlusIcon from './square-plus';
 
 export {
   DevIcon,
@@ -54,4 +58,8 @@ export {
   UsersIcon,
   DollarIcon,
   CircleIcon,
+  TimesIcon,
+  BookMarkIcon,
+  FolderIcon,
+  SquarePlusIcon,
 };

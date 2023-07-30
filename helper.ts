@@ -122,6 +122,11 @@ export const tags = [
   { label: 'NoSQL', value: 'nosql' },
   { label: 'Dart', value: 'dart' },
   { label: 'Flutter', value: 'flutter' },
+  { label: 'PHP', value: 'php' },
+  { label: 'Laravel', value: 'laravel' },
+  { label: 'Symphony', value: 'symphony' },
+  { label: 'Composer', value: 'composer' },
+  { label: 'Coding', value: 'coding' },
 ];
 
 export const categories = [
@@ -422,16 +427,25 @@ export const signinWithGoogle = async (
     localStorage.setItem('googleToken', token!);
     localStorage.setItem('userId', user.uid);
     console.log(credential, token, user);
-    await setDoc(doc(db, 'users', user.uid), {
-      name: user.displayName,
-      email: user.email,
-      articles: [],
-      createdAt: new Date().getTime(),
-      creator: creator,
-    });
-    alert('Your account has been created successfully');
-    setShowSpinner2(false);
-    router.push('/user/profile');
+    const docRef = doc(db, 'users', user.uid);
+    const docRes = await getDoc(docRef);
+    const _user = { ...docRes.data(), id: docRes.id } as User;
+    if (_user) {
+      alert('login successfully');
+      setShowSpinner2(false);
+      router.push('/user/profile');
+    } else {
+      await setDoc(doc(db, 'users', user.uid), {
+        name: user.displayName,
+        email: user.email,
+        articles: [],
+        createdAt: new Date().getTime(),
+        creator: creator,
+      });
+      alert('Your account has been created successfully');
+      setShowSpinner2(false);
+      router.push('/user/profile');
+    }
   } catch (error: any) {
     setShowSpinner2(false);
     // alert(error.message);
@@ -455,16 +469,29 @@ export const signinWithGithub = async (
     localStorage.setItem('githubToken', token!);
     localStorage.setItem('userId', user.uid);
     console.log(credential, token, user);
-    await setDoc(doc(db, 'users', user.uid), {
-      name: user.displayName,
-      email: user.email,
-      articles: [],
-      createdAt: new Date().getTime(),
-      creator: creator,
-    });
-    alert('Your account has been created successfully');
-    setShowSpinner2(false);
-    router.push('/user/profile');
+    const docRef = doc(db, 'users', user.uid);
+    const docRes = await getDoc(docRef);
+    const _user = { ...docRes.data(), id: docRes.id } as User;
+
+    if (_user) {
+      alert('login successfully');
+      setShowSpinner2(false);
+      router.push('/user/profile');
+    } else {
+      await setDoc(doc(db, 'users', user.uid), {
+        // @ts-ignore
+        name: user.reloadUserInfo.screenName,
+        email: user.email,
+        phone: user.providerData[0].phoneNumber,
+        articles: [],
+        profilePhoto: user.providerData[0].photoURL,
+        createdAt: new Date().getTime(),
+        creator: creator,
+      });
+      alert('Your account has been created successfully');
+      setShowSpinner2(false);
+      router.push('/user/profile');
+    }
   } catch (error: any) {
     setShowSpinner2(false);
     console.log(error.message);
@@ -1470,7 +1497,7 @@ export const getRegisteredCourses = async (userId: string) => {
 };
 
 export const getRegisteredCourseRefs = async (userId: string):
-Promise<[StudentCourseRef[]|null, null|any]> => {
+  Promise<[StudentCourseRef[] | null, null | any]> => {
   try {
     const docRef = doc(db, 'users', userId!);
     const document = await getDoc(docRef);

@@ -37,6 +37,7 @@ export const AuthContext = React.createContext<{
 })
 
 export const fontFamily = 'Roboto Slab'
+export const userDoc = { name: 'kala' };
 
 function CustomApp({ Component, pageProps, router }: AppProps) {
   const [theme, setTheme] = useState(_theme);

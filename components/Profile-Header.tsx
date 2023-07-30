@@ -3,9 +3,9 @@ import { FC, MutableRefObject, useContext, useRef } from 'react';
 import { Card, ListGroup, Button } from 'react-bootstrap';
 import { uploadProfilePhoto } from '../helper';
 import { NextRouter, useRouter } from 'next/router';
-import { ThemeContext } from '../pages/_app';
+import { ThemeContext, fontFamily } from '../pages/_app';
 import { Author } from '../types';
-import { GithubIcon, LinkedinIcon, TwitterIcon } from './svg/icons';
+import { GithubIcon, LinkedinIcon, TwitterIcon, BookMarkIcon, ListIcon, FolderIcon } from './svg/icons';
 
 type Props = {
   name: string;
@@ -119,46 +119,46 @@ const ProfileHeader: FC<Props> = ({
           <div className="author-box-description text-justify">
             <p>{bio?.slice(0, 100)}...</p>
           </div>
-          <div className="mb-2 mt-3">
-           {twitter === 'kinanee_samson' && (<Button
+          <div className="mb-2 mt-3 d-flex">
+           {twitter === 'kinanee_samson' && (<span
               onClick={() => router.push(`/user/courses/${id}`)}
-              style={{ cursor: 'pointer' }}
-              className="w-100 btn-warning my-4 text-small font-weight-bold"
+              style={{ cursor: 'pointer', fontFamily }}
+              className="w-100 mb-4 text-small font-weight-bold"
             >
-              Your Courses
-            </Button>)}
-            <Button
+              <FolderIcon onClick={() => {}} />
+            </span>)}
+            <span
               onClick={() => router.push(`/user/courses/registered/${id}`)}
-              style={{ cursor: 'pointer' }}
-              className="w-100 btn-secondary text-small font-weight-bold mb-4"
+              style={{ cursor: 'pointer', fontFamily }}
+              className="w-100 text-small font-weight-bold mb-4"
             >
-              Registered Courses
-            </Button>
-            <Button
+              <ListIcon />
+            </span>
+            <span
               onClick={() => router.push(`/user/reading_list/${id}`)}
-              style={{ cursor: 'pointer' }}
-              className="w-100 btn-primary text-small font-weight-bold"
+              style={{ cursor: 'pointer', fontFamily }}
+              className="w-100 text-small font-weight-bold"
             >
-              Reading List
-            </Button>
+              <BookMarkIcon onClick={() => {}} />
+            </span>
           </div>
           <a
             href={`https://linkedin.com/in/${linkedin}`}
             className="btn btn-social-icon mr-1 btn-facebook"
           >
-            <LinkedinIcon width={22} />
+            <LinkedinIcon width={18} />
           </a>
           <a
             href={`https://twitter.com/${twitter}`}
             className="btn btn-social-icon mr-1 btn-twitter"
           >
-            <TwitterIcon width={22} />{' '}
+            <TwitterIcon width={18} />{' '}
           </a>
           <a
             href={`https://github.com/${github?.toLowerCase()}`}
             className="btn btn-social-icon mr-1 btn-github"
           >
-            <GithubIcon width={22} />
+            <GithubIcon width={18} />
           </a>
 
           <div className="w-100 d-sm-none"></div>

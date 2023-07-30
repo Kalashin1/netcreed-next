@@ -46,7 +46,7 @@ const CourseComponent: FC<Props> = ({
 
   const [showDeleteIcon, updateShowDeleteIcon] = useState(false);
   return (
-    <Card bg={theme} className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
+    <Card bg={theme}  className={`text-${theme === 'dark' ? 'light' : 'dark'}`}>
       <Card.Img
         src={img}
         style={{ cursor: 'pointer', height: '200px', objectFit: 'cover' }}
@@ -55,6 +55,7 @@ const CourseComponent: FC<Props> = ({
       <Card.Header onClick={(e) => router.push(`/course/${id}`)}>
         <Card.Title
           className="mb-1 h4 font-weight-bold"
+          style={{cursor: 'pointer'}}
           onClick={(e: any) => router.push(`/course/${id}`)}
         >
           {title}
@@ -74,9 +75,6 @@ const CourseComponent: FC<Props> = ({
           className="my-2 mt-4 d-flex justify-items-center justify-content-between"
           onClick={(e) => router.push(`/course/${id}`)}
         >
-          <Button style={{ cursor: 'pointer', fontFamily}} onClick={(e) => router.push(`/course/${id}`)}>
-            View Course
-          </Button>
           {showDeleteIcon && (
             <div style={{ cursor: 'pointer' }} onClick={_deleteCourse}>
               <DeleteIcon fill='red' />

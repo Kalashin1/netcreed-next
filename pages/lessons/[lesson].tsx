@@ -172,7 +172,7 @@ const Lesson: NextPage<{
         </Row>
         <Row className="justify-content-between">
 
-          <Col md={4}>
+          {/* <Col md={4}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
@@ -212,9 +212,9 @@ const Lesson: NextPage<{
                   ))}
               </ListGroup>
             </Container>
-          </Col>
+          </Col> */}
 
-          <Col md={8}>
+          <Col md={12}>
             <div className="m-2 my-4">
               <LessonContent content={lesson?.courseContent} />
             </div>

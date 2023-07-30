@@ -145,7 +145,7 @@ const UserProfile: FC = () => {
                     style={{ fontFamily, cursor:'pointer', width: '100%' }}
                     onClick={(e: any) => navigate(`/post/create`)}
                   >
-                    <EditIcon width={40} onClick={() => {}} />
+                    <EditIcon width={20} onClick={() => {}} />
                     <span className="mx-2">
                       New Post
                     </span>

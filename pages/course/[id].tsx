@@ -230,7 +230,7 @@ const Course: NextPage<{ course: CourseSchema; lessons: LessonSchema[] }> = ({
                         </Col>)}
                         {currentUser && currentUser.uid === course?.author?.id && (<Col xs={1}>
                           <span style={{ cursor: 'pointer' }} onClick={() => _deleteLesson(l.id!)}>
-                            <TimesIcon fill="red" />
+                            <TimesIcon fill="red" width={12} />
                           </span>
                         </Col>)}
                       </Row>

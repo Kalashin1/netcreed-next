@@ -29,11 +29,10 @@ const LessonHeader: FC<Prop> = ({ title, description, creator }) => {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {/* <img src={`/assets/img/demo/blog6.jpg`} className="img-fluid" alt="Leson 1" /> */}
             </Col>
-            <Col md={12} className="pt pb-6 pr-6 align-self-center">
+            <Col md={12} className="pt pr-6 align-self-center">
               <h1 className="display-4 secondfont mb-3 font-weight-bold">
                 {title}
               </h1>
-              <p className="mb-3">{description}</p>
             </Col>
           </Row>
         </div>

@@ -160,19 +160,19 @@ const Lesson: NextPage<{
         />
       </Head>
       <Container className="my-4">
-        <h3 className={`display-4 text-${theme === 'dark' ? 'light' : 'dark'}`}>
+        {/* <h3 className={`display-4 text-${theme === 'dark' ? 'light' : 'dark'}`}>
           {course?.title}
-        </h3>
+        </h3> */}
         <Row className="justify-content-between">
           <Col md={12}>
-            <div className="my-4">
+            <div>
               <LessonHeader {...lesson} />
             </div>
           </Col>
         </Row>
         <Row className="justify-content-between">
 
-          <Col md={4}>
+          {/* <Col md={4}>
             <Container
               className={`px-2 text-${theme === 'dark' ? 'light' : 'dark'}`}
             >
@@ -212,9 +212,9 @@ const Lesson: NextPage<{
                   ))}
               </ListGroup>
             </Container>
-          </Col>
+          </Col> */}
 
-          <Col md={8}>
+          <Col md={12}>
             <div className="m-2 my-4">
               <LessonContent content={lesson?.courseContent} />
             </div>

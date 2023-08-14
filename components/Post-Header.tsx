@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 const marked = require('marked');
 import { Container, Row, Col, Badge } from 'react-bootstrap';
 import { ThemeContext } from '../pages/_app';
-import { tags } from '../helper';
+import { tags, tagColors } from '../helper';
 
 type _Article = {
   article: Article;
@@ -12,6 +12,8 @@ type _Article = {
 
 const PostHeader: FC<_Article> = ({ article }) => {
   let theme: string = useContext(ThemeContext).theme;
+
+  console.log(article.tags)
 
   const router = useRouter();
 
@@ -59,12 +61,18 @@ const PostHeader: FC<_Article> = ({ article }) => {
                 </p>
               )}
               {article &&
-                article.tags.map((a: { value: string; label: string }) => (
-                  <Badge className="mx-1 p-1" bg="primary" key={a.value}>
-                    {a.label}
-                  </Badge>
+                article.tags.map(({value, label}: { value: string; label: string }) => (
+                  <span 
+                    className="mx-1 mt-4 p-1"
+                    style={{ 
+                      background: tagColors[value].bg ?? '#303030', 
+                      color: tagColors[value].text ?? '#fff',
+                      borderRadius: '.5rem',  
+                    }} key={value}>
+                    {label}
+                  </span>
                 ))}
-              <h1 className="display-4 secondfont mb-3 font-weight-bold">
+              <h1 className="display-4 mt-4 second font mb-3 font-weight-bold">
                 {article.title}
               </h1>
               <p

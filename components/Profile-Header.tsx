@@ -5,7 +5,14 @@ import { uploadProfilePhoto } from '../helper';
 import { NextRouter, useRouter } from 'next/router';
 import { ThemeContext, fontFamily } from '../pages/_app';
 import { Author } from '../types';
-import { GithubIcon, LinkedinIcon, TwitterIcon, BookMarkIcon, ListIcon, FolderIcon } from './svg/icons';
+import { 
+  GithubIcon, 
+  LinkedinIcon, 
+  TwitterIcon, 
+  BookMarkIcon, 
+  ListIcon, 
+  FolderIcon, 
+} from './svg/icons';
 
 type Props = {
   name: string;

@@ -93,6 +93,17 @@ export const uploadAsset = async (file: any, folder: string, isVideo?: boolean) 
 
 export const baseDomain = `https://blog.thenetcreed.com`;
 
+export const tagColors: Record<string, {bg: string; text: string}> = {
+  'js': {bg: '#f7df1e', text: '#000' },
+  'ts': {bg: '#007acc', text: '#fff' },
+  'c#': {bg: '#280068', text: '#fff' },
+  'node': {bg: '#303030', text: '#fff' },
+  'c++': {bg: '#044F88', text: '#fff'},
+  'c':  {bg: '#044F88', text: '#fff'},
+  'rust': {bg: '#8b0000', text: '#fff'},
+  'nosql': {bg: '#660066', text: '#fff'}
+} as const
+
 export const tags = [
   { label: 'JavaScript', value: 'js' },
   { label: 'HTML', value: 'html' },
@@ -110,10 +121,14 @@ export const tags = [
   { label: 'React Native', value: 'react-native' },
   { label: 'Firebase', value: 'firebase' },
   { label: 'Firestore', value: 'firestore' },
+  { label: 'FaunaDB', value: 'fauna' },
+  { label: 'FQL', value: 'fql' },
   { label: 'Angular', value: 'angular' },
   { label: 'Go', value: 'go' },
   { label: 'Vue', value: 'vue' },
   { label: 'Svelte', value: 'svelte' },
+  { label: 'SvelteKit', value: 'sveltekit' },
+  { label: 'Supabase', value: 'supabase' },
   { label: 'Solidity', value: 'solidity' },
   { label: 'AWS', value: 'aws' },
   { label: 'GCP', value: 'gcp' },

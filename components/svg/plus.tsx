@@ -11,8 +11,10 @@ const Plus: FC<Props> = ({
   width = 15,
   fill
 }) => {
+  
   const theme = useContext(ThemeContext).theme;
   fill = fill || `${theme === 'dark' ? '#fff' : '#000'}`;
+  
   return (
     <svg
       width={width}

@@ -42,16 +42,16 @@ const RecentPosts: FC<Posts> = ({ posts }) => {
                     className="img-fluid"
                     src={post.coverPhoto}
                     alt="Card image"
-                    onClick={(e: any) => navigate(`/post/${post.id}`)}
+                    onClick={(e: any) => navigate(`/post/${post.slug}`)}
                   />
                   <Card.Body>
                     <Card.Title
                       style={{ cursor: 'pointer' }}
-                      onClick={(e: any) => navigate(`/post/${post.id}`)}
+                      onClick={(e: any) => navigate(`/post/${post.slug}`)}
                     >
                       {post.title}
                     </Card.Title>
-                    {/* <Card.Text style={{ cursor: 'pointer' }} onClick={(e: any) => navigate(`/post/${post.id}`)}>
+                    {/* <Card.Text style={{ cursor: 'pointer' }} onClick={(e: any) => navigate(`/post/${post.slug}`)}>
                     {post.description}
                   </Card.Text> */}
                     <Card.Text

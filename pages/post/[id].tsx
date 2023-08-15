@@ -15,9 +15,7 @@ import { getArticle, getCurrentUser, getProfile, getArticleBySlug } from '../../
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
   console.log(id)
-  let { article, articles } = await getArticleBySlug(
-    id.includes('post/') ? id : `post/${id}`
-  );
+  let { article, articles } = await getArticleBySlug(id);
   if (!article) {
     let { article, articles } = await (await getArticle(id)).article;
     return {

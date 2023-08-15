@@ -688,7 +688,7 @@ export const getArticleBySlug = async (slug: string) => {
   )[0];
   const _q = query(
     collection(db, 'articles'),
-    where('tags', 'array-contains-any', article.tags),
+    where('tags', 'array-contains-any', article?.tags),
     orderBy('createdAt', 'desc'),
     limit(7)
   );
@@ -1771,3 +1771,37 @@ export const MoneyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
+
+// async function slugifyArticles(title: string, id: string) {
+//   const slug = slugify(title);
+//   const articleUpdate: Partial<Article> = {
+//     slug: `${slug}`,
+//   };
+//   await updateDoc(doc(db, 'articles', id), articleUpdate);
+//   return {result: true, id}
+// };
+
+// async function retrieveAllArticles() {
+//   const _q = query(
+//     collection(db, 'articles'),
+//   );
+//   const _docRes = await getDocs(_q);
+//   const articles = _docRes.docs.map((doc) => ({
+//     ...doc.data(),
+//     id: doc.id,
+//   })) as Article[];
+//   return articles
+// };
+
+// async function makeUpdate() {
+//   const articles = await retrieveAllArticles();
+//   const slugifyResult = articles.map((article) => slugifyArticles(
+//     article.title,
+//     article.id
+//   ));
+//   return await Promise.all(slugifyResult)
+// }
+
+// makeUpdate().then((result) => {
+//   console.log(result)
+// })

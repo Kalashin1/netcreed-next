@@ -2,6 +2,7 @@ import { Modal, Card } from "react-bootstrap";
 import SignupForm from "./Signup-Form";
 import { FC, useContext } from "react";
 import { ThemeContext } from '../pages/_app';
+import {TimesIcon} from './svg/icons';
 
 type Props = {
   show: boolean;
@@ -23,6 +24,10 @@ const SignInModal: FC<Props> = ({
       <Card className={`bg-${theme}`}>
         <Modal.Header>
           <Modal.Title className="text-primary">Create a free account</Modal.Title>
+        
+          <span>
+            <TimesIcon />
+          </span>
         </Modal.Header>
         <Modal.Body>
           <SignupForm creator={true} isModal={true} closeModal={handleClose} />

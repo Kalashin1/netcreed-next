@@ -45,13 +45,13 @@ const AlikePost: FC<Articles> = ({ articles }) => {
                   backgroundRepeat: 'no-repeat',
                   cursor: 'pointer',
                 }}
-                onClick={(e: any) => navigate(`/post/${article?.id}`)}
+                onClick={(e: any) => navigate(`/post/${article?.slug}`)}
               ></div>
               <Card.Body className="d-flex flex-column align-items-start">
                 <h2
                   className={`h4 font-weight-bold`}
                   style={{ cursor: 'pointer' }}
-                  onClick={(e: any) => navigate(`/post/${article?.id}`)}
+                  onClick={(e: any) => navigate(`/post/${article?.slug}`)}
                 >
                   {article?.title}
                 </h2>
@@ -93,14 +93,14 @@ const AlikePost: FC<Articles> = ({ articles }) => {
                       style={{ cursor: 'pointer' }}
                       onClick={(e: any) => {
                         e.preventDefault();
-                        navigate(`/post/${article.id}`);
+                        navigate(`/post/${article.slug}`);
                       }}
                     >
                       {article.title}
                     </a>
                   </Card.Title>
                   <p
-                    onClick={(e: any) => navigate(`/post/${article.id}`)}
+                    onClick={(e: any) => navigate(`/post/${article.slug}`)}
                     dangerouslySetInnerHTML={{
                       __html: marked.marked(article.description),
                     }}

@@ -25,7 +25,7 @@ const Header: FC<_Article> = ({ article }) => {
                   __html: marked.marked(article.description),
                 }}
               ></p>
-              <Link href={`/post/${article.id}`} className="btn btn-dark">
+              <Link href={`/post/${article.slug}`} className="btn btn-dark">
                 Read More
               </Link>
             </Col>

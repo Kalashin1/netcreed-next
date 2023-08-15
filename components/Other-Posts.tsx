@@ -39,7 +39,7 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                 src={post.coverPhoto}
                 style={{ cursor: 'pointer' }}
                 alt="Card image"
-                onClick={(e: any) => navigate(`/post/${post.id}`)}
+                onClick={(e: any) => navigate(`/post/${post.slug}`)}
               />
               <Card
                 bg={theme}
@@ -48,11 +48,11 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                 <Card.Body>
                   <Card.Title
                     style={{ cursor: 'pointer' }}
-                    onClick={(e: any) => navigate(`/post/${post.id}`)}
+                    onClick={(e: any) => navigate(`/post/${post.slug}`)}
                   >
                     {post.title}
                   </Card.Title>
-                  {/* <Card.Text onClick={(e: any) => navigate(`/post/${post.id}`)}>
+                  {/* <Card.Text onClick={(e: any) => navigate(`/post/${post.slug}`)}>
                     {post.description}
                   </Card.Text> */}
                   <Card.Text
@@ -116,14 +116,14 @@ const OtherPosts: FC<Posts> = ({ allPosts, featuredPosts }) => {
                       style={{ cursor: 'pointer' }}
                       onClick={(e: any) => {
                         e.preventDefault();
-                        navigate(`/post/${article.id}`);
+                        navigate(`/post/${article.slig}`);
                       }}
                     >
                       {article.title}
                     </a>
                   </Card.Title>
                   <p
-                    onClick={(e: any) => navigate(`/post/${article.id}`)}
+                    onClick={(e: any) => navigate(`/post/${article.slig}`)}
                     style={{ cursor: 'pointer' }}
                     dangerouslySetInnerHTML={{
                       __html: marked.marked(article.description),

@@ -14,9 +14,12 @@ import { getArticle, getCurrentUser, getProfile, getArticleBySlug } from '../../
 
 export const getServerSideProps = async (context: any) => {
   const { id } = context.query;
-  let { article, articles } = await getArticleBySlug(id)
+  console.log(id)
+  let { article, articles } = await getArticleBySlug(
+    id.includes('post/') ? id : `post/${id}`
+  );
   if (!article) {
-    let { article, articles }  = await (await getArticle(id)).article;
+    let { article, articles } = await (await getArticle(id)).article;
     return {
       props: { article, articles }
     }
@@ -87,17 +90,16 @@ const Post: NextPage = ({ article, articles }) => {
         {article && <PostContent article={article} />}
         <div className="my-4">
           <h3
-            className={`text-left mb-4 text-${
-              theme === 'dark' ? 'light' : 'dark'
-            }`}
-            style={{ marginLeft: '5vw '}}
+            className={`text-left mb-4 text-${theme === 'dark' ? 'light' : 'dark'
+              }`}
+            style={{ marginLeft: '5vw ' }}
           >
             Add Comment
           </h3>
           <AddComment articleId={article?.id} userId={userId ? userId : ''} />
         </div>
         <div className="my-6">
-          
+
           {article &&
             article.comments &&
             article.comments.length > 0 &&

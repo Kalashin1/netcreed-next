@@ -13,13 +13,12 @@ type _Article = {
 const PostHeader: FC<_Article> = ({ article }) => {
   let theme: string = useContext(ThemeContext).theme;
 
-  console.log(article.tags)
-
   const router = useRouter();
 
   function navigate(route: string) {
     router.push(route);
   }
+
 
   function isAuthor() {
     if (typeof window !== 'undefined') {

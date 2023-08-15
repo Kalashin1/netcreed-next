@@ -294,7 +294,7 @@ export const createCourseFormHandler = async (
     const courseDoc = await addDoc(collection(db, 'courses'), course);
     await updateDoc(doc(db, 'courses', courseDoc.id), {
       url: `course/${courseDoc.id}`,
-      slug: `course/${slug}`,
+      slug: `${slug}`,
       updatedAt: new Date().getTime(),
     });
     setShowSpinner(true);
@@ -320,7 +320,7 @@ export const editCourseFormHandler = async (
       description,
       title,
       url: `course/${courseId}`,
-      slug: `course/${slug}`,
+      slug: `${slug}`,
       price,
     };
 
@@ -399,14 +399,14 @@ export const createArticleHandler = async (
     });
     await updateDoc(doc(db, 'articles', articleDoc.id), {
       url: `post/${articleDoc.id}`,
-      slug: `post/${slug}`,
+      slug: `${slug}`,
       updatedAt: new Date().getTime(),
     });
     userArticles.push({
       coverPhoto: imageUrl,
       url: `post/${articleDoc.id}`,
       id: articleDoc.id,
-      slug: `post/${slug}`,
+      slug: `${slug}`,
       description: article.description!,
       title: articleName.value,
     });
@@ -677,9 +677,15 @@ export const getArticle = async (id: string) => {
 };
 
 export const getArticleBySlug = async (slug: string) => {
-  const ref = doc(db, 'articles', slug);
-  const docRes = await getDoc(ref);
-  const article = { ...docRes.data(), id: docRes.id } as Article;
+  const q = query(
+    collection(db, 'articles'),
+    where('slug', '==', slug),
+    limit(1)
+  );
+  const docs = await getDocs(q);
+  const article = docs.docs.map(
+    (docRes) => ({ ...docRes.data(), id: docRes.id } as Article)
+  )[0];
   const _q = query(
     collection(db, 'articles'),
     where('tags', 'array-contains-any', article.tags),
@@ -819,7 +825,7 @@ export const createLessonFormHandler = async (
     console.log("slug", slug)
     await updateDoc(doc(db, 'lessons', lessonDoc.id), {
       url: `lessons/${lessonDoc.id}`,
-      slug: `lessons/${slug}`,
+      slug: `${slug}`,
       updatedAt: new Date().getTime(),
     });
     return [lessonDoc, null];
@@ -864,7 +870,7 @@ export const editLessonFormHandler = async (
       title,
       courseContent: content!,
       url: `lessons/${_lesson}`,
-      slug: `lessons/${slug}`,
+      slug: `${slug}`,
       lessonPosition,
       updatedAt: new Date().getTime(),
       video: videoURL ? videoURL : '',

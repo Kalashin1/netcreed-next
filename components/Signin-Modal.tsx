@@ -21,7 +21,7 @@ const SignInModal: FC<Props> = ({
       keyboard={false}
     >
       <Card className={`bg-${theme}`}>
-        <Modal.Header>
+        <Modal.Header closeButton>
           <Modal.Title className="text-primary">Create a free account</Modal.Title>
         </Modal.Header>
         <Modal.Body>

@@ -51,7 +51,7 @@ const Layout: FC<Props> = function ({ children }) {
       <div className={`bg-${_theme == 'dark' ? 'dark' : 'light'}`} style={{ fontFamily: 'Roboto Slab'}}>
         <Navbar />
         <div style={{ padding: '4rem .5rem', minHeight: '72vh' }}>
-          {/* <SignInModal show={show} handleClose={handleClose} /> */}
+          <SignInModal show={show} handleClose={handleClose} />
           {children}
           
         </div>
